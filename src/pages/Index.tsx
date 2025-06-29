@@ -46,17 +46,20 @@ const Index = () => {
     {
       icon: Brain,
       title: "Stateful, Adaptive & Transparent Reasoning",
-      description: "Persistent, contextual memory allows truly complete & auditable reasoning."
+      description: "Persistent, contextual memory enables fully auditable decisions.",
+      ariaLabel: "brain outline icon"
     },
     {
       icon: Eye,
       title: "Dynamic Contradiction Handling",
-      description: "Surfaces critical drift before to protect your short and long-term goals."
+      description: "Surfaces critical drift before to protect your short and long-term goals.",
+      ariaLabel: "eye outline icon"
     },
     {
       icon: Shield,
       title: "Ownable Knowledge",
-      description: "Your private, customizable library seeded with timeless humanist thought."
+      description: "Your private, customizable library seeded with timeless humanist thought.",
+      ariaLabel: "shield outline icon"
     }
   ];
 
@@ -64,8 +67,8 @@ const Index = () => {
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <BackgroundVideo />
       
-      {/* Hero Section */}
-      <section className="relative z-10 min-h-screen flex items-center justify-center px-4 snap-start">
+      {/* Hero Section - Reduced padding-top to 15vh */}
+      <section className="relative z-10 flex items-center justify-center px-4 snap-start" style={{ minHeight: '100vh', paddingTop: '15vh' }}>
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
             Meet Your Cognitive Growth Partner
@@ -81,10 +84,19 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="group bg-white/5 border-white/10 backdrop-blur-md hover:bg-white/10 transition-all duration-500 animate-fade-in glassmorphic-card" style={{ animationDelay: `${index * 0.2}s` }}>
+              <Card 
+                key={index} 
+                className="group glassmorphic-feature-card transition-all duration-500 animate-fade-in" 
+                style={{ animationDelay: `${index * 0.2}s` }}
+              >
                 <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#68d5c4]/20 to-[#68d5c4]/5 border border-[#68d5c4]/30 backdrop-blur-sm flex items-center justify-center group-hover:border-[#68d5c4]/50 transition-all duration-300">
-                    <feature.icon className="w-8 h-8 text-[#68d5c4] group-hover:scale-110 transition-transform duration-300" />
+                  <div className="w-16 h-16 mx-auto mb-6 rounded-full glassmorphic-icon-container flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <feature.icon 
+                      className="w-12 h-12 text-[#68d5c4]" 
+                      strokeWidth={2}
+                      fill="none"
+                      aria-label={feature.ariaLabel}
+                    />
                   </div>
                   <h3 className="text-xl font-semibold mb-4 text-white">
                     {feature.title}
@@ -173,9 +185,9 @@ const Index = () => {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-[#68d5c4] to-[#5bc4b1] hover:from-[#5bc4b1] hover:to-[#4fb3a0] text-black font-semibold py-3 text-lg transition-all duration-300 border border-[#68d5c4]/30 backdrop-blur-sm shadow-lg hover:shadow-[#68d5c4]/25"
+                  className="w-full bg-[#68d5c4] hover:bg-[#5bc4b1] text-[#0b0d10] font-semibold py-3 text-lg transition-all duration-300 border border-[#68d5c4]/30 backdrop-blur-sm shadow-lg hover:shadow-[#68d5c4]/25"
                 >
-                  {isSubmitting ? 'Joining Queue...' : 'Request to Join Private Demo Queue'}
+                  {isSubmitting ? 'Joining Queue...' : 'Request Early Access'}
                 </Button>
               </form>
             </CardContent>
