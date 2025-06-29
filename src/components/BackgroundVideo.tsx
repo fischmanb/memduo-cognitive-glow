@@ -29,25 +29,28 @@ const BackgroundVideo = () => {
     if (!isSlowConnection && !prefersReducedMotion && !scriptLoadedRef.current) {
       const loadTsParticles = async () => {
         try {
-          await tsParticles.load("graphBG", {
-            fullScreen: { zIndex: -1 },
-            detectRetina: true,
-            background: { color: "#000" },
-            fpsLimit: 30,
-            particles: {
-              number: { value: 8, density: { enable: false } },
-              color: { value: ["#00e5ff", "#9b59ff"] },
-              shape: { type: "circle" },
-              size: { value: 4 },
-              opacity: { value: 0.8, animation: { speed: 0.2 } },
-              links: {
-                enable: true,
-                distance: 150,
+          await tsParticles.load({
+            id: "graphBG",
+            options: {
+              fullScreen: { zIndex: -1 },
+              detectRetina: true,
+              background: { color: "#000" },
+              fpsLimit: 30,
+              particles: {
+                number: { value: 8, density: { enable: false } },
                 color: { value: ["#00e5ff", "#9b59ff"] },
-                opacity: 0.6,
-                width: 1
-              },
-              move: { enable: true, speed: 0.3, random: true, outMode: "bounce" }
+                shape: { type: "circle" },
+                size: { value: 4 },
+                opacity: { value: 0.8, animation: { speed: 0.2 } },
+                links: {
+                  enable: true,
+                  distance: 150,
+                  color: { value: ["#00e5ff", "#9b59ff"] },
+                  opacity: 0.6,
+                  width: 1
+                },
+                move: { enable: true, speed: 0.3, random: true, outMode: "bounce" }
+              }
             }
           });
           
