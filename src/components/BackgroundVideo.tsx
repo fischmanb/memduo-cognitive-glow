@@ -65,7 +65,6 @@ const BackgroundVideo = () => {
                   animation: {
                     enable: true,
                     speed: 1,
-                    min: 3,
                     sync: false
                   }
                 },
@@ -74,7 +73,6 @@ const BackgroundVideo = () => {
                   animation: { 
                     enable: true,
                     speed: 0.8,
-                    min: 0.5,
                     sync: false
                   }
                 },
