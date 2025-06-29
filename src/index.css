@@ -164,7 +164,7 @@ All colors MUST be HSL.
     transform: translateY(-4px);
   }
 
-  /* Clean, simple icon container styling */
+  /* Unified icon container styling - removing all overrides */
   .icon-container {
     background: rgba(104, 213, 196, 0.15) !important;
     backdrop-filter: blur(8px) !important;
@@ -178,5 +178,16 @@ All colors MUST be HSL.
     background: rgba(104, 213, 196, 0.2) !important;
     border-color: rgba(104, 213, 196, 0.5) !important;
     box-shadow: 0 12px 32px rgba(104, 213, 196, 0.15) !important;
+  }
+
+  /* Force all SVG icons to have transparent fill */
+  .icon-container svg {
+    fill: none !important;
+    background: none !important;
+  }
+
+  .icon-container svg path {
+    fill: none !important;
+    background: none !important;
   }
 }
