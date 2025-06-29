@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { tsParticles } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
@@ -61,11 +60,7 @@ const BackgroundVideo = () => {
                   type: "circle" 
                 },
                 size: { 
-                  value: 6,
-                  random: {
-                    enable: true,
-                    minimumValue: 4
-                  },
+                  value: { min: 4, max: 8 },
                   animation: {
                     enable: true,
                     speed: 1,
@@ -73,11 +68,7 @@ const BackgroundVideo = () => {
                   }
                 },
                 opacity: { 
-                  value: 0.8,
-                  random: {
-                    enable: true,
-                    minimumValue: 0.6
-                  },
+                  value: { min: 0.6, max: 1.0 },
                   animation: { 
                     enable: true,
                     speed: 0.8,
