@@ -32,7 +32,7 @@ const BackgroundVideo = () => {
           // Initialize tsParticles engine
           await loadSlim(tsParticles);
           
-          // Load particles with correct API usage
+          // Load particles with intelligent adaptive graph configuration
           await tsParticles.load({
             id: "graphBG",
             options: {
@@ -47,7 +47,7 @@ const BackgroundVideo = () => {
               fpsLimit: 60,
               particles: {
                 number: { 
-                  value: 25,
+                  value: 35,
                   density: { 
                     enable: true,
                     width: 1920,
@@ -55,50 +55,77 @@ const BackgroundVideo = () => {
                   }
                 },
                 color: { 
-                  value: ["#00e5ff", "#9b59ff", "#68d5c4", "#ff6b9d", "#ffd93d"] 
+                  value: "#00ffff", // Electric cyan base
+                  animation: {
+                    h: {
+                      count: 0,
+                      enable: true,
+                      offset: 0,
+                      speed: 20,
+                      decay: 0,
+                      sync: false
+                    },
+                    s: {
+                      count: 0,
+                      enable: false,
+                      offset: 0,
+                      speed: 1,
+                      decay: 0,
+                      sync: true
+                    },
+                    l: {
+                      count: 0,
+                      enable: true,
+                      offset: 20,
+                      speed: 30,
+                      decay: 0,
+                      sync: false
+                    }
+                  }
                 },
                 shape: { 
                   type: "circle" 
                 },
                 size: { 
-                  value: { min: 3, max: 12 },
+                  value: { min: 4, max: 8 },
                   animation: {
+                    enable: true,
+                    speed: 3,
+                    sync: false,
+                    startValue: "random"
+                  }
+                },
+                opacity: { 
+                  value: { min: 0.7, max: 1.0 },
+                  animation: { 
                     enable: true,
                     speed: 2,
                     sync: false
                   }
                 },
-                opacity: { 
-                  value: { min: 0.6, max: 1.0 },
-                  animation: { 
-                    enable: true,
-                    speed: 1.5,
-                    sync: false
-                  }
-                },
                 stroke: {
-                  width: 2,
+                  width: 1,
                   color: {
-                    value: ["#00e5ff", "#9b59ff", "#68d5c4"]
+                    value: "#00ffff"
                   }
                 },
                 links: {
                   enable: true,
-                  distance: 200,
+                  distance: 180,
                   color: {
-                    value: ["#00e5ff", "#9b59ff", "#68d5c4"]
+                    value: "#00ffff"
                   },
-                  opacity: { min: 0.3, max: 0.8 },
-                  width: { min: 1, max: 3 },
+                  opacity: 0.4,
+                  width: 1,
+                  warp: false,
+                  frequency: 1,
                   triangles: {
-                    enable: true,
-                    color: "#68d5c4",
-                    opacity: 0.1
+                    enable: false
                   }
                 },
                 move: { 
                   enable: true, 
-                  speed: { min: 0.5, max: 2 },
+                  speed: { min: 0.8, max: 2.5 },
                   direction: "none",
                   random: true,
                   straight: false,
@@ -108,18 +135,42 @@ const BackgroundVideo = () => {
                   attract: {
                     enable: true,
                     rotate: {
-                      x: 600,
-                      y: 1200
+                      x: 800,
+                      y: 1600
                     }
-                  }
+                  },
+                  path: {
+                    clamp: true,
+                    delay: {
+                      random: {
+                        enable: true,
+                        minimumValue: 0
+                      },
+                      value: 0
+                    },
+                    enable: false,
+                    options: {}
+                  },
+                  trail: {
+                    enable: false,
+                    length: 10,
+                    fill: {}
+                  },
+                  vibrate: false,
+                  warp: false
                 }
               },
               interactivity: {
-                detectsOn: "canvas",
+                detectsOn: "window",
                 events: {
                   onHover: {
                     enable: true,
-                    mode: ["grab", "bubble"]
+                    mode: ["grab", "bubble"],
+                    parallax: {
+                      enable: false,
+                      force: 60,
+                      smooth: 10
+                    }
                   },
                   onClick: {
                     enable: true,
@@ -132,20 +183,26 @@ const BackgroundVideo = () => {
                 },
                 modes: {
                   grab: {
-                    distance: 250,
+                    distance: 200,
                     links: {
-                      opacity: 1,
-                      color: "#ffffff"
+                      blink: false,
+                      consent: false,
+                      opacity: 0.8,
+                      color: "#9b59ff" // Purple on hover
                     }
                   },
                   bubble: {
-                    distance: 200,
-                    size: 15,
-                    duration: 2,
-                    opacity: 1
+                    distance: 150,
+                    size: 12,
+                    duration: 0.4,
+                    opacity: 1,
+                    color: "#9b59ff",
+                    mix: false
                   },
                   push: {
-                    quantity: 2
+                    default: true,
+                    groups: [],
+                    quantity: 3
                   }
                 }
               }
@@ -153,7 +210,7 @@ const BackgroundVideo = () => {
           });
           
           setParticlesLoaded(true);
-          console.log('tsParticles loaded successfully');
+          console.log('Adaptive graph particles loaded successfully');
         } catch (error) {
           console.error('Failed to load tsParticles:', error);
         }
@@ -169,7 +226,7 @@ const BackgroundVideo = () => {
       <div 
         className="fixed inset-0 w-full h-full object-cover z-0"
         style={{
-          backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.9) 80%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23068d9d' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3Ccircle cx='10' cy='10' r='1'/%3E%3Ccircle cx='50' cy='10' r='1'/%3E%3Ccircle cx='10' cy='50' r='1'/%3E%3Ccircle cx='50' cy='50' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.9) 80%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300ffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3Ccircle cx='10' cy='10' r='1'/%3E%3Ccircle cx='50' cy='10' r='1'/%3E%3Ccircle cx='10' cy='50' r='1'/%3E%3Ccircle cx='50' cy='50' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           backgroundColor: '#0b0d10'
         }}
       />
