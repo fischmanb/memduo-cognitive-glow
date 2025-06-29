@@ -50,7 +50,7 @@ const BackgroundVideo = () => {
                   value: 12,
                   density: { 
                     enable: true,
-                    area: 800
+                    value_area: 800
                   }
                 },
                 color: { 
@@ -60,15 +60,14 @@ const BackgroundVideo = () => {
                   type: "circle" 
                 },
                 size: { 
-                  value: { min: 2, max: 6 },
-                  random: true
+                  value: { min: 2, max: 6 }
                 },
                 opacity: { 
                   value: 0.8,
                   animation: { 
                     enable: true,
                     speed: 0.5,
-                    minimumValue: 0.3
+                    min_value: 0.3
                   }
                 },
                 links: {
@@ -96,7 +95,9 @@ const BackgroundVideo = () => {
                     enable: true,
                     mode: "grab"
                   },
-                  resize: true
+                  resize: {
+                    enable: true
+                  }
                 },
                 modes: {
                   grab: {
