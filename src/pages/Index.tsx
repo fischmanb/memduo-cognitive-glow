@@ -1,4 +1,5 @@
 
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -124,14 +125,14 @@ const Index = () => {
       {/* Waitlist Form Section */}
       <section className="relative z-10 py-20 px-4 snap-start">
         <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-light mb-4 text-white">
-              Private demo opportunities for select researchers, media, and investors.
-            </h2>
-          </div>
-          
           <Card className="bg-white/5 border-white/10 backdrop-blur-md glassmorphic-card">
             <CardContent className="p-8">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl md:text-4xl font-light mb-4 text-white">
+                  Private demo opportunities for select researchers, media, and investors.
+                </h2>
+              </div>
+              
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
@@ -208,3 +209,4 @@ const Index = () => {
 };
 
 export default Index;
+
