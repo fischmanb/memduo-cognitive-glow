@@ -86,10 +86,10 @@ const BackgroundVideo = () => {
           id: i,
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
+          vx: (Math.random() - 0.5) * 0.15, // Reduced movement speed for more organic feel
+          vy: (Math.random() - 0.5) * 0.15,
           color: colors[Math.floor(Math.random() * colors.length)],
-          size: isHub ? 12 + Math.random() * 8 : 6 + Math.random() * 6,
+          size: isHub ? 8 + Math.random() * 4 : 4 + Math.random() * 3, // Smaller, sharper nodes
           connections: [],
           pulsePhase: Math.random() * Math.PI * 2,
           colorIndex: Math.floor(Math.random() * colors.length),
@@ -205,9 +205,9 @@ const BackgroundVideo = () => {
 
     // Animation loop with neural-like activity
     const animate = () => {
-      timeRef.current += 0.02;
+      timeRef.current += 0.01; // Slower time progression for more organic feel
       
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)'; // Slower fade for smoother trails
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       const nodes = nodesRef.current;
@@ -226,38 +226,38 @@ const BackgroundVideo = () => {
         node.x = Math.max(0, Math.min(canvas.width, node.x));
         node.y = Math.max(0, Math.min(canvas.height, node.y));
 
-        // Neural firing patterns (faster for hubs)
-        node.pulsePhase += node.isHub ? 0.08 : 0.05;
+        // Slower neural firing patterns (more organic)
+        node.pulsePhase += node.isHub ? 0.025 : 0.02; // Significantly slower
 
-        // Color changes based on neural activity
-        const activityRate = node.isHub ? 2 : 4;
-        if (timeRef.current - node.lastColorChange > activityRate + Math.random() * 3) {
+        // Slower color changes for less distraction
+        const activityRate = node.isHub ? 6 : 8; // Much slower color transitions
+        if (timeRef.current - node.lastColorChange > activityRate + Math.random() * 4) {
           node.colorIndex = (node.colorIndex + 1) % colors.length;
           node.color = colors[node.colorIndex];
           node.lastColorChange = timeRef.current;
         }
       });
 
-      // Update synaptic activity
+      // Update synaptic activity with slower transitions
       edges.forEach(edge => {
-        // Synaptic transmission speed varies by connection strength
-        edge.pulsePhase += 0.02 + (edge.strength * 0.04);
+        // Slower synaptic transmission
+        edge.pulsePhase += 0.01 + (edge.strength * 0.015); // Much slower pulse
         
-        // Synaptic plasticity - connections change over time
-        const plasticityRate = 1.5 + Math.random() * 2;
+        // Slower synaptic plasticity
+        const plasticityRate = 4 + Math.random() * 3; // Slower color changes
         if (timeRef.current - edge.lastColorChange > plasticityRate) {
           edge.colorIndex = (edge.colorIndex + 1) % colors.length;
           edge.lastColorChange = timeRef.current;
         }
       });
 
-      // Draw synaptic connections with activity-based rendering
+      // Draw synaptic connections - thinner and clearer
       edges.forEach(edge => {
         const fromNode = nodes[edge.from];
         const toNode = nodes[edge.to];
         
-        // Neural transmission visualization
-        const transmissionIntensity = 0.2 + edge.strength * 0.6 * Math.sin(edge.pulsePhase);
+        // Smoother neural transmission visualization
+        const transmissionIntensity = 0.3 + edge.strength * 0.4 * (Math.sin(edge.pulsePhase) * 0.5 + 0.5);
         const edgeColor = colors[edge.colorIndex];
         
         // Extract RGB values
@@ -266,24 +266,18 @@ const BackgroundVideo = () => {
         const b = parseInt(edgeColor.slice(5, 7), 16);
         
         ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${transmissionIntensity})`;
-        ctx.lineWidth = 1 + edge.strength * 2 + Math.sin(edge.pulsePhase) * 0.5;
+        ctx.lineWidth = 0.5 + edge.strength * 0.8; // Much thinner connections
         ctx.beginPath();
         ctx.moveTo(fromNode.x, fromNode.y);
         ctx.lineTo(toNode.x, toNode.y);
         ctx.stroke();
-        
-        // Reduced synaptic glow
-        ctx.shadowColor = edgeColor;
-        ctx.shadowBlur = 2 + edge.strength * 2 + Math.sin(edge.pulsePhase) * 1; // Reduced from 3 + 5 + 2
-        ctx.stroke();
-        ctx.shadowBlur = 0;
       });
 
-      // Draw neurons with biological characteristics
+      // Draw neurons - sharper and cleaner
       nodes.forEach(node => {
-        // Neural firing visualization
-        const firingIntensity = node.size + Math.sin(node.pulsePhase) * (node.isHub ? 5 : 3);
-        const neuralActivity = 0.6 + 0.4 * Math.sin(node.pulsePhase * (node.isHub ? 1.5 : 1));
+        // Smoother neural firing visualization
+        const firingIntensity = node.size + Math.sin(node.pulsePhase) * (node.isHub ? 2 : 1.5);
+        const neuralActivity = 0.7 + 0.3 * (Math.sin(node.pulsePhase) * 0.5 + 0.5);
         
         // Extract RGB values
         const r = parseInt(node.color.slice(1, 3), 16);
@@ -292,27 +286,24 @@ const BackgroundVideo = () => {
         
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${neuralActivity})`;
         ctx.strokeStyle = node.color;
-        ctx.lineWidth = node.isHub ? 3 : 2;
+        ctx.lineWidth = node.isHub ? 1.5 : 1; // Thinner, sharper outlines
         
-        // Reduced neural glow based on activity
-        ctx.shadowColor = node.color;
-        ctx.shadowBlur = (node.isHub ? 6 : 4) + Math.sin(node.pulsePhase) * (node.isHub ? 3 : 2); // Reduced from 12/8 + 6/4
+        // No glow for sharper appearance
+        ctx.shadowBlur = 0;
         
         ctx.beginPath();
         ctx.arc(node.x, node.y, firingIntensity, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
         
-        // Hub nodes get extra visual emphasis
+        // Hub nodes get subtle emphasis without glow
         if (node.isHub) {
-          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, 0.3)`;
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, 0.2)`;
+          ctx.lineWidth = 0.5;
           ctx.beginPath();
-          ctx.arc(node.x, node.y, firingIntensity + 8, 0, Math.PI * 2);
+          ctx.arc(node.x, node.y, firingIntensity + 4, 0, Math.PI * 2);
           ctx.stroke();
         }
-        
-        ctx.shadowBlur = 0;
       });
 
       animationRef.current = requestAnimationFrame(animate);
