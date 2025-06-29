@@ -50,7 +50,8 @@ const BackgroundVideo = () => {
                   value: 12,
                   density: { 
                     enable: true,
-                    value_area: 800
+                    width: 1920,
+                    height: 1080
                   }
                 },
                 color: { 
