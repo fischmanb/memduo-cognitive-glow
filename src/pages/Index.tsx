@@ -90,7 +90,7 @@ const Index = () => {
                 style={{ animationDelay: `${index * 0.2}s` }}
               >
                 <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-lg glassmorphic-icon-container flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 bg-gradient-to-br from-[#68d5c4]/20 to-[#68d5c4]/10 backdrop-blur-sm">
                     <feature.icon 
                       className="w-12 h-12 text-[#68d5c4]" 
                       strokeWidth={2}
