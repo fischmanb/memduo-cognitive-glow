@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { tsParticles } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
@@ -54,7 +55,7 @@ const BackgroundVideo = () => {
                   }
                 },
                 color: { 
-                  value: "#00ffff" // Electric cyan base
+                  value: ["#00ffff", "#00ccff", "#33aaff", "#6699ff", "#9966ff", "#9b59ff"]
                 },
                 shape: { 
                   type: "circle" 
@@ -63,16 +64,17 @@ const BackgroundVideo = () => {
                   value: { min: 4, max: 8 },
                   animation: {
                     enable: true,
-                    speed: 2,
-                    sync: false,
-                    startValue: "random"
+                    speed: 1,
+                    size_min: 3,
+                    sync: false
                   }
                 },
                 opacity: { 
-                  value: { min: 0.6, max: 1.0 },
+                  value: { min: 0.7, max: 1.0 },
                   animation: { 
                     enable: true,
-                    speed: 1.5,
+                    speed: 0.8,
+                    opacity_min: 0.5,
                     sync: false
                   }
                 },
@@ -85,7 +87,7 @@ const BackgroundVideo = () => {
                   color: {
                     value: "#00ffff"
                   },
-                  opacity: 0.4,
+                  opacity: 0.6,
                   width: 1,
                   warp: false,
                   triangles: {
@@ -94,7 +96,7 @@ const BackgroundVideo = () => {
                 },
                 move: { 
                   enable: true, 
-                  speed: 1,
+                  speed: 0.8,
                   direction: "none",
                   outModes: {
                     default: "bounce"
@@ -135,8 +137,8 @@ const BackgroundVideo = () => {
                     links: {
                       blink: false,
                       consent: false,
-                      opacity: 0.8,
-                      color: "#9b59ff" // Electric purple on hover
+                      opacity: 0.9,
+                      color: "#9b59ff"
                     }
                   },
                   bubble: {
