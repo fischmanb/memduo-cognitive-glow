@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 
 interface Node {
@@ -73,7 +72,7 @@ const BackgroundVideo = () => {
 
     // Generate biologically-inspired neural network
     const generateNeuralNetwork = () => {
-      const nodeCount = 20;
+      const nodeCount = 40; // Doubled from 20
       const hubRatio = 0.15; // 15% of nodes are hubs
       const layers = 3;
       
@@ -273,9 +272,9 @@ const BackgroundVideo = () => {
         ctx.lineTo(toNode.x, toNode.y);
         ctx.stroke();
         
-        // Synaptic glow
+        // Reduced synaptic glow
         ctx.shadowColor = edgeColor;
-        ctx.shadowBlur = 3 + edge.strength * 5 + Math.sin(edge.pulsePhase) * 2;
+        ctx.shadowBlur = 2 + edge.strength * 2 + Math.sin(edge.pulsePhase) * 1; // Reduced from 3 + 5 + 2
         ctx.stroke();
         ctx.shadowBlur = 0;
       });
@@ -295,9 +294,9 @@ const BackgroundVideo = () => {
         ctx.strokeStyle = node.color;
         ctx.lineWidth = node.isHub ? 3 : 2;
         
-        // Neural glow based on activity
+        // Reduced neural glow based on activity
         ctx.shadowColor = node.color;
-        ctx.shadowBlur = (node.isHub ? 12 : 8) + Math.sin(node.pulsePhase) * (node.isHub ? 6 : 4);
+        ctx.shadowBlur = (node.isHub ? 6 : 4) + Math.sin(node.pulsePhase) * (node.isHub ? 3 : 2); // Reduced from 12/8 + 6/4
         
         ctx.beginPath();
         ctx.arc(node.x, node.y, firingIntensity, 0, Math.PI * 2);
