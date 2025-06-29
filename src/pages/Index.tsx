@@ -45,8 +45,8 @@ const Index = () => {
   const features = [
     {
       icon: Brain,
-      title: "Stateful, Adaptive & Transparent Memory",
-      description: "See what it remembers and why it matters."
+      title: "Stateful, Adaptive & Transparent Reasoning",
+      description: "Persistent, contextual memory allows truly complete & auditable reasoning."
     },
     {
       icon: Eye,
