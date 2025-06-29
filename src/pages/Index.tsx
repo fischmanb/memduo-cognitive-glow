@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { Brain, Eye, Shield } from "lucide-react";
+import { Zap, Eye, Shield } from "lucide-react";
 import BackgroundVideo from "../components/BackgroundVideo";
 import { useToast } from "@/hooks/use-toast";
 
@@ -44,10 +43,10 @@ const Index = () => {
 
   const features = [
     {
-      icon: Brain,
+      icon: Zap,
       title: "Stateful, Adaptive & Transparent Reasoning",
       description: "Persistent, contextual memory enables fully auditable decisions.",
-      ariaLabel: "brain outline icon"
+      ariaLabel: "zap outline icon"
     },
     {
       icon: Eye,
@@ -90,22 +89,12 @@ const Index = () => {
                 style={{ animationDelay: `${index * 0.2}s` }}
               >
                 <CardContent className="p-8 text-center">
-                  <div 
-                    className="icon-container w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                    style={{
-                      background: 'rgba(104, 213, 196, 0.15) !important',
-                      backdropFilter: 'blur(8px) !important',
-                      WebkitBackdropFilter: 'blur(8px) !important',
-                      border: '2px solid rgba(104, 213, 196, 0.3) !important',
-                      boxShadow: '0 8px 24px rgba(104, 213, 196, 0.1) !important'
-                    }}
-                  >
+                  <div className="icon-container w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <feature.icon 
                       className="w-12 h-12 text-[#68d5c4]" 
                       strokeWidth={2}
                       fill="none"
                       aria-label={feature.ariaLabel}
-                      style={{ color: '#68d5c4 !important' }}
                     />
                   </div>
                   <h3 className="text-xl font-semibold mb-4 text-white">
