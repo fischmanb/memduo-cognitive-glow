@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [interest, setInterest] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,10 +19,10 @@ const Index = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firstName.trim() || !email.trim()) {
+    if (!firstName.trim() || !lastName.trim() || !email.trim()) {
       toast({
         title: "Required fields missing",
-        description: "Please provide your first name and email address.",
+        description: "Please provide your first name, last name, and email address.",
         variant: "destructive"
       });
       return;
@@ -37,10 +37,11 @@ const Index = () => {
         description: "We'll contact you when demo opportunities become available.",
       });
       setFirstName('');
+      setLastName('');
       setEmail('');
       setInterest('');
       setIsSubmitting(false);
-      console.log('Waitlist submission:', { firstName, email, interest });
+      console.log('Waitlist submission:', { firstName, lastName, email, interest });
     }, 1000);
   };
 
@@ -126,8 +127,8 @@ const Index = () => {
         <div className="max-w-2xl mx-auto">
           <Card className="bg-white/5 border-white/10 backdrop-blur-md glassmorphic-card">
             <CardContent className="p-8">
-              <div className="text-center mb-18">
-                <h2 className="text-3xl md:text-4xl font-light mb-12 text-white">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl md:text-4xl font-light mb-4 text-white">
                   Private demo opportunities for select researchers, media, and investors.
                 </h2>
               </div>
@@ -149,19 +150,33 @@ const Index = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                      Email Address *
+                    <label htmlFor="lastName" className="block text-sm font-medium text-gray-300 mb-2">
+                      Last Name *
                     </label>
                     <Input
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      id="lastName"
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
                       className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#68d5c4] focus:bg-white/10 backdrop-blur-sm transition-all duration-300"
-                      placeholder="your@email.com"
+                      placeholder="Your last name"
                       required
                     />
                   </div>
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                    Email Address *
+                  </label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#68d5c4] focus:bg-white/10 backdrop-blur-sm transition-all duration-300"
+                    placeholder="your@email.com"
+                    required
+                  />
                 </div>
                 
                 <div>
