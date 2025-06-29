@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { tsParticles } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
@@ -47,7 +46,7 @@ const BackgroundVideo = () => {
               fpsLimit: 60,
               particles: {
                 number: { 
-                  value: 40,
+                  value: 35,
                   density: { 
                     enable: true,
                     width: 1920,
@@ -55,42 +54,16 @@ const BackgroundVideo = () => {
                   }
                 },
                 color: { 
-                  value: "#00ffff", // Electric cyan base
-                  animation: {
-                    h: {
-                      count: 0,
-                      enable: true,
-                      offset: 0,
-                      speed: 15,
-                      decay: 0,
-                      sync: false
-                    },
-                    s: {
-                      count: 0,
-                      enable: false,
-                      offset: 0,
-                      speed: 1,
-                      decay: 0,
-                      sync: true
-                    },
-                    l: {
-                      count: 0,
-                      enable: true,
-                      offset: 15,
-                      speed: 25,
-                      decay: 0,
-                      sync: false
-                    }
-                  }
+                  value: "#00ffff" // Electric cyan base
                 },
                 shape: { 
                   type: "circle" 
                 },
                 size: { 
-                  value: { min: 3, max: 10 },
+                  value: { min: 4, max: 8 },
                   animation: {
                     enable: true,
-                    speed: 4,
+                    speed: 2,
                     sync: false,
                     startValue: "random"
                   }
@@ -99,33 +72,29 @@ const BackgroundVideo = () => {
                   value: { min: 0.6, max: 1.0 },
                   animation: { 
                     enable: true,
-                    speed: 3,
+                    speed: 1.5,
                     sync: false
                   }
                 },
                 stroke: {
-                  width: 1,
-                  color: {
-                    value: "#00ffff"
-                  }
+                  width: 0
                 },
                 links: {
                   enable: true,
-                  distance: 160,
+                  distance: 150,
                   color: {
                     value: "#00ffff"
                   },
-                  opacity: 0.3,
-                  width: 1.5,
+                  opacity: 0.4,
+                  width: 1,
                   warp: false,
-                  frequency: 1,
                   triangles: {
                     enable: false
                   }
                 },
                 move: { 
                   enable: true, 
-                  speed: 1.5,
+                  speed: 1,
                   direction: "none",
                   outModes: {
                     default: "bounce"
@@ -136,22 +105,7 @@ const BackgroundVideo = () => {
                       x: 600,
                       y: 1200
                     }
-                  },
-                  path: {
-                    clamp: true,
-                    delay: {
-                      value: 0
-                    },
-                    enable: false,
-                    options: {}
-                  },
-                  trail: {
-                    enable: false,
-                    length: 10,
-                    fill: {}
-                  },
-                  vibrate: false,
-                  warp: false
+                  }
                 }
               },
               interactivity: {
@@ -177,18 +131,18 @@ const BackgroundVideo = () => {
                 },
                 modes: {
                   grab: {
-                    distance: 220,
+                    distance: 200,
                     links: {
                       blink: false,
                       consent: false,
-                      opacity: 0.9,
+                      opacity: 0.8,
                       color: "#9b59ff" // Electric purple on hover
                     }
                   },
                   bubble: {
-                    distance: 180,
-                    size: 15,
-                    duration: 0.3,
+                    distance: 150,
+                    size: 12,
+                    duration: 0.4,
                     opacity: 1,
                     color: "#9b59ff",
                     mix: false
