@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -91,7 +92,8 @@ const Index = () => {
                 <Brain size={32} color="#68d5c4" strokeWidth={2} fill="none" />
               </div>
               <h3 className="text-xl font-semibold mb-4 text-white">
-                Dynamic Contradiction Handling
+                Dynamic Contradiction<br />
+                Handling
               </h3>
               <p className="text-gray-300 leading-relaxed">
                 Surfaces critical drift before to protect your short and long-term goals.
@@ -163,7 +165,8 @@ const Index = () => {
                 <Eye size={32} color="#68d5c4" strokeWidth={2} fill="none" />
               </div>
               <h3 className="text-xl font-semibold mb-4 text-white">
-                Stateful, Adaptive & Transparent Reasoning
+                Stateful, Adaptive &<br />
+                Transparent Reasoning
               </h3>
               <p className="text-gray-300 leading-relaxed">
                 Persistent, contextual memory enables fully auditable decisions.
