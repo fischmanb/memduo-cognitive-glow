@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useRef } from 'react';
+import { tsParticles } from '@tsparticles/engine';
 
 const BackgroundVideo = () => {
   const [isSlowConnection, setIsSlowConnection] = useState(false);
@@ -24,12 +25,10 @@ const BackgroundVideo = () => {
   }, []);
 
   useEffect(() => {
-    // Load tsParticles script and initialize
+    // Load tsParticles and initialize
     if (!isSlowConnection && !prefersReducedMotion && !scriptLoadedRef.current) {
       const loadTsParticles = async () => {
         try {
-          const { tsParticles } = await import('https://cdn.jsdelivr.net/npm/@tsparticles/engine/+esm');
-          
           await tsParticles.load("graphBG", {
             fullScreen: { zIndex: -1 },
             detectRetina: true,
