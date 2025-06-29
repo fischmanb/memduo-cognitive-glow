@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,7 +57,7 @@ const Index = () => {
       <BackgroundVideo />
       
       {/* Hero Section */}
-      <section className="relative z-10 flex items-center justify-center px-4 snap-start" style={{ minHeight: '100vh', paddingTop: '15vh' }}>
+      <section className="relative z-10 flex items-center justify-center px-4 snap-start" style={{ minHeight: '100vh', paddingTop: '10vh' }}>
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
             Meet Your Cognitive Growth Partner
@@ -70,7 +69,7 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="relative z-10 py-20 px-4 snap-start">
+      <section className="relative z-10 py-12 px-4 snap-start">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
             
@@ -120,7 +119,7 @@ const Index = () => {
       </section>
 
       {/* Benefit Section */}
-      <section className="relative z-10 py-20 px-4 snap-start">
+      <section className="relative z-10 py-12 px-4 snap-start">
         <div className="max-w-4xl mx-auto text-center">
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-12 animate-fade-in glassmorphic-card">
             <p className="text-2xl md:text-3xl font-light text-gray-200 leading-relaxed">
@@ -131,7 +130,7 @@ const Index = () => {
       </section>
 
       {/* Enhanced Waitlist Form Section */}
-      <section className="relative z-10 py-20 px-4 snap-start">
+      <section className="relative z-10 py-12 px-4 snap-start">
         <div className="max-w-2xl mx-auto">
           <Card className="bg-white/5 border-white/10 backdrop-blur-md glassmorphic-card relative overflow-hidden">
             {/* Subtle background pattern */}
