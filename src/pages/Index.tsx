@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -125,7 +126,7 @@ const Index = () => {
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-light mb-4 text-white">
-              Private demo opportunities for select researchers, media, and pre‑seed investors.
+              Private demo opportunities for select researchers, media, and investors.
             </h2>
           </div>
           
