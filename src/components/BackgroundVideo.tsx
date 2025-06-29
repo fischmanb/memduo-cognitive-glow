@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 
 interface Node {
@@ -68,7 +67,7 @@ const BackgroundVideo = () => {
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
 
-    // Generate connected graph - REVERTED TO PREVIOUS STRUCTURE
+    // Generate single connected graph using MST approach
     const generateConnectedGraph = () => {
       const nodeCount = 15;
       
@@ -151,7 +150,7 @@ const BackgroundVideo = () => {
               Math.pow(node.y - nodes[i].y, 2)
             );
             
-            if (dist < closestDist && dist < 300) { // Reasonable visual distance
+            if (dist < closestDist) {
               closestDist = dist;
               closestNode = i;
             }
