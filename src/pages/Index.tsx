@@ -68,6 +68,18 @@ const Index = () => {
             
             <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#68d5c4]/40 hover:shadow-lg hover:shadow-[#68d5c4]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0s forwards' }}>
               <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
+                <Shield size={32} className="text-[#68d5c4]" strokeWidth={2} />
+              </div>
+              <h3 className="text-xl font-semibold mb-4 text-white leading-tight">
+                Design Your Own Intelligence
+              </h3>
+              <p className="text-gray-300 leading-relaxed">
+                Your private, customizable library seeded with timeless humanist thought.
+              </p>
+            </div>
+
+            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#68d5c4]/40 hover:shadow-lg hover:shadow-[#68d5c4]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.2s forwards' }}>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
                 <Brain size={32} className="text-[#68d5c4]" strokeWidth={2} />
               </div>
               <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2">
@@ -78,18 +90,6 @@ const Index = () => {
               </h3>
               <p className="text-gray-300 leading-relaxed">
                 Surfaces critical drift before to protect your short and long-term goals.
-              </p>
-            </div>
-
-            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#68d5c4]/40 hover:shadow-lg hover:shadow-[#68d5c4]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.2s forwards' }}>
-              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
-                <Shield size={32} className="text-[#68d5c4]" strokeWidth={2} />
-              </div>
-              <h3 className="text-xl font-semibold mb-4 text-white leading-tight">
-                Design Your Own Intelligence
-              </h3>
-              <p className="text-gray-300 leading-relaxed">
-                Your private, customizable library seeded with timeless humanist thought.
               </p>
             </div>
 
