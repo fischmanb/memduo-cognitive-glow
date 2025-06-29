@@ -59,6 +59,19 @@ const Index = () => {
           throw error;
         }
       } else {
+        // Send notification email (don't await to avoid blocking the user)
+        supabase.functions.invoke('notify-waitlist-submission', {
+          body: {
+            first_name: firstName.trim(),
+            last_name: lastName.trim(),
+            email: email.trim(),
+            interest: interest.trim() || null
+          }
+        }).catch(emailError => {
+          console.error('Failed to send notification email:', emailError);
+          // Don't show error to user since their submission was successful
+        });
+
         toast({
           title: "Welcome to the queue!",
           description: "We'll contact you when demo opportunities become available.",
