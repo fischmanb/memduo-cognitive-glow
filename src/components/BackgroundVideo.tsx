@@ -47,7 +47,7 @@ const BackgroundVideo = () => {
               fpsLimit: 60,
               particles: {
                 number: { 
-                  value: 35,
+                  value: 40,
                   density: { 
                     enable: true,
                     width: 1920,
@@ -61,7 +61,7 @@ const BackgroundVideo = () => {
                       count: 0,
                       enable: true,
                       offset: 0,
-                      speed: 20,
+                      speed: 15,
                       decay: 0,
                       sync: false
                     },
@@ -76,8 +76,8 @@ const BackgroundVideo = () => {
                     l: {
                       count: 0,
                       enable: true,
-                      offset: 20,
-                      speed: 30,
+                      offset: 15,
+                      speed: 25,
                       decay: 0,
                       sync: false
                     }
@@ -87,19 +87,19 @@ const BackgroundVideo = () => {
                   type: "circle" 
                 },
                 size: { 
-                  value: { min: 4, max: 8 },
+                  value: { min: 3, max: 10 },
                   animation: {
                     enable: true,
-                    speed: 3,
+                    speed: 4,
                     sync: false,
                     startValue: "random"
                   }
                 },
                 opacity: { 
-                  value: { min: 0.7, max: 1.0 },
+                  value: { min: 0.6, max: 1.0 },
                   animation: { 
                     enable: true,
-                    speed: 2,
+                    speed: 3,
                     sync: false
                   }
                 },
@@ -111,12 +111,12 @@ const BackgroundVideo = () => {
                 },
                 links: {
                   enable: true,
-                  distance: 180,
+                  distance: 160,
                   color: {
                     value: "#00ffff"
                   },
-                  opacity: 0.4,
-                  width: 1,
+                  opacity: 0.3,
+                  width: 1.5,
                   warp: false,
                   frequency: 1,
                   triangles: {
@@ -125,27 +125,21 @@ const BackgroundVideo = () => {
                 },
                 move: { 
                   enable: true, 
-                  speed: { min: 0.8, max: 2.5 },
+                  speed: 1.5,
                   direction: "none",
-                  random: true,
-                  straight: false,
                   outModes: {
                     default: "bounce"
                   },
                   attract: {
                     enable: true,
                     rotate: {
-                      x: 800,
-                      y: 1600
+                      x: 600,
+                      y: 1200
                     }
                   },
                   path: {
                     clamp: true,
                     delay: {
-                      random: {
-                        enable: true,
-                        minimumValue: 0
-                      },
                       value: 0
                     },
                     enable: false,
@@ -183,18 +177,18 @@ const BackgroundVideo = () => {
                 },
                 modes: {
                   grab: {
-                    distance: 200,
+                    distance: 220,
                     links: {
                       blink: false,
                       consent: false,
-                      opacity: 0.8,
-                      color: "#9b59ff" // Purple on hover
+                      opacity: 0.9,
+                      color: "#9b59ff" // Electric purple on hover
                     }
                   },
                   bubble: {
-                    distance: 150,
-                    size: 12,
-                    duration: 0.4,
+                    distance: 180,
+                    size: 15,
+                    duration: 0.3,
                     opacity: 1,
                     color: "#9b59ff",
                     mix: false
@@ -202,7 +196,7 @@ const BackgroundVideo = () => {
                   push: {
                     default: true,
                     groups: [],
-                    quantity: 3
+                    quantity: 2
                   }
                 }
               }
