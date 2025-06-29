@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 
 interface Node {
@@ -67,7 +68,7 @@ const BackgroundVideo = () => {
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
 
-    // Generate connected graph
+    // Generate connected graph - REVERTED TO PREVIOUS STRUCTURE
     const generateConnectedGraph = () => {
       const nodeCount = 15;
       
