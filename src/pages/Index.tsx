@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Shield, Eye, User, Mail, MessageSquare, CheckCircle, ChevronDown } from "lucide-react";
 import BackgroundVideo from "../components/BackgroundVideo";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const [firstName, setFirstName] = useState('');
@@ -18,7 +18,6 @@ const Index = () => {
 
   console.log('Index component rendered - feature title updated to Transparent Stateful Reasoning');
 
-  // Calculate form completion progress
   const getFormProgress = () => {
     const fields = [firstName, lastName, email];
     const completedFields = fields.filter(field => field.trim().length > 0).length;
@@ -38,19 +37,49 @@ const Index = () => {
 
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const { error } = await supabase
+        .from('waitlist_submissions')
+        .insert({
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          email: email.trim(),
+          interest: interest.trim() || null
+        });
+
+      if (error) {
+        if (error.code === '23505') {
+          // Unique constraint violation (duplicate email)
+          toast({
+            title: "Email already registered",
+            description: "This email is already on the waitlist. We'll be in touch!",
+            variant: "destructive"
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        toast({
+          title: "Welcome to the queue!",
+          description: "We'll contact you when demo opportunities become available.",
+        });
+        
+        // Clear form on success
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setInterest('');
+      }
+    } catch (error) {
+      console.error('Error submitting to waitlist:', error);
       toast({
-        title: "Welcome to the queue!",
-        description: "We'll contact you when demo opportunities become available.",
+        title: "Submission failed",
+        description: "There was an error submitting your information. Please try again.",
+        variant: "destructive"
       });
-      setFirstName('');
-      setLastName('');
-      setEmail('');
-      setInterest('');
+    } finally {
       setIsSubmitting(false);
-      console.log('Waitlist submission:', { firstName, lastName, email, interest });
-    }, 1000);
+    }
   };
 
   return (
