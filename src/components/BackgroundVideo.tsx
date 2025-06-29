@@ -47,7 +47,7 @@ const BackgroundVideo = () => {
               fpsLimit: 60,
               particles: {
                 number: { 
-                  value: 12,
+                  value: 25,
                   density: { 
                     enable: true,
                     width: 1920,
@@ -55,38 +55,60 @@ const BackgroundVideo = () => {
                   }
                 },
                 color: { 
-                  value: ["#00e5ff", "#9b59ff", "#68d5c4"] 
+                  value: ["#00e5ff", "#9b59ff", "#68d5c4", "#ff6b9d", "#ffd93d"] 
                 },
                 shape: { 
                   type: "circle" 
                 },
                 size: { 
-                  value: { min: 2, max: 6 }
+                  value: { min: 3, max: 12 },
+                  animation: {
+                    enable: true,
+                    speed: 2,
+                    sync: false
+                  }
                 },
                 opacity: { 
-                  value: 0.8,
+                  value: { min: 0.6, max: 1.0 },
                   animation: { 
                     enable: true,
-                    speed: 0.5,
-                    sync: false,
-                    startValue: "random"
+                    speed: 1.5,
+                    sync: false
+                  }
+                },
+                stroke: {
+                  width: 2,
+                  color: {
+                    value: ["#00e5ff", "#9b59ff", "#68d5c4"]
                   }
                 },
                 links: {
                   enable: true,
-                  distance: 150,
-                  color: "#68d5c4",
-                  opacity: 0.4,
-                  width: 1
+                  distance: 200,
+                  color: {
+                    value: ["#00e5ff", "#9b59ff", "#68d5c4"]
+                  },
+                  opacity: { min: 0.3, max: 0.8 },
+                  width: { min: 1, max: 3 },
+                  triangles: {
+                    enable: true,
+                    color: "#68d5c4",
+                    opacity: 0.1
+                  }
                 },
                 move: { 
                   enable: true, 
-                  speed: 1,
+                  speed: { min: 0.5, max: 2 },
                   direction: "none",
                   random: true,
                   straight: false,
                   outModes: {
                     default: "bounce"
+                  },
+                  attract: {
+                    enable: true,
+                    rotateX: 600,
+                    rotateY: 1200
                   }
                 }
               },
@@ -95,7 +117,11 @@ const BackgroundVideo = () => {
                 events: {
                   onHover: {
                     enable: true,
-                    mode: "grab"
+                    mode: ["grab", "bubble"]
+                  },
+                  onClick: {
+                    enable: true,
+                    mode: "push"
                   },
                   resize: {
                     delay: 0.5,
@@ -104,10 +130,20 @@ const BackgroundVideo = () => {
                 },
                 modes: {
                   grab: {
-                    distance: 140,
+                    distance: 250,
                     links: {
-                      opacity: 1
+                      opacity: 1,
+                      color: "#ffffff"
                     }
+                  },
+                  bubble: {
+                    distance: 200,
+                    size: 15,
+                    duration: 2,
+                    opacity: 1
+                  },
+                  push: {
+                    quantity: 2
                   }
                 }
               }
