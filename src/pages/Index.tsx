@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { Eye, Shield, Zap } from "lucide-react";
+import { Brain, Shield, Zap } from "lucide-react";
 import BackgroundVideo from "../components/BackgroundVideo";
 import { useToast } from "@/hooks/use-toast";
 
@@ -58,7 +58,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Features Section - Completely rewritten with simple structure */}
+      {/* Features Section */}
       <section className="relative z-10 py-20 px-4 snap-start">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
@@ -89,7 +89,7 @@ const Index = () => {
                 transition: 'all 0.3s ease',
                 boxShadow: '0 8px 24px rgba(104, 213, 196, 0.1)'
               }} className="group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 group-hover:shadow-[#68d5c4]/15">
-                <Eye size={32} color="#68d5c4" strokeWidth={2} fill="none" />
+                <Brain size={32} color="#68d5c4" strokeWidth={2} fill="none" />
               </div>
               <h3 className="text-xl font-semibold mb-4 text-white">
                 Dynamic Contradiction Handling
