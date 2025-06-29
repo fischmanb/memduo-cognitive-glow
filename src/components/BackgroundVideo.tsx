@@ -41,72 +41,104 @@ const BackgroundVideo = () => {
 
   return (
     <>
-      <div className="fixed inset-0 w-full h-full z-0">
+      <div className="fixed inset-0 w-full h-full z-0 overflow-hidden">
         <svg
-          className="w-full h-full animate-pulse"
-          viewBox="0 0 800 600"
+          className="w-full h-full min-w-full min-h-full"
+          viewBox="0 0 1920 1080"
           xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="xMidYMid slice"
         >
           <defs>
             <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#68d5c4" stopOpacity="0.8" />
+              <stop offset="0%" stopColor="#68d5c4" stopOpacity="1" />
+              <stop offset="50%" stopColor="#68d5c4" stopOpacity="0.6" />
               <stop offset="100%" stopColor="#68d5c4" stopOpacity="0" />
             </radialGradient>
             <linearGradient id="connectionGlow" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#68d5c4" stopOpacity="0.3" />
-              <stop offset="50%" stopColor="#68d5c4" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#68d5c4" stopOpacity="0.3" />
+              <stop offset="0%" stopColor="#68d5c4" stopOpacity="0.2" />
+              <stop offset="50%" stopColor="#68d5c4" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#68d5c4" stopOpacity="0.2" />
             </linearGradient>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge> 
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
           </defs>
           
           {/* Background */}
-          <rect width="100%" height="100%" fill="#000" />
+          <rect width="100%" height="100%" fill="#000000" />
           
           {/* Animated network nodes */}
-          <g className="animate-pulse">
-            <circle cx="150" cy="100" r="3" fill="url(#nodeGlow)">
-              <animate attributeName="r" values="2;5;2" dur="3s" repeatCount="indefinite" />
+          <g filter="url(#glow)">
+            <circle cx="300" cy="200" r="4" fill="url(#nodeGlow)">
+              <animate attributeName="r" values="2;8;2" dur="4s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite" />
             </circle>
-            <circle cx="400" cy="150" r="4" fill="url(#nodeGlow)">
-              <animate attributeName="r" values="3;6;3" dur="4s" repeatCount="indefinite" />
+            <circle cx="800" cy="300" r="5" fill="url(#nodeGlow)">
+              <animate attributeName="r" values="3;10;3" dur="5s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.4;1;0.4" dur="5s" repeatCount="indefinite" />
             </circle>
-            <circle cx="650" cy="200" r="2" fill="url(#nodeGlow)">
-              <animate attributeName="r" values="1;4;1" dur="2.5s" repeatCount="indefinite" />
+            <circle cx="1300" cy="250" r="3" fill="url(#nodeGlow)">
+              <animate attributeName="r" values="2;7;2" dur="3.5s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.2;0.9;0.2" dur="3.5s" repeatCount="indefinite" />
             </circle>
-            <circle cx="300" cy="350" r="3" fill="url(#nodeGlow)">
-              <animate attributeName="r" values="2;5;2" dur="3.5s" repeatCount="indefinite" />
+            <circle cx="600" cy="600" r="6" fill="url(#nodeGlow)">
+              <animate attributeName="r" values="4;12;4" dur="6s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.3;1;0.3" dur="6s" repeatCount="indefinite" />
             </circle>
-            <circle cx="600" cy="400" r="4" fill="url(#nodeGlow)">
-              <animate attributeName="r" values="3;6;3" dur="2.8s" repeatCount="indefinite" />
+            <circle cx="1100" cy="700" r="4" fill="url(#nodeGlow)">
+              <animate attributeName="r" values="2;9;2" dur="4.5s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.4;1;0.4" dur="4.5s" repeatCount="indefinite" />
             </circle>
-            <circle cx="100" cy="450" r="2" fill="url(#nodeGlow)">
-              <animate attributeName="r" values="1;4;1" dur="4.2s" repeatCount="indefinite" />
+            <circle cx="200" cy="800" r="3" fill="url(#nodeGlow)">
+              <animate attributeName="r" values="1;6;1" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.2;0.8;0.2" dur="3s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="1500" cy="600" r="5" fill="url(#nodeGlow)">
+              <animate attributeName="r" values="3;11;3" dur="5.5s" repeatCount="indefinite" />
+              <animate attributeName="opacity" values="0.3;1;0.3" dur="5.5s" repeatCount="indefinite" />
             </circle>
           </g>
           
           {/* Animated connections */}
-          <g stroke="url(#connectionGlow)" strokeWidth="1" fill="none">
-            <line x1="150" y1="100" x2="400" y2="150">
-              <animate attributeName="stroke-opacity" values="0.2;0.8;0.2" dur="3s" repeatCount="indefinite" />
+          <g stroke="url(#connectionGlow)" strokeWidth="2" fill="none" filter="url(#glow)">
+            <line x1="300" y1="200" x2="800" y2="300">
+              <animate attributeName="stroke-opacity" values="0.1;0.8;0.1" dur="4s" repeatCount="indefinite" />
+              <animate attributeName="stroke-width" values="1;3;1" dur="4s" repeatCount="indefinite" />
             </line>
-            <line x1="400" y1="150" x2="650" y2="200">
-              <animate attributeName="stroke-opacity" values="0.3;0.9;0.3" dur="4s" repeatCount="indefinite" />
+            <line x1="800" y1="300" x2="1300" y2="250">
+              <animate attributeName="stroke-opacity" values="0.2;0.9;0.2" dur="5s" repeatCount="indefinite" />
+              <animate attributeName="stroke-width" values="1;4;1" dur="5s" repeatCount="indefinite" />
             </line>
-            <line x1="300" y1="350" x2="600" y2="400">
-              <animate attributeName="stroke-opacity" values="0.1;0.7;0.1" dur="2.5s" repeatCount="indefinite" />
+            <line x1="600" y1="600" x2="1100" y2="700">
+              <animate attributeName="stroke-opacity" values="0.1;0.7;0.1" dur="3.5s" repeatCount="indefinite" />
+              <animate attributeName="stroke-width" values="1;2;1" dur="3.5s" repeatCount="indefinite" />
             </line>
-            <line x1="150" y1="100" x2="300" y2="350">
-              <animate attributeName="stroke-opacity" values="0.2;0.6;0.2" dur="3.8s" repeatCount="indefinite" />
+            <line x1="300" y1="200" x2="600" y2="600">
+              <animate attributeName="stroke-opacity" values="0.2;0.6;0.2" dur="6s" repeatCount="indefinite" />
+              <animate attributeName="stroke-width" values="1;3;1" dur="6s" repeatCount="indefinite" />
             </line>
-            <line x1="400" y1="150" x2="300" y2="350">
-              <animate attributeName="stroke-opacity" values="0.1;0.5;0.1" dur="3.2s" repeatCount="indefinite" />
+            <line x1="800" y1="300" x2="600" y2="600">
+              <animate attributeName="stroke-opacity" values="0.1;0.5;0.1" dur="4.5s" repeatCount="indefinite" />
+              <animate attributeName="stroke-width" values="1;2;1" dur="4.5s" repeatCount="indefinite" />
+            </line>
+            <line x1="1100" y1="700" x2="1500" y2="600">
+              <animate attributeName="stroke-opacity" values="0.2;0.8;0.2" dur="5.5s" repeatCount="indefinite" />
+              <animate attributeName="stroke-width" values="1;3;1" dur="5.5s" repeatCount="indefinite" />
+            </line>
+            <line x1="200" y1="800" x2="600" y2="600">
+              <animate attributeName="stroke-opacity" values="0.1;0.6;0.1" dur="3s" repeatCount="indefinite" />
+              <animate attributeName="stroke-width" values="1;2;1" dur="3s" repeatCount="indefinite" />
             </line>
           </g>
         </svg>
       </div>
       
-      {/* Overlay for text legibility */}
-      <div className="fixed inset-0 bg-black/70 z-0" />
+      {/* Glassmorphic overlay for text legibility */}
+      <div className="fixed inset-0 bg-gradient-to-br from-black/60 via-black/70 to-black/80 backdrop-blur-[1px] z-0" />
     </>
   );
 };

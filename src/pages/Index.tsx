@@ -50,8 +50,8 @@ const Index = () => {
     },
     {
       icon: Eye,
-      title: "Real‑Time Insight",
-      description: "Surfaces contradictions before they derail your short and long-term goals."
+      title: "Dynamic Contradiction Handling",
+      description: "Surfaces critical drift before to protect your short and long-term goals."
     },
     {
       icon: Shield,
@@ -81,9 +81,11 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="bg-black/30 border-gray-800 backdrop-blur-sm hover:bg-black/40 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 0.2}s` }}>
+              <Card key={index} className="group bg-white/5 border-white/10 backdrop-blur-md hover:bg-white/10 transition-all duration-500 animate-fade-in glassmorphic-card" style={{ animationDelay: `${index * 0.2}s` }}>
                 <CardContent className="p-8 text-center">
-                  <feature.icon className="w-12 h-12 mx-auto mb-6 text-[#68d5c4]" />
+                  <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#68d5c4]/20 to-[#68d5c4]/5 border border-[#68d5c4]/30 backdrop-blur-sm flex items-center justify-center group-hover:border-[#68d5c4]/50 transition-all duration-300">
+                    <feature.icon className="w-8 h-8 text-[#68d5c4] group-hover:scale-110 transition-transform duration-300" />
+                  </div>
                   <h3 className="text-xl font-semibold mb-4 text-white">
                     {feature.title}
                   </h3>
@@ -100,9 +102,9 @@ const Index = () => {
       {/* Benefit Section */}
       <section className="relative z-10 py-20 px-4 snap-start">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-black/20 backdrop-blur-sm border border-gray-800 rounded-2xl p-12 animate-fade-in">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-12 animate-fade-in glassmorphic-card">
             <p className="text-2xl md:text-3xl font-light text-gray-200 leading-relaxed">
-              MemDuo grows alongside you—adapting its knowledge, staying aligned with your short‑ and long‑term intent, and never hallucinating, always and by design.
+              MemDuo grows alongside you — adapting its knowledge, staying aligned with your short and long‑term intent, and never hallucinating by design.
             </p>
           </div>
         </div>
@@ -113,11 +115,11 @@ const Index = () => {
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-              Private demo opportunities for selected researchers, media, and pre‑seed investors.
+              Private demo opportunities for select researchers, media, and pre‑seed investors.
             </h2>
           </div>
           
-          <Card className="bg-black/30 border-gray-800 backdrop-blur-sm">
+          <Card className="bg-white/5 border-white/10 backdrop-blur-md glassmorphic-card">
             <CardContent className="p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
@@ -130,7 +132,7 @@ const Index = () => {
                       type="text"
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
-                      className="bg-black/50 border-gray-700 text-white placeholder-gray-500 focus:border-[#68d5c4]"
+                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#68d5c4] focus:bg-white/10 backdrop-blur-sm transition-all duration-300"
                       placeholder="Your first name"
                       required
                     />
@@ -144,7 +146,7 @@ const Index = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-black/50 border-gray-700 text-white placeholder-gray-500 focus:border-[#68d5c4]"
+                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#68d5c4] focus:bg-white/10 backdrop-blur-sm transition-all duration-300"
                       placeholder="your@email.com"
                       required
                     />
@@ -159,7 +161,7 @@ const Index = () => {
                     id="interest"
                     value={interest}
                     onChange={(e) => setInterest(e.target.value)}
-                    className="bg-black/50 border-gray-700 text-white placeholder-gray-500 focus:border-[#68d5c4] min-h-[120px]"
+                    className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#68d5c4] focus:bg-white/10 backdrop-blur-sm transition-all duration-300 min-h-[120px]"
                     placeholder="What draws you to MemDuo? How might you use it in your work or research?"
                     maxLength={150}
                   />
@@ -171,7 +173,7 @@ const Index = () => {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#68d5c4] hover:bg-[#5bc4b1] text-black font-semibold py-3 text-lg transition-all duration-200"
+                  className="w-full bg-gradient-to-r from-[#68d5c4] to-[#5bc4b1] hover:from-[#5bc4b1] hover:to-[#4fb3a0] text-black font-semibold py-3 text-lg transition-all duration-300 border border-[#68d5c4]/30 backdrop-blur-sm shadow-lg hover:shadow-[#68d5c4]/25"
                 >
                   {isSubmitting ? 'Joining Queue...' : 'Request to Join Private Demo Queue'}
                 </Button>
@@ -182,7 +184,7 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 py-12 px-4 text-center border-t border-gray-800">
+      <footer className="relative z-10 py-12 px-4 text-center border-t border-white/10">
         <p className="text-gray-400 text-sm">
           We use your email only to share demo access and updates.
         </p>
