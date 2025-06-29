@@ -90,7 +90,16 @@ const Index = () => {
                 style={{ animationDelay: `${index * 0.2}s` }}
               >
                 <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 bg-gradient-to-br from-[#68d5c4]/20 to-[#68d5c4]/10 backdrop-blur-sm">
+                  <div 
+                    className="w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(104, 213, 196, 0.2) 0%, rgba(104, 213, 196, 0.1) 100%)',
+                      backdropFilter: 'blur(4px)',
+                      WebkitBackdropFilter: 'blur(4px)',
+                      border: '1px solid rgba(104, 213, 196, 0.2)',
+                      boxShadow: '0 4px 16px rgba(31, 38, 135, 0.2)'
+                    }}
+                  >
                     <feature.icon 
                       className="w-12 h-12 text-[#68d5c4]" 
                       strokeWidth={2}
