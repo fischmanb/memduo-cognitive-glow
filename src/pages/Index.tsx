@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
+import { Eye, Shield, Zap } from "lucide-react";
 import BackgroundVideo from "../components/BackgroundVideo";
-import Features from "../components/Features";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
@@ -58,8 +58,51 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <Features />
+      {/* Features Section - Rewritten from scratch */}
+      <section className="relative z-10 py-20 px-4 snap-start">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Feature 1 */}
+            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#68d5c4]/40 hover:shadow-lg hover:shadow-[#68d5c4]/20 hover:-translate-y-1 animate-fade-in">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
+                <Eye className="w-8 h-8 text-[#68d5c4]" strokeWidth={2} />
+              </div>
+              <h3 className="text-xl font-semibold mb-4 text-white">
+                Dynamic Contradiction Handling
+              </h3>
+              <p className="text-gray-300 leading-relaxed">
+                Surfaces critical drift before to protect your short and long-term goals.
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#68d5c4]/40 hover:shadow-lg hover:shadow-[#68d5c4]/20 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
+                <Shield className="w-8 h-8 text-[#68d5c4]" strokeWidth={2} />
+              </div>
+              <h3 className="text-xl font-semibold mb-4 text-white">
+                Ownable Knowledge
+              </h3>
+              <p className="text-gray-300 leading-relaxed">
+                Your private, customizable library seeded with timeless humanist thought.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#68d5c4]/40 hover:shadow-lg hover:shadow-[#68d5c4]/20 hover:-translate-y-1 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
+                <Zap className="w-8 h-8 text-[#68d5c4]" strokeWidth={2} />
+              </div>
+              <h3 className="text-xl font-semibold mb-4 text-white">
+                Stateful, Adaptive & Transparent Reasoning
+              </h3>
+              <p className="text-gray-300 leading-relaxed">
+                Persistent, contextual memory enables fully auditable decisions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Benefit Section */}
       <section className="relative z-10 py-20 px-4 snap-start">
