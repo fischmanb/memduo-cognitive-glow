@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +14,7 @@ const Index = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  console.log('Index component rendered');
+  console.log('Index component rendered with line breaks');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
