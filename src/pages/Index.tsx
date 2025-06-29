@@ -68,9 +68,11 @@ const Index = () => {
               <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
                 <Brain size={32} className="text-[#68d5c4]" strokeWidth={2} />
               </div>
-              <h3 className="text-xl font-semibold mb-4 text-white leading-tight">
-                Dynamic Contradiction<br />
-                Handling
+              <h3 className="text-lg sm:text-xl font-semibold mb-4 text-white leading-tight min-h-[3rem] flex items-center justify-center">
+                <span className="block">
+                  Dynamic Contradiction<br />
+                  Handling
+                </span>
               </h3>
               <p className="text-gray-300 leading-relaxed">
                 Surfaces critical drift before to protect your short and long-term goals.
