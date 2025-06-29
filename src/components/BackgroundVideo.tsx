@@ -32,75 +32,78 @@ const BackgroundVideo = () => {
           // Initialize tsParticles engine
           await loadSlim(tsParticles);
           
-          // Load particles
-          await tsParticles.load("graphBG", {
-            fullScreen: { 
-              enable: true,
-              zIndex: -1 
-            },
-            detectRetina: true,
-            background: { 
-              color: "#000000" 
-            },
-            fpsLimit: 60,
-            particles: {
-              number: { 
-                value: 12,
-                density: { 
-                  enable: true,
-                  area: 800
-                }
-              },
-              color: { 
-                value: ["#00e5ff", "#9b59ff", "#68d5c4"] 
-              },
-              shape: { 
-                type: "circle" 
-              },
-              size: { 
-                value: { min: 2, max: 6 },
-                random: true
-              },
-              opacity: { 
-                value: 0.8,
-                animation: { 
-                  enable: true,
-                  speed: 0.5,
-                  minimumValue: 0.3
-                }
-              },
-              links: {
+          // Load particles with correct API usage
+          await tsParticles.load({
+            id: "graphBG",
+            options: {
+              fullScreen: { 
                 enable: true,
-                distance: 150,
-                color: "#68d5c4",
-                opacity: 0.4,
-                width: 1
+                zIndex: -1 
               },
-              move: { 
-                enable: true, 
-                speed: 1,
-                direction: "none",
-                random: true,
-                straight: false,
-                outModes: {
-                  default: "bounce"
-                }
-              }
-            },
-            interactivity: {
-              detectsOn: "canvas",
-              events: {
-                onHover: {
-                  enable: true,
-                  mode: "grab"
+              detectRetina: true,
+              background: { 
+                color: "#000000" 
+              },
+              fpsLimit: 60,
+              particles: {
+                number: { 
+                  value: 12,
+                  density: { 
+                    enable: true,
+                    area: 800
+                  }
                 },
-                resize: true
+                color: { 
+                  value: ["#00e5ff", "#9b59ff", "#68d5c4"] 
+                },
+                shape: { 
+                  type: "circle" 
+                },
+                size: { 
+                  value: { min: 2, max: 6 },
+                  random: true
+                },
+                opacity: { 
+                  value: 0.8,
+                  animation: { 
+                    enable: true,
+                    speed: 0.5,
+                    minimumValue: 0.3
+                  }
+                },
+                links: {
+                  enable: true,
+                  distance: 150,
+                  color: "#68d5c4",
+                  opacity: 0.4,
+                  width: 1
+                },
+                move: { 
+                  enable: true, 
+                  speed: 1,
+                  direction: "none",
+                  random: true,
+                  straight: false,
+                  outModes: {
+                    default: "bounce"
+                  }
+                }
               },
-              modes: {
-                grab: {
-                  distance: 140,
-                  links: {
-                    opacity: 1
+              interactivity: {
+                detectsOn: "canvas",
+                events: {
+                  onHover: {
+                    enable: true,
+                    mode: "grab"
+                  },
+                  resize: true
+                },
+                modes: {
+                  grab: {
+                    distance: 140,
+                    links: {
+                      opacity: 1
+                    }
                   }
                 }
               }
