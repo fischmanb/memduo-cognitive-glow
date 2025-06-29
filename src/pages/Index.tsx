@@ -96,7 +96,7 @@ const Index = () => {
                 </span>
               </h3>
               <p className="text-gray-300 leading-relaxed">
-                Surfaces critical drift before to protect your short and long-term goals.
+                Proactively surfaces critical drift to protect you, your goals and principles.
               </p>
             </div>
 
