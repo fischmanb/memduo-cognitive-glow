@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { tsParticles } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
@@ -31,7 +32,7 @@ const BackgroundVideo = () => {
           // Initialize tsParticles engine
           await loadSlim(tsParticles);
           
-          // Load particles with intelligent adaptive graph configuration
+          // Load particles with cohesive network graph configuration
           await tsParticles.load({
             id: "graphBG",
             options: {
@@ -46,7 +47,7 @@ const BackgroundVideo = () => {
               fpsLimit: 60,
               particles: {
                 number: { 
-                  value: 45,
+                  value: 35,
                   density: { 
                     enable: true,
                     width: 1920,
@@ -60,7 +61,11 @@ const BackgroundVideo = () => {
                   type: "circle" 
                 },
                 size: { 
-                  value: { min: 4, max: 8 },
+                  value: 6,
+                  random: {
+                    enable: true,
+                    minimumValue: 4
+                  },
                   animation: {
                     enable: true,
                     speed: 1,
@@ -68,7 +73,11 @@ const BackgroundVideo = () => {
                   }
                 },
                 opacity: { 
-                  value: { min: 0.7, max: 1.0 },
+                  value: 0.8,
+                  random: {
+                    enable: true,
+                    minimumValue: 0.6
+                  },
                   animation: { 
                     enable: true,
                     speed: 0.8,
@@ -80,31 +89,31 @@ const BackgroundVideo = () => {
                 },
                 links: {
                   enable: true,
-                  distance: 200,
+                  distance: 280,
                   color: {
                     value: "#00ffff"
                   },
-                  opacity: 0.7,
-                  width: 1.5,
+                  opacity: 0.4,
+                  width: 1,
                   warp: false,
                   triangles: {
-                    enable: false
+                    enable: true,
+                    color: "#00ffff",
+                    opacity: 0.1
                   }
                 },
                 move: { 
                   enable: true, 
-                  speed: 0.6,
+                  speed: 0.3,
                   direction: "none",
                   outModes: {
                     default: "bounce"
                   },
                   attract: {
-                    enable: true,
-                    rotate: {
-                      x: 600,
-                      y: 1200
-                    }
-                  }
+                    enable: false
+                  },
+                  random: false,
+                  straight: false
                 }
               },
               interactivity: {
@@ -112,7 +121,7 @@ const BackgroundVideo = () => {
                 events: {
                   onHover: {
                     enable: true,
-                    mode: ["bubble"],
+                    mode: ["grab", "bubble"],
                     parallax: {
                       enable: false,
                       force: 60,
@@ -129,6 +138,13 @@ const BackgroundVideo = () => {
                   }
                 },
                 modes: {
+                  grab: {
+                    distance: 200,
+                    links: {
+                      opacity: 0.8,
+                      color: "#9b59ff"
+                    }
+                  },
                   bubble: {
                     distance: 150,
                     size: 12,
@@ -148,7 +164,7 @@ const BackgroundVideo = () => {
           });
           
           setParticlesLoaded(true);
-          console.log('Adaptive graph particles loaded successfully');
+          console.log('Cohesive network graph particles loaded successfully');
         } catch (error) {
           console.error('Failed to load tsParticles:', error);
         }
