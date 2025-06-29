@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { tsParticles } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
@@ -85,7 +84,7 @@ const BackgroundVideo = () => {
                   color: {
                     value: "#00ffff"
                   },
-                  opacity: 0.8,
+                  opacity: 0.6,
                   width: 1.5,
                   warp: false,
                   triangles: {
@@ -113,7 +112,7 @@ const BackgroundVideo = () => {
                 events: {
                   onHover: {
                     enable: true,
-                    mode: ["grab", "bubble"],
+                    mode: ["bubble"],
                     parallax: {
                       enable: false,
                       force: 60,
@@ -130,15 +129,6 @@ const BackgroundVideo = () => {
                   }
                 },
                 modes: {
-                  grab: {
-                    distance: 200,
-                    links: {
-                      blink: false,
-                      consent: false,
-                      opacity: 0.9,
-                      color: "#9b59ff"
-                    }
-                  },
                   bubble: {
                     distance: 150,
                     size: 12,
