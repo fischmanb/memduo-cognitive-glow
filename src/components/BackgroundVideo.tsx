@@ -32,7 +32,7 @@ const BackgroundVideo = () => {
           // Initialize tsParticles engine
           await loadSlim(tsParticles);
           
-          // Load particles with high-connectivity network configuration
+          // Load particles with forced connectivity configuration
           await tsParticles.load({
             id: "graphBG",
             options: {
@@ -47,11 +47,9 @@ const BackgroundVideo = () => {
               fpsLimit: 60,
               particles: {
                 number: { 
-                  value: 22,
+                  value: 15,
                   density: { 
-                    enable: true,
-                    width: 1920,
-                    height: 1080
+                    enable: false
                   }
                 },
                 color: { 
@@ -61,45 +59,45 @@ const BackgroundVideo = () => {
                   type: "circle" 
                 },
                 size: { 
-                  value: { min: 6, max: 14 },
+                  value: { min: 8, max: 16 },
                   animation: {
                     enable: true,
-                    speed: 2,
+                    speed: 1,
                     sync: false
                   }
                 },
                 opacity: { 
-                  value: { min: 0.8, max: 1.0 },
+                  value: { min: 0.9, max: 1.0 },
                   animation: { 
                     enable: true,
-                    speed: 1.5,
+                    speed: 0.8,
                     sync: false
                   }
                 },
                 stroke: {
-                  width: 1,
+                  width: 2,
                   color: {
                     value: "#00ffff"
                   }
                 },
                 links: {
                   enable: true,
-                  distance: 600,
+                  distance: 800,
                   color: {
                     value: ["#00ffff", "#33aaff", "#6699ff", "#9966ff"]
                   },
-                  opacity: 0.8,
-                  width: { min: 1, max: 3 },
+                  opacity: 0.9,
+                  width: { min: 2, max: 4 },
                   warp: false,
                   triangles: {
                     enable: true,
                     color: ["#00ffff", "#6699ff", "#9966ff"],
-                    opacity: 0.4
+                    opacity: 0.5
                   }
                 },
                 move: { 
                   enable: true, 
-                  speed: 1.2,
+                  speed: 0.8,
                   direction: "none",
                   outModes: {
                     default: "bounce"
@@ -107,12 +105,15 @@ const BackgroundVideo = () => {
                   attract: {
                     enable: true,
                     rotate: {
-                      x: 600,
-                      y: 1200
+                      x: 300,
+                      y: 600
                     }
                   },
                   random: false,
                   straight: false
+                },
+                collisions: {
+                  enable: false
                 }
               },
               interactivity: {
@@ -138,16 +139,16 @@ const BackgroundVideo = () => {
                 },
                 modes: {
                   grab: {
-                    distance: 400,
+                    distance: 500,
                     links: {
                       opacity: 1.0,
                       color: "#9b59ff"
                     }
                   },
                   bubble: {
-                    distance: 250,
-                    size: 18,
-                    duration: 0.6,
+                    distance: 300,
+                    size: 20,
+                    duration: 0.8,
                     opacity: 1,
                     color: "#9b59ff",
                     mix: false
@@ -163,7 +164,7 @@ const BackgroundVideo = () => {
           });
           
           setParticlesLoaded(true);
-          console.log('High-connectivity knowledge graph loaded successfully');
+          console.log('Single connected graph loaded successfully');
         } catch (error) {
           console.error('Failed to load tsParticles:', error);
         }
