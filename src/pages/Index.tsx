@@ -14,7 +14,7 @@ const Index = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  console.log('Index component rendered - features section updated');
+  console.log('Index component rendered - feature title updated to Transparent Stateful Reasoning');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,8 +94,7 @@ const Index = () => {
                 <Eye size={32} className="text-[#68d5c4]" strokeWidth={2} />
               </div>
               <h3 className="text-xl font-semibold mb-4 text-white leading-tight">
-                Stateful, Adaptive &<br />
-                Transparent Reasoning
+                Transparent Stateful Reasoning
               </h3>
               <p className="text-gray-300 leading-relaxed">
                 Persistent, contextual memory enables fully auditable decisions.
