@@ -1,12 +1,29 @@
-
 import { useState, useEffect, useRef } from 'react';
-import { tsParticles } from '@tsparticles/engine';
-import { loadSlim } from '@tsparticles/slim';
+
+interface Node {
+  id: number;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  color: string;
+  size: number;
+  connections: number[];
+}
+
+interface Edge {
+  from: number;
+  to: number;
+  opacity: number;
+}
 
 const BackgroundVideo = () => {
   const [isSlowConnection, setIsSlowConnection] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const [particlesLoaded, setParticlesLoaded] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number>();
+  const nodesRef = useRef<Node[]>([]);
+  const edgesRef = useRef<Edge[]>([]);
 
   useEffect(() => {
     // Check for reduced motion preference
@@ -17,7 +34,7 @@ const BackgroundVideo = () => {
     const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
     if (connection) {
       const slowConnections = ['slow-2g', '2g'];
-      const effectiveSpeed = connection.downlink || 0; // Speed in Mbps
+      const effectiveSpeed = connection.downlink || 0;
       if (slowConnections.includes(connection.effectiveType) || effectiveSpeed < 1) {
         setIsSlowConnection(true);
       }
@@ -25,154 +42,177 @@ const BackgroundVideo = () => {
   }, []);
 
   useEffect(() => {
-    // Load tsParticles and initialize
-    if (!isSlowConnection && !prefersReducedMotion && !particlesLoaded) {
-      const initParticles = async () => {
-        try {
-          // Initialize tsParticles engine
-          await loadSlim(tsParticles);
-          
-          // Load particles with forced connectivity configuration
-          await tsParticles.load({
-            id: "graphBG",
-            options: {
-              fullScreen: { 
-                enable: true,
-                zIndex: -1 
-              },
-              detectRetina: true,
-              background: { 
-                color: "#000000" 
-              },
-              fpsLimit: 60,
-              particles: {
-                number: { 
-                  value: 15,
-                  density: { 
-                    enable: false
-                  }
-                },
-                color: { 
-                  value: ["#00ffff", "#00ccff", "#33aaff", "#6699ff", "#9966ff", "#9b59ff"]
-                },
-                shape: { 
-                  type: "circle" 
-                },
-                size: { 
-                  value: { min: 8, max: 16 },
-                  animation: {
-                    enable: true,
-                    speed: 1,
-                    sync: false
-                  }
-                },
-                opacity: { 
-                  value: { min: 0.9, max: 1.0 },
-                  animation: { 
-                    enable: true,
-                    speed: 0.8,
-                    sync: false
-                  }
-                },
-                stroke: {
-                  width: 2,
-                  color: {
-                    value: "#00ffff"
-                  }
-                },
-                links: {
-                  enable: true,
-                  distance: 800,
-                  color: {
-                    value: ["#00ffff", "#33aaff", "#6699ff", "#9966ff"]
-                  },
-                  opacity: 0.9,
-                  width: { min: 2, max: 4 },
-                  warp: false,
-                  triangles: {
-                    enable: true,
-                    color: ["#00ffff", "#6699ff", "#9966ff"],
-                    opacity: 0.5
-                  }
-                },
-                move: { 
-                  enable: true, 
-                  speed: 0.8,
-                  direction: "none",
-                  outModes: {
-                    default: "bounce"
-                  },
-                  attract: {
-                    enable: true,
-                    rotate: {
-                      x: 300,
-                      y: 600
-                    }
-                  },
-                  random: false,
-                  straight: false
-                },
-                collisions: {
-                  enable: false
-                }
-              },
-              interactivity: {
-                detectsOn: "window",
-                events: {
-                  onHover: {
-                    enable: true,
-                    mode: ["grab", "bubble"],
-                    parallax: {
-                      enable: false,
-                      force: 60,
-                      smooth: 10
-                    }
-                  },
-                  onClick: {
-                    enable: true,
-                    mode: "push"
-                  },
-                  resize: {
-                    delay: 0.5,
-                    enable: true
-                  }
-                },
-                modes: {
-                  grab: {
-                    distance: 500,
-                    links: {
-                      opacity: 1.0,
-                      color: "#9b59ff"
-                    }
-                  },
-                  bubble: {
-                    distance: 300,
-                    size: 20,
-                    duration: 0.8,
-                    opacity: 1,
-                    color: "#9b59ff",
-                    mix: false
-                  },
-                  push: {
-                    default: true,
-                    groups: [],
-                    quantity: 1
-                  }
-                }
-              }
-            }
-          });
-          
-          setParticlesLoaded(true);
-          console.log('Single connected graph loaded successfully');
-        } catch (error) {
-          console.error('Failed to load tsParticles:', error);
-        }
-      };
+    if (isSlowConnection || prefersReducedMotion) return;
 
-      initParticles();
-    }
-  }, [isSlowConnection, prefersReducedMotion, particlesLoaded]);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Set canvas size
+    const updateCanvasSize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    updateCanvasSize();
+    window.addEventListener('resize', updateCanvasSize);
+
+    // Generate connected graph
+    const generateConnectedGraph = () => {
+      const nodeCount = 15;
+      const colors = ["#00ffff", "#00ccff", "#33aaff", "#6699ff", "#9966ff", "#9b59ff"];
+      
+      // Create nodes
+      const nodes: Node[] = [];
+      for (let i = 0; i < nodeCount; i++) {
+        nodes.push({
+          id: i,
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          size: 8 + Math.random() * 8,
+          connections: []
+        });
+      }
+
+      // Create minimum spanning tree to ensure connectivity
+      const edges: Edge[] = [];
+      const connected = new Set([0]); // Start with first node
+      const unconnected = new Set(Array.from({length: nodeCount}, (_, i) => i).slice(1));
+
+      // Build MST
+      while (unconnected.size > 0) {
+        let minDist = Infinity;
+        let bestConnection: {from: number, to: number} | null = null;
+
+        for (const connectedNode of connected) {
+          for (const unconnectedNode of unconnected) {
+            const dist = Math.sqrt(
+              Math.pow(nodes[connectedNode].x - nodes[unconnectedNode].x, 2) +
+              Math.pow(nodes[connectedNode].y - nodes[unconnectedNode].y, 2)
+            );
+            if (dist < minDist) {
+              minDist = dist;
+              bestConnection = {from: connectedNode, to: unconnectedNode};
+            }
+          }
+        }
+
+        if (bestConnection) {
+          edges.push({from: bestConnection.from, to: bestConnection.to, opacity: 0.8});
+          nodes[bestConnection.from].connections.push(bestConnection.to);
+          nodes[bestConnection.to].connections.push(bestConnection.from);
+          connected.add(bestConnection.to);
+          unconnected.delete(bestConnection.to);
+        }
+      }
+
+      // Add additional edges to ensure >85% nodes have 2+ connections
+      const targetConnections = Math.ceil(nodeCount * 0.85);
+      let nodesWithTwoPlus = nodes.filter(n => n.connections.length >= 2).length;
+
+      while (nodesWithTwoPlus < targetConnections) {
+        // Find nodes with < 2 connections
+        const needMore = nodes.filter(n => n.connections.length < 2);
+        if (needMore.length === 0) break;
+
+        for (const node of needMore) {
+          // Find closest unconnected node
+          let closestDist = Infinity;
+          let closestNode = -1;
+
+          for (let i = 0; i < nodeCount; i++) {
+            if (i === node.id || node.connections.includes(i)) continue;
+            
+            const dist = Math.sqrt(
+              Math.pow(node.x - nodes[i].x, 2) +
+              Math.pow(node.y - nodes[i].y, 2)
+            );
+            
+            if (dist < closestDist && dist < 300) { // Reasonable visual distance
+              closestDist = dist;
+              closestNode = i;
+            }
+          }
+
+          if (closestNode !== -1) {
+            edges.push({from: node.id, to: closestNode, opacity: 0.7});
+            node.connections.push(closestNode);
+            nodes[closestNode].connections.push(node.id);
+          }
+        }
+
+        nodesWithTwoPlus = nodes.filter(n => n.connections.length >= 2).length;
+      }
+
+      nodesRef.current = nodes;
+      edgesRef.current = edges;
+    };
+
+    generateConnectedGraph();
+
+    // Animation loop
+    const animate = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const nodes = nodesRef.current;
+      const edges = edgesRef.current;
+
+      // Update node positions
+      nodes.forEach(node => {
+        node.x += node.vx;
+        node.y += node.vy;
+
+        // Bounce off edges
+        if (node.x <= 0 || node.x >= canvas.width) node.vx *= -1;
+        if (node.y <= 0 || node.y >= canvas.height) node.vy *= -1;
+
+        // Keep in bounds
+        node.x = Math.max(0, Math.min(canvas.width, node.x));
+        node.y = Math.max(0, Math.min(canvas.height, node.y));
+      });
+
+      // Draw edges
+      edges.forEach(edge => {
+        const fromNode = nodes[edge.from];
+        const toNode = nodes[edge.to];
+        
+        ctx.strokeStyle = `rgba(0, 255, 255, ${edge.opacity})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(fromNode.x, fromNode.y);
+        ctx.lineTo(toNode.x, toNode.y);
+        ctx.stroke();
+      });
+
+      // Draw nodes
+      nodes.forEach(node => {
+        ctx.fillStyle = node.color;
+        ctx.strokeStyle = '#00ffff';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      });
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animate();
+    console.log('Single connected graph generated successfully');
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+      window.removeEventListener('resize', updateCanvasSize);
+    };
+  }, [isSlowConnection, prefersReducedMotion]);
 
   // Fallback for slow connections or reduced motion
   if (isSlowConnection || prefersReducedMotion) {
@@ -189,7 +229,11 @@ const BackgroundVideo = () => {
 
   return (
     <>
-      <div id="graphBG" className="fixed inset-0 z-0" />
+      <canvas 
+        ref={canvasRef}
+        className="fixed inset-0 z-0"
+        style={{ background: '#000000' }}
+      />
       
       {/* Overlay for text legibility */}
       <div 
