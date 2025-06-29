@@ -127,7 +127,7 @@ const Index = () => {
           <Card className="bg-white/5 border-white/10 backdrop-blur-md glassmorphic-card">
             <CardContent className="p-8">
               <div className="text-center mb-18">
-                <h2 className="text-3xl md:text-4xl font-light mb-9 text-white">
+                <h2 className="text-3xl md:text-4xl font-light mb-12 text-white">
                   Private demo opportunities for select researchers, media, and investors.
                 </h2>
               </div>
