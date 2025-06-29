@@ -190,4 +190,19 @@ All colors MUST be HSL.
     fill: none !important;
     background: none !important;
   }
+
+  /* Target the first icon specifically to override any first-child styles */
+  .icon-container:first-child svg,
+  .icon-container:first-of-type svg,
+  .group:first-child .icon-container svg {
+    fill: none !important;
+    background: transparent !important;
+  }
+
+  .icon-container:first-child svg path,
+  .icon-container:first-of-type svg path,
+  .group:first-child .icon-container svg path {
+    fill: none !important;
+    background: transparent !important;
+  }
 }
