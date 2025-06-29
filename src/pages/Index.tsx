@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { Zap, Eye, Shield } from "lucide-react";
 import BackgroundVideo from "../components/BackgroundVideo";
+import Features from "../components/Features";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
@@ -42,32 +42,11 @@ const Index = () => {
     }, 1000);
   };
 
-  const features = [
-    {
-      icon: Eye,
-      title: "Dynamic Contradiction Handling",
-      description: "Surfaces critical drift before to protect your short and long-term goals.",
-      ariaLabel: "eye outline icon"
-    },
-    {
-      icon: Shield,
-      title: "Ownable Knowledge",
-      description: "Your private, customizable library seeded with timeless humanist thought.",
-      ariaLabel: "shield outline icon"
-    },
-    {
-      icon: Zap,
-      title: "Stateful, Adaptive & Transparent Reasoning",
-      description: "Persistent, contextual memory enables fully auditable decisions.",
-      ariaLabel: "zap outline icon"
-    }
-  ];
-
   return (
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <BackgroundVideo />
       
-      {/* Hero Section - Reduced padding-top to 15vh */}
+      {/* Hero Section */}
       <section className="relative z-10 flex items-center justify-center px-4 snap-start" style={{ minHeight: '100vh', paddingTop: '15vh' }}>
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
@@ -80,36 +59,7 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="relative z-10 py-20 px-4 snap-start">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card 
-                key={index} 
-                className="group glassmorphic-feature-card transition-all duration-500 animate-fade-in" 
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                <CardContent className="p-8 text-center">
-                  <div className="icon-container w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <feature.icon 
-                      className="w-12 h-12 text-[#68d5c4]" 
-                      strokeWidth={2}
-                      fill="none"
-                      aria-label={feature.ariaLabel}
-                    />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4 text-white">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Features />
 
       {/* Benefit Section */}
       <section className="relative z-10 py-20 px-4 snap-start">
