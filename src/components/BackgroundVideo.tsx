@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { tsParticles } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
@@ -46,7 +47,7 @@ const BackgroundVideo = () => {
               fpsLimit: 60,
               particles: {
                 number: { 
-                  value: 35,
+                  value: 28,
                   density: { 
                     enable: true,
                     width: 1920,
@@ -60,48 +61,53 @@ const BackgroundVideo = () => {
                   type: "circle" 
                 },
                 size: { 
-                  value: { min: 4, max: 8 },
+                  value: { min: 5, max: 12 },
                   animation: {
                     enable: true,
-                    speed: 1,
+                    speed: 2,
                     sync: false
                   }
                 },
                 opacity: { 
-                  value: { min: 0.6, max: 1.0 },
+                  value: { min: 0.7, max: 1.0 },
                   animation: { 
                     enable: true,
-                    speed: 0.8,
+                    speed: 1.5,
                     sync: false
                   }
                 },
                 stroke: {
-                  width: 0
+                  width: 1,
+                  color: {
+                    value: "#00ffff"
+                  }
                 },
                 links: {
                   enable: true,
-                  distance: 280,
+                  distance: 450,
                   color: {
-                    value: "#00ffff"
+                    value: ["#00ffff", "#33aaff", "#6699ff", "#9966ff"]
                   },
-                  opacity: 0.4,
-                  width: 1,
+                  opacity: 0.7,
+                  width: { min: 1, max: 3 },
                   warp: false,
                   triangles: {
                     enable: true,
-                    color: "#00ffff",
-                    opacity: 0.1
+                    color: ["#00ffff", "#6699ff", "#9966ff"],
+                    opacity: 0.35
                   }
                 },
                 move: { 
                   enable: true, 
-                  speed: 0.3,
+                  speed: 1.0,
                   direction: "none",
                   outModes: {
                     default: "bounce"
                   },
                   attract: {
-                    enable: false
+                    enable: true,
+                    rotateX: 600,
+                    rotateY: 1200
                   },
                   random: false,
                   straight: false
@@ -130,16 +136,16 @@ const BackgroundVideo = () => {
                 },
                 modes: {
                   grab: {
-                    distance: 200,
+                    distance: 300,
                     links: {
-                      opacity: 0.8,
+                      opacity: 1.0,
                       color: "#9b59ff"
                     }
                   },
                   bubble: {
-                    distance: 150,
-                    size: 12,
-                    duration: 0.4,
+                    distance: 200,
+                    size: 16,
+                    duration: 0.6,
                     opacity: 1,
                     color: "#9b59ff",
                     mix: false
@@ -147,7 +153,7 @@ const BackgroundVideo = () => {
                   push: {
                     default: true,
                     groups: [],
-                    quantity: 2
+                    quantity: 1
                   }
                 }
               }
@@ -155,7 +161,7 @@ const BackgroundVideo = () => {
           });
           
           setParticlesLoaded(true);
-          console.log('Cohesive network graph particles loaded successfully');
+          console.log('Cohesive adaptive knowledge graph loaded successfully');
         } catch (error) {
           console.error('Failed to load tsParticles:', error);
         }
