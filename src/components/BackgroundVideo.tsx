@@ -32,7 +32,7 @@ const BackgroundVideo = () => {
           // Initialize tsParticles engine
           await loadSlim(tsParticles);
           
-          // Load particles with cohesive network graph configuration
+          // Load particles with high-connectivity network configuration
           await tsParticles.load({
             id: "graphBG",
             options: {
@@ -47,7 +47,7 @@ const BackgroundVideo = () => {
               fpsLimit: 60,
               particles: {
                 number: { 
-                  value: 28,
+                  value: 22,
                   density: { 
                     enable: true,
                     width: 1920,
@@ -61,7 +61,7 @@ const BackgroundVideo = () => {
                   type: "circle" 
                 },
                 size: { 
-                  value: { min: 5, max: 12 },
+                  value: { min: 6, max: 14 },
                   animation: {
                     enable: true,
                     speed: 2,
@@ -69,7 +69,7 @@ const BackgroundVideo = () => {
                   }
                 },
                 opacity: { 
-                  value: { min: 0.7, max: 1.0 },
+                  value: { min: 0.8, max: 1.0 },
                   animation: { 
                     enable: true,
                     speed: 1.5,
@@ -84,22 +84,22 @@ const BackgroundVideo = () => {
                 },
                 links: {
                   enable: true,
-                  distance: 450,
+                  distance: 600,
                   color: {
                     value: ["#00ffff", "#33aaff", "#6699ff", "#9966ff"]
                   },
-                  opacity: 0.7,
+                  opacity: 0.8,
                   width: { min: 1, max: 3 },
                   warp: false,
                   triangles: {
                     enable: true,
                     color: ["#00ffff", "#6699ff", "#9966ff"],
-                    opacity: 0.35
+                    opacity: 0.4
                   }
                 },
                 move: { 
                   enable: true, 
-                  speed: 1.0,
+                  speed: 1.2,
                   direction: "none",
                   outModes: {
                     default: "bounce"
@@ -138,15 +138,15 @@ const BackgroundVideo = () => {
                 },
                 modes: {
                   grab: {
-                    distance: 300,
+                    distance: 400,
                     links: {
                       opacity: 1.0,
                       color: "#9b59ff"
                     }
                   },
                   bubble: {
-                    distance: 200,
-                    size: 16,
+                    distance: 250,
+                    size: 18,
                     duration: 0.6,
                     opacity: 1,
                     color: "#9b59ff",
@@ -163,7 +163,7 @@ const BackgroundVideo = () => {
           });
           
           setParticlesLoaded(true);
-          console.log('Cohesive adaptive knowledge graph loaded successfully');
+          console.log('High-connectivity knowledge graph loaded successfully');
         } catch (error) {
           console.error('Failed to load tsParticles:', error);
         }
