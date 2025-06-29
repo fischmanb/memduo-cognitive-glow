@@ -9,12 +9,18 @@ interface Node {
   color: string;
   size: number;
   connections: number[];
+  pulsePhase: number;
+  colorIndex: number;
+  lastColorChange: number;
 }
 
 interface Edge {
   from: number;
   to: number;
   opacity: number;
+  pulsePhase: number;
+  colorIndex: number;
+  lastColorChange: number;
 }
 
 const BackgroundVideo = () => {
@@ -24,6 +30,9 @@ const BackgroundVideo = () => {
   const animationRef = useRef<number>();
   const nodesRef = useRef<Node[]>([]);
   const edgesRef = useRef<Edge[]>([]);
+  const timeRef = useRef<number>(0);
+
+  const colors = ["#00ffff", "#00ccff", "#33aaff", "#6699ff", "#9966ff", "#9b59ff"];
 
   useEffect(() => {
     // Check for reduced motion preference
@@ -61,9 +70,8 @@ const BackgroundVideo = () => {
     // Generate connected graph
     const generateConnectedGraph = () => {
       const nodeCount = 15;
-      const colors = ["#00ffff", "#00ccff", "#33aaff", "#6699ff", "#9966ff", "#9b59ff"];
       
-      // Create nodes
+      // Create nodes with animation properties
       const nodes: Node[] = [];
       for (let i = 0; i < nodeCount; i++) {
         nodes.push({
@@ -74,7 +82,10 @@ const BackgroundVideo = () => {
           vy: (Math.random() - 0.5) * 0.5,
           color: colors[Math.floor(Math.random() * colors.length)],
           size: 8 + Math.random() * 8,
-          connections: []
+          connections: [],
+          pulsePhase: Math.random() * Math.PI * 2,
+          colorIndex: Math.floor(Math.random() * colors.length),
+          lastColorChange: 0
         });
       }
 
@@ -102,7 +113,14 @@ const BackgroundVideo = () => {
         }
 
         if (bestConnection) {
-          edges.push({from: bestConnection.from, to: bestConnection.to, opacity: 0.8});
+          edges.push({
+            from: bestConnection.from, 
+            to: bestConnection.to, 
+            opacity: 0.8,
+            pulsePhase: Math.random() * Math.PI * 2,
+            colorIndex: Math.floor(Math.random() * colors.length),
+            lastColorChange: 0
+          });
           nodes[bestConnection.from].connections.push(bestConnection.to);
           nodes[bestConnection.to].connections.push(bestConnection.from);
           connected.add(bestConnection.to);
@@ -139,7 +157,14 @@ const BackgroundVideo = () => {
           }
 
           if (closestNode !== -1) {
-            edges.push({from: node.id, to: closestNode, opacity: 0.7});
+            edges.push({
+              from: node.id, 
+              to: closestNode, 
+              opacity: 0.7,
+              pulsePhase: Math.random() * Math.PI * 2,
+              colorIndex: Math.floor(Math.random() * colors.length),
+              lastColorChange: 0
+            });
             node.connections.push(closestNode);
             nodes[closestNode].connections.push(node.id);
           }
@@ -156,13 +181,15 @@ const BackgroundVideo = () => {
 
     // Animation loop
     const animate = () => {
+      timeRef.current += 0.02;
+      
       ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       const nodes = nodesRef.current;
       const edges = edgesRef.current;
 
-      // Update node positions
+      // Update node positions and animations
       nodes.forEach(node => {
         node.x += node.vx;
         node.y += node.vy;
@@ -174,37 +201,89 @@ const BackgroundVideo = () => {
         // Keep in bounds
         node.x = Math.max(0, Math.min(canvas.width, node.x));
         node.y = Math.max(0, Math.min(canvas.height, node.y));
+
+        // Update pulse phase
+        node.pulsePhase += 0.05;
+
+        // Change color periodically
+        if (timeRef.current - node.lastColorChange > 3 + Math.random() * 4) {
+          node.colorIndex = (node.colorIndex + 1) % colors.length;
+          node.color = colors[node.colorIndex];
+          node.lastColorChange = timeRef.current;
+        }
       });
 
-      // Draw edges
+      // Update edge animations
+      edges.forEach(edge => {
+        edge.pulsePhase += 0.03;
+        
+        // Change edge color periodically
+        if (timeRef.current - edge.lastColorChange > 2 + Math.random() * 3) {
+          edge.colorIndex = (edge.colorIndex + 1) % colors.length;
+          edge.lastColorChange = timeRef.current;
+        }
+      });
+
+      // Draw edges with pulsing effect
       edges.forEach(edge => {
         const fromNode = nodes[edge.from];
         const toNode = nodes[edge.to];
         
-        ctx.strokeStyle = `rgba(0, 255, 255, ${edge.opacity})`;
-        ctx.lineWidth = 2;
+        // Pulsing opacity
+        const pulseOpacity = 0.3 + 0.5 * Math.sin(edge.pulsePhase);
+        const edgeColor = colors[edge.colorIndex];
+        
+        // Extract RGB values for dynamic opacity
+        const r = parseInt(edgeColor.slice(1, 3), 16);
+        const g = parseInt(edgeColor.slice(3, 5), 16);
+        const b = parseInt(edgeColor.slice(5, 7), 16);
+        
+        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${pulseOpacity})`;
+        ctx.lineWidth = 2 + Math.sin(edge.pulsePhase) * 0.5;
         ctx.beginPath();
         ctx.moveTo(fromNode.x, fromNode.y);
         ctx.lineTo(toNode.x, toNode.y);
         ctx.stroke();
+        
+        // Add glow effect
+        ctx.shadowColor = edgeColor;
+        ctx.shadowBlur = 5 + Math.sin(edge.pulsePhase) * 3;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
       });
 
-      // Draw nodes
+      // Draw nodes with pulsing effect
       nodes.forEach(node => {
-        ctx.fillStyle = node.color;
-        ctx.strokeStyle = '#00ffff';
+        // Pulsing size
+        const pulseSize = node.size + Math.sin(node.pulsePhase) * 3;
+        const pulseOpacity = 0.7 + 0.3 * Math.sin(node.pulsePhase * 1.5);
+        
+        // Node fill with pulsing opacity
+        const r = parseInt(node.color.slice(1, 3), 16);
+        const g = parseInt(node.color.slice(3, 5), 16);
+        const b = parseInt(node.color.slice(5, 7), 16);
+        
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${pulseOpacity})`;
+        ctx.strokeStyle = node.color;
         ctx.lineWidth = 2;
+        
+        // Add glow effect
+        ctx.shadowColor = node.color;
+        ctx.shadowBlur = 8 + Math.sin(node.pulsePhase) * 4;
+        
         ctx.beginPath();
-        ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, pulseSize, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
+        
+        ctx.shadowBlur = 0;
       });
 
       animationRef.current = requestAnimationFrame(animate);
     };
 
     animate();
-    console.log('Single connected graph generated successfully');
+    console.log('Animated connected graph generated successfully');
 
     return () => {
       if (animationRef.current) {
