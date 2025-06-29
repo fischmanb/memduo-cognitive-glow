@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -68,8 +69,8 @@ const Index = () => {
               <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
                 <Brain size={32} className="text-[#68d5c4]" strokeWidth={2} />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-4 text-white leading-tight min-h-[3rem] flex items-center justify-center">
-                <span className="block">
+              <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2">
+                <span className="block text-center whitespace-nowrap">
                   Dynamic Contradiction<br />
                   Handling
                 </span>
