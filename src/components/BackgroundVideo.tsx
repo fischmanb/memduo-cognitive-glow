@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 
 interface Node {
@@ -12,6 +13,8 @@ interface Node {
   pulsePhase: number;
   colorIndex: number;
   lastColorChange: number;
+  isHub: boolean;
+  layer: number;
 }
 
 interface Edge {
@@ -21,6 +24,7 @@ interface Edge {
   pulsePhase: number;
   colorIndex: number;
   lastColorChange: number;
+  strength: number;
 }
 
 const BackgroundVideo = () => {
@@ -67,119 +71,140 @@ const BackgroundVideo = () => {
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
 
-    // Generate single connected graph using MST approach
-    const generateConnectedGraph = () => {
-      const nodeCount = 15;
+    // Generate biologically-inspired neural network
+    const generateNeuralNetwork = () => {
+      const nodeCount = 20;
+      const hubRatio = 0.15; // 15% of nodes are hubs
+      const layers = 3;
       
-      // Create nodes with animation properties
+      // Create nodes with biological properties
       const nodes: Node[] = [];
       for (let i = 0; i < nodeCount; i++) {
+        const layer = Math.floor(i / (nodeCount / layers));
+        const isHub = Math.random() < hubRatio;
+        
         nodes.push({
           id: i,
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
           color: colors[Math.floor(Math.random() * colors.length)],
-          size: 8 + Math.random() * 8,
+          size: isHub ? 12 + Math.random() * 8 : 6 + Math.random() * 6,
           connections: [],
           pulsePhase: Math.random() * Math.PI * 2,
           colorIndex: Math.floor(Math.random() * colors.length),
-          lastColorChange: 0
+          lastColorChange: 0,
+          isHub,
+          layer
         });
       }
 
-      // Create minimum spanning tree to ensure connectivity
       const edges: Edge[] = [];
-      const connected = new Set([0]); // Start with first node
-      const unconnected = new Set(Array.from({length: nodeCount}, (_, i) => i).slice(1));
-
-      // Build MST
-      while (unconnected.size > 0) {
-        let minDist = Infinity;
-        let bestConnection: {from: number, to: number} | null = null;
-
-        for (const connectedNode of connected) {
-          for (const unconnectedNode of unconnected) {
-            const dist = Math.sqrt(
-              Math.pow(nodes[connectedNode].x - nodes[unconnectedNode].x, 2) +
-              Math.pow(nodes[connectedNode].y - nodes[unconnectedNode].y, 2)
-            );
-            if (dist < minDist) {
-              minDist = dist;
-              bestConnection = {from: connectedNode, to: unconnectedNode};
-            }
-          }
-        }
-
-        if (bestConnection) {
-          edges.push({
-            from: bestConnection.from, 
-            to: bestConnection.to, 
-            opacity: 0.8,
-            pulsePhase: Math.random() * Math.PI * 2,
-            colorIndex: Math.floor(Math.random() * colors.length),
-            lastColorChange: 0
-          });
-          nodes[bestConnection.from].connections.push(bestConnection.to);
-          nodes[bestConnection.to].connections.push(bestConnection.from);
-          connected.add(bestConnection.to);
-          unconnected.delete(bestConnection.to);
-        }
-      }
-
-      // Add additional edges to ensure >85% nodes have 2+ connections
-      const targetConnections = Math.ceil(nodeCount * 0.85);
-      let nodesWithTwoPlus = nodes.filter(n => n.connections.length >= 2).length;
-
-      while (nodesWithTwoPlus < targetConnections) {
-        // Find nodes with < 2 connections
-        const needMore = nodes.filter(n => n.connections.length < 2);
-        if (needMore.length === 0) break;
-
-        for (const node of needMore) {
-          // Find closest unconnected node
-          let closestDist = Infinity;
-          let closestNode = -1;
-
-          for (let i = 0; i < nodeCount; i++) {
-            if (i === node.id || node.connections.includes(i)) continue;
+      
+      // Create hub connections (hubs connect to many nodes)
+      const hubs = nodes.filter(n => n.isHub);
+      const regularNodes = nodes.filter(n => !n.isHub);
+      
+      hubs.forEach(hub => {
+        // Each hub connects to 6-12 other nodes
+        const targetConnections = 6 + Math.floor(Math.random() * 7);
+        const availableNodes = nodes.filter(n => n.id !== hub.id);
+        
+        // Sort by distance and connection preference
+        availableNodes.sort((a, b) => {
+          const distA = Math.sqrt(Math.pow(hub.x - a.x, 2) + Math.pow(hub.y - a.y, 2));
+          const distB = Math.sqrt(Math.pow(hub.x - b.x, 2) + Math.pow(hub.y - b.y, 2));
+          
+          // Prefer closer nodes but with some randomness
+          return (distA + Math.random() * 200) - (distB + Math.random() * 200);
+        });
+        
+        for (let i = 0; i < Math.min(targetConnections, availableNodes.length); i++) {
+          const target = availableNodes[i];
+          if (!hub.connections.includes(target.id)) {
+            const strength = hub.isHub && target.isHub ? 0.9 : 0.7;
             
-            const dist = Math.sqrt(
-              Math.pow(node.x - nodes[i].x, 2) +
-              Math.pow(node.y - nodes[i].y, 2)
-            );
-            
-            if (dist < closestDist) {
-              closestDist = dist;
-              closestNode = i;
-            }
-          }
-
-          if (closestNode !== -1) {
             edges.push({
-              from: node.id, 
-              to: closestNode, 
-              opacity: 0.7,
+              from: hub.id,
+              to: target.id,
+              opacity: strength,
               pulsePhase: Math.random() * Math.PI * 2,
               colorIndex: Math.floor(Math.random() * colors.length),
-              lastColorChange: 0
+              lastColorChange: 0,
+              strength
             });
-            node.connections.push(closestNode);
-            nodes[closestNode].connections.push(node.id);
+            
+            hub.connections.push(target.id);
+            target.connections.push(hub.id);
           }
         }
-
-        nodesWithTwoPlus = nodes.filter(n => n.connections.length >= 2).length;
+      });
+      
+      // Create local clustering (small-world properties)
+      regularNodes.forEach(node => {
+        if (node.connections.length < 2) {
+          // Find 2-4 nearby nodes to connect
+          const targetConnections = 2 + Math.floor(Math.random() * 3);
+          const nearbyNodes = nodes
+            .filter(n => n.id !== node.id && !node.connections.includes(n.id))
+            .sort((a, b) => {
+              const distA = Math.sqrt(Math.pow(node.x - a.x, 2) + Math.pow(node.y - a.y, 2));
+              const distB = Math.sqrt(Math.pow(node.x - b.x, 2) + Math.pow(node.y - b.y, 2));
+              return distA - distB;
+            });
+          
+          for (let i = 0; i < Math.min(targetConnections, nearbyNodes.length); i++) {
+            const target = nearbyNodes[i];
+            const strength = 0.5 + Math.random() * 0.3;
+            
+            edges.push({
+              from: node.id,
+              to: target.id,
+              opacity: strength,
+              pulsePhase: Math.random() * Math.PI * 2,
+              colorIndex: Math.floor(Math.random() * colors.length),
+              lastColorChange: 0,
+              strength
+            });
+            
+            node.connections.push(target.id);
+            target.connections.push(node.id);
+          }
+        }
+      });
+      
+      // Add some long-range connections (like corpus callosum)
+      const longRangeConnections = Math.floor(nodeCount * 0.1);
+      for (let i = 0; i < longRangeConnections; i++) {
+        const node1 = nodes[Math.floor(Math.random() * nodeCount)];
+        const node2 = nodes[Math.floor(Math.random() * nodeCount)];
+        
+        if (node1.id !== node2.id && !node1.connections.includes(node2.id)) {
+          const strength = 0.4 + Math.random() * 0.4;
+          
+          edges.push({
+            from: node1.id,
+            to: node2.id,
+            opacity: strength,
+            pulsePhase: Math.random() * Math.PI * 2,
+            colorIndex: Math.floor(Math.random() * colors.length),
+            lastColorChange: 0,
+            strength
+          });
+          
+          node1.connections.push(node2.id);
+          node2.connections.push(node1.id);
+        }
       }
 
       nodesRef.current = nodes;
       edgesRef.current = edges;
     };
 
-    generateConnectedGraph();
+    generateNeuralNetwork();
 
-    // Animation loop
+    // Animation loop with neural-like activity
     const animate = () => {
       timeRef.current += 0.02;
       
@@ -189,7 +214,7 @@ const BackgroundVideo = () => {
       const nodes = nodesRef.current;
       const edges = edgesRef.current;
 
-      // Update node positions and animations
+      // Update node positions and neural activity
       nodes.forEach(node => {
         node.x += node.vx;
         node.y += node.vy;
@@ -202,79 +227,91 @@ const BackgroundVideo = () => {
         node.x = Math.max(0, Math.min(canvas.width, node.x));
         node.y = Math.max(0, Math.min(canvas.height, node.y));
 
-        // Update pulse phase
-        node.pulsePhase += 0.05;
+        // Neural firing patterns (faster for hubs)
+        node.pulsePhase += node.isHub ? 0.08 : 0.05;
 
-        // Change color periodically
-        if (timeRef.current - node.lastColorChange > 3 + Math.random() * 4) {
+        // Color changes based on neural activity
+        const activityRate = node.isHub ? 2 : 4;
+        if (timeRef.current - node.lastColorChange > activityRate + Math.random() * 3) {
           node.colorIndex = (node.colorIndex + 1) % colors.length;
           node.color = colors[node.colorIndex];
           node.lastColorChange = timeRef.current;
         }
       });
 
-      // Update edge animations
+      // Update synaptic activity
       edges.forEach(edge => {
-        edge.pulsePhase += 0.03;
+        // Synaptic transmission speed varies by connection strength
+        edge.pulsePhase += 0.02 + (edge.strength * 0.04);
         
-        // Change edge color periodically
-        if (timeRef.current - edge.lastColorChange > 2 + Math.random() * 3) {
+        // Synaptic plasticity - connections change over time
+        const plasticityRate = 1.5 + Math.random() * 2;
+        if (timeRef.current - edge.lastColorChange > plasticityRate) {
           edge.colorIndex = (edge.colorIndex + 1) % colors.length;
           edge.lastColorChange = timeRef.current;
         }
       });
 
-      // Draw edges with pulsing effect
+      // Draw synaptic connections with activity-based rendering
       edges.forEach(edge => {
         const fromNode = nodes[edge.from];
         const toNode = nodes[edge.to];
         
-        // Pulsing opacity
-        const pulseOpacity = 0.3 + 0.5 * Math.sin(edge.pulsePhase);
+        // Neural transmission visualization
+        const transmissionIntensity = 0.2 + edge.strength * 0.6 * Math.sin(edge.pulsePhase);
         const edgeColor = colors[edge.colorIndex];
         
-        // Extract RGB values for dynamic opacity
+        // Extract RGB values
         const r = parseInt(edgeColor.slice(1, 3), 16);
         const g = parseInt(edgeColor.slice(3, 5), 16);
         const b = parseInt(edgeColor.slice(5, 7), 16);
         
-        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${pulseOpacity})`;
-        ctx.lineWidth = 2 + Math.sin(edge.pulsePhase) * 0.5;
+        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${transmissionIntensity})`;
+        ctx.lineWidth = 1 + edge.strength * 2 + Math.sin(edge.pulsePhase) * 0.5;
         ctx.beginPath();
         ctx.moveTo(fromNode.x, fromNode.y);
         ctx.lineTo(toNode.x, toNode.y);
         ctx.stroke();
         
-        // Add glow effect
+        // Synaptic glow
         ctx.shadowColor = edgeColor;
-        ctx.shadowBlur = 5 + Math.sin(edge.pulsePhase) * 3;
+        ctx.shadowBlur = 3 + edge.strength * 5 + Math.sin(edge.pulsePhase) * 2;
         ctx.stroke();
         ctx.shadowBlur = 0;
       });
 
-      // Draw nodes with pulsing effect
+      // Draw neurons with biological characteristics
       nodes.forEach(node => {
-        // Pulsing size
-        const pulseSize = node.size + Math.sin(node.pulsePhase) * 3;
-        const pulseOpacity = 0.7 + 0.3 * Math.sin(node.pulsePhase * 1.5);
+        // Neural firing visualization
+        const firingIntensity = node.size + Math.sin(node.pulsePhase) * (node.isHub ? 5 : 3);
+        const neuralActivity = 0.6 + 0.4 * Math.sin(node.pulsePhase * (node.isHub ? 1.5 : 1));
         
-        // Node fill with pulsing opacity
+        // Extract RGB values
         const r = parseInt(node.color.slice(1, 3), 16);
         const g = parseInt(node.color.slice(3, 5), 16);
         const b = parseInt(node.color.slice(5, 7), 16);
         
-        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${pulseOpacity})`;
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${neuralActivity})`;
         ctx.strokeStyle = node.color;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = node.isHub ? 3 : 2;
         
-        // Add glow effect
+        // Neural glow based on activity
         ctx.shadowColor = node.color;
-        ctx.shadowBlur = 8 + Math.sin(node.pulsePhase) * 4;
+        ctx.shadowBlur = (node.isHub ? 12 : 8) + Math.sin(node.pulsePhase) * (node.isHub ? 6 : 4);
         
         ctx.beginPath();
-        ctx.arc(node.x, node.y, pulseSize, 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, firingIntensity, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
+        
+        // Hub nodes get extra visual emphasis
+        if (node.isHub) {
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, 0.3)`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, firingIntensity + 8, 0, Math.PI * 2);
+          ctx.stroke();
+        }
         
         ctx.shadowBlur = 0;
       });
@@ -283,7 +320,7 @@ const BackgroundVideo = () => {
     };
 
     animate();
-    console.log('Animated connected graph generated successfully');
+    console.log('Neural network visualization generated successfully');
 
     return () => {
       if (animationRef.current) {
