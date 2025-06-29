@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,7 +72,7 @@ const Index = () => {
                 Design Your Own Intelligence
               </h3>
               <p className="text-gray-300 leading-relaxed">
-                Your private, customizable library seeded with timeless humanist thought.
+                Private, customizable cognition seeded with timeless humanist thought.
               </p>
             </div>
 
@@ -209,4 +207,3 @@ const Index = () => {
 };
 
 export default Index;
-
