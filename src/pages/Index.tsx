@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,12 +44,6 @@ const Index = () => {
 
   const features = [
     {
-      icon: Zap,
-      title: "Stateful, Adaptive & Transparent Reasoning",
-      description: "Persistent, contextual memory enables fully auditable decisions.",
-      ariaLabel: "zap outline icon"
-    },
-    {
       icon: Eye,
       title: "Dynamic Contradiction Handling",
       description: "Surfaces critical drift before to protect your short and long-term goals.",
@@ -59,6 +54,12 @@ const Index = () => {
       title: "Ownable Knowledge",
       description: "Your private, customizable library seeded with timeless humanist thought.",
       ariaLabel: "shield outline icon"
+    },
+    {
+      icon: Zap,
+      title: "Stateful, Adaptive & Transparent Reasoning",
+      description: "Persistent, contextual memory enables fully auditable decisions.",
+      ariaLabel: "zap outline icon"
     }
   ];
 
