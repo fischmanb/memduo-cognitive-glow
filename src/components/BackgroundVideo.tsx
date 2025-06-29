@@ -1,5 +1,3 @@
-
-
 import { useState, useEffect, useRef } from 'react';
 import { tsParticles } from '@tsparticles/engine';
 import { loadSlim } from '@tsparticles/slim';
@@ -66,7 +64,7 @@ const BackgroundVideo = () => {
                   animation: {
                     enable: true,
                     speed: 1,
-                    minimumValue: 3,
+                    size_min: 3,
                     sync: false
                   }
                 },
@@ -75,7 +73,7 @@ const BackgroundVideo = () => {
                   animation: { 
                     enable: true,
                     speed: 0.8,
-                    minimumValue: 0.5,
+                    opacity_min: 0.5,
                     sync: false
                   }
                 },
@@ -88,8 +86,8 @@ const BackgroundVideo = () => {
                   color: {
                     value: "#00ffff"
                   },
-                  opacity: 0.6,
-                  width: 1,
+                  opacity: 0.8,
+                  width: 1.5,
                   warp: false,
                   triangles: {
                     enable: false
@@ -201,4 +199,3 @@ const BackgroundVideo = () => {
 };
 
 export default BackgroundVideo;
-
