@@ -1,12 +1,12 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { tsParticles } from '@tsparticles/engine';
+import { loadSlim } from '@tsparticles/slim';
 
 const BackgroundVideo = () => {
   const [isSlowConnection, setIsSlowConnection] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const scriptLoadedRef = useRef(false);
+  const [particlesLoaded, setParticlesLoaded] = useState(false);
 
   useEffect(() => {
     // Check for reduced motion preference
@@ -26,43 +26,97 @@ const BackgroundVideo = () => {
 
   useEffect(() => {
     // Load tsParticles and initialize
-    if (!isSlowConnection && !prefersReducedMotion && !scriptLoadedRef.current) {
-      const loadTsParticles = async () => {
+    if (!isSlowConnection && !prefersReducedMotion && !particlesLoaded) {
+      const initParticles = async () => {
         try {
-          await tsParticles.load({
-            id: "graphBG",
-            options: {
-              fullScreen: { zIndex: -1 },
-              detectRetina: true,
-              background: { color: "#000" },
-              fpsLimit: 30,
-              particles: {
-                number: { value: 8, density: { enable: false } },
-                color: { value: ["#00e5ff", "#9b59ff"] },
-                shape: { type: "circle" },
-                size: { value: 4 },
-                opacity: { value: 0.8, animation: { speed: 0.2 } },
-                links: {
+          // Initialize tsParticles engine
+          await loadSlim(tsParticles);
+          
+          // Load particles
+          await tsParticles.load("graphBG", {
+            fullScreen: { 
+              enable: true,
+              zIndex: -1 
+            },
+            detectRetina: true,
+            background: { 
+              color: "#000000" 
+            },
+            fpsLimit: 60,
+            particles: {
+              number: { 
+                value: 12,
+                density: { 
                   enable: true,
-                  distance: 150,
-                  color: { value: ["#00e5ff", "#9b59ff"] },
-                  opacity: 0.6,
-                  width: 1
+                  area: 800
+                }
+              },
+              color: { 
+                value: ["#00e5ff", "#9b59ff", "#68d5c4"] 
+              },
+              shape: { 
+                type: "circle" 
+              },
+              size: { 
+                value: { min: 2, max: 6 },
+                random: true
+              },
+              opacity: { 
+                value: 0.8,
+                animation: { 
+                  enable: true,
+                  speed: 0.5,
+                  minimumValue: 0.3
+                }
+              },
+              links: {
+                enable: true,
+                distance: 150,
+                color: "#68d5c4",
+                opacity: 0.4,
+                width: 1
+              },
+              move: { 
+                enable: true, 
+                speed: 1,
+                direction: "none",
+                random: true,
+                straight: false,
+                outModes: {
+                  default: "bounce"
+                }
+              }
+            },
+            interactivity: {
+              detectsOn: "canvas",
+              events: {
+                onHover: {
+                  enable: true,
+                  mode: "grab"
                 },
-                move: { enable: true, speed: 0.3, random: true, outModes: "bounce" }
+                resize: true
+              },
+              modes: {
+                grab: {
+                  distance: 140,
+                  links: {
+                    opacity: 1
+                  }
+                }
               }
             }
           });
           
-          scriptLoadedRef.current = true;
+          setParticlesLoaded(true);
+          console.log('tsParticles loaded successfully');
         } catch (error) {
           console.error('Failed to load tsParticles:', error);
         }
       };
 
-      loadTsParticles();
+      initParticles();
     }
-  }, [isSlowConnection, prefersReducedMotion]);
+  }, [isSlowConnection, prefersReducedMotion, particlesLoaded]);
 
   // Fallback for slow connections or reduced motion
   if (isSlowConnection || prefersReducedMotion) {
@@ -79,18 +133,14 @@ const BackgroundVideo = () => {
 
   return (
     <>
-      <canvas 
-        id="graphBG" 
-        ref={canvasRef}
-        className="fixed inset-0 z-0"
-        style={{ display: prefersReducedMotion ? 'none' : 'block' }}
-      />
+      <div id="graphBG" className="fixed inset-0 z-0" />
       
       {/* Overlay for text legibility */}
       <div 
-        className="absolute inset-0 z-0"
+        className="fixed inset-0 z-0"
         style={{
-          background: 'linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.9) 80%)'
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 80%)',
+          pointerEvents: 'none'
         }}
       />
     </>
