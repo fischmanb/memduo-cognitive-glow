@@ -50,7 +50,7 @@ const BackgroundVideo = () => {
                   value: 12,
                   density: { 
                     enable: true,
-                    value_area: 800
+                    area: 800
                   }
                 },
                 color: { 
@@ -67,7 +67,7 @@ const BackgroundVideo = () => {
                   animation: { 
                     enable: true,
                     speed: 0.5,
-                    min_value: 0.3
+                    minimumValue: 0.3
                   }
                 },
                 links: {
