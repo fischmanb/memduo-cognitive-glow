@@ -91,13 +91,13 @@ const Index = () => {
               >
                 <CardContent className="p-8 text-center">
                   <div 
-                    className="w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                    className="icon-container w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(104, 213, 196, 0.2) 0%, rgba(104, 213, 196, 0.1) 100%)',
-                      backdropFilter: 'blur(4px)',
-                      WebkitBackdropFilter: 'blur(4px)',
-                      border: '1px solid rgba(104, 213, 196, 0.2)',
-                      boxShadow: '0 4px 16px rgba(31, 38, 135, 0.2)'
+                      background: 'rgba(104, 213, 196, 0.15) !important',
+                      backdropFilter: 'blur(8px) !important',
+                      WebkitBackdropFilter: 'blur(8px) !important',
+                      border: '2px solid rgba(104, 213, 196, 0.3) !important',
+                      boxShadow: '0 8px 24px rgba(104, 213, 196, 0.1) !important'
                     }}
                   >
                     <feature.icon 
@@ -105,6 +105,7 @@ const Index = () => {
                       strokeWidth={2}
                       fill="none"
                       aria-label={feature.ariaLabel}
+                      style={{ color: '#68d5c4 !important' }}
                     />
                   </div>
                   <h3 className="text-xl font-semibold mb-4 text-white">
