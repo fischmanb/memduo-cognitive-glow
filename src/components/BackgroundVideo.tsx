@@ -46,7 +46,7 @@ const BackgroundVideo = () => {
               fpsLimit: 60,
               particles: {
                 number: { 
-                  value: 35,
+                  value: 45,
                   density: { 
                     enable: true,
                     width: 1920,
@@ -80,11 +80,11 @@ const BackgroundVideo = () => {
                 },
                 links: {
                   enable: true,
-                  distance: 150,
+                  distance: 200,
                   color: {
                     value: "#00ffff"
                   },
-                  opacity: 0.6,
+                  opacity: 0.7,
                   width: 1.5,
                   warp: false,
                   triangles: {
@@ -93,7 +93,7 @@ const BackgroundVideo = () => {
                 },
                 move: { 
                   enable: true, 
-                  speed: 0.8,
+                  speed: 0.6,
                   direction: "none",
                   outModes: {
                     default: "bounce"
