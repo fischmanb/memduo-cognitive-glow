@@ -81,7 +81,7 @@ const Index = () => {
                 Design Your Own Intelligence
               </h3>
               <p className="text-gray-300 leading-relaxed">
-                Private, customizable cognition seeded with timeless humanist thought.
+                Private customizable cognition seeded with timeless humanist thought.
               </p>
             </div>
 
