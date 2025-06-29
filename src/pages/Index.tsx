@@ -127,7 +127,7 @@ const Index = () => {
                 <Shield size={32} color="#68d5c4" strokeWidth={2} fill="none" />
               </div>
               <h3 className="text-xl font-semibold mb-4 text-white">
-                Ownable Knowledge
+                Design Your Own Intelligence
               </h3>
               <p className="text-gray-300 leading-relaxed">
                 Your private, customizable library seeded with timeless humanist thought.
