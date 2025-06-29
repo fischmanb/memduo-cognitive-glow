@@ -49,7 +49,7 @@ const BackgroundVideo = () => {
                   opacity: 0.6,
                   width: 1
                 },
-                move: { enable: true, speed: 0.3, random: true, outMode: "bounce" }
+                move: { enable: true, speed: 0.3, random: true, outModes: "bounce" }
               }
             }
           });
