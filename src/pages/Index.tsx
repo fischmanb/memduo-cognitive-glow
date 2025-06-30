@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -144,20 +143,20 @@ const Index = () => {
         >
           <span className="relative z-10 whitespace-nowrap">Request Access</span>
           
-          {/* Subtle texture overlay */}
+          {/* Much more subtle texture overlay */}
           <div 
-            className="absolute inset-0 opacity-15 mix-blend-overlay pointer-events-none"
+            className="absolute inset-0 opacity-5 mix-blend-overlay pointer-events-none"
             style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)`,
-              backgroundSize: '6px 6px'
+              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+              backgroundSize: '8px 8px'
             }}
           ></div>
           
-          {/* Simple shine effect without gradients */}
+          {/* Simple hover effect */}
           <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
-          {/* Animated shine sweep without gradients */}
-          <div className="absolute inset-0 bg-white/10 -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 opacity-50"></div>
+          {/* Simple shine sweep */}
+          <div className="absolute inset-0 bg-white/8 -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 opacity-30"></div>
         </Button>
       </div>
       
@@ -463,20 +462,20 @@ const Index = () => {
                       )}
                     </span>
                     
-                    {/* Subtle texture overlay */}
+                    {/* Much more subtle texture overlay */}
                     <div 
-                      className="absolute inset-0 opacity-15 mix-blend-overlay pointer-events-none"
+                      className="absolute inset-0 opacity-3 mix-blend-overlay pointer-events-none"
                       style={{
-                        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)`,
-                        backgroundSize: '6px 6px'
+                        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.2) 0.5px, transparent 0)`,
+                        backgroundSize: '12px 12px'
                       }}
                     ></div>
                     
-                    {/* Simple shine effect without gradients */}
+                    {/* Simple hover effect */}
                     <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
-                    {/* Animated shine sweep without gradients */}
-                    <div className="absolute inset-0 bg-white/10 -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 opacity-50"></div>
+                    {/* Simple shine sweep */}
+                    <div className="absolute inset-0 bg-white/8 -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 opacity-30"></div>
                   </Button>
                 </div>
 
