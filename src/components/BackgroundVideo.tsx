@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 
 interface Node {
@@ -76,7 +77,8 @@ const BackgroundVideo = () => {
       // Safari optimization
       willReadFrequently: false,
       powerPreference: 'high-performance'
-    });
+    }) as CanvasRenderingContext2D | null;
+    
     if (!ctx) return;
 
     console.log('Starting animation setup');
