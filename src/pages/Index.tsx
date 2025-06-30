@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -435,7 +436,7 @@ const Index = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-[#2E5BBA] hover:bg-[#1E4B9A] disabled:bg-[#4A90E2]/50 text-white font-semibold py-4 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
+                    className="w-full bg-slate-900/40 backdrop-blur-md border-2 border-[#4A90E2]/50 hover:bg-slate-800/60 hover:border-[#4A90E2]/70 disabled:bg-slate-900/20 disabled:border-slate-600/30 text-white font-semibold py-4 text-base transition-all duration-500 shadow-2xl hover:shadow-[#4A90E2]/30 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
                       {isSubmitting ? (
