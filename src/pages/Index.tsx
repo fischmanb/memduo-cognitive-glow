@@ -104,24 +104,29 @@ const Index = () => {
       {/* Combined Header and Hero Section - Centered in viewport */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
-          {/* Logo - 50% larger */}
-          <div>
-            <img 
-              src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
-              alt="MemDuo" 
-              className="h-96 w-auto mx-auto"
-              style={{
-                filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
-              }}
-            />
+          {/* Logo Icon Only */}
+          <div className="mb-8">
+            <div className="relative w-32 h-32 mx-auto">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center shadow-lg shadow-[#68d5c4]/10">
+                <Brain size={32} className="text-[#68d5c4]" strokeWidth={2} />
+              </div>
+            </div>
           </div>
           
-          {/* Header Text */}
-          <div className="-mt-21">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
-              Meet Your Cognitive Growth Partner
+          {/* Unified Header Text */}
+          <div className="space-y-6">
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+              <div className="bg-gradient-to-r from-[#68d5c4] to-[#5bc4b1] bg-clip-text text-transparent mb-6">
+                MemDuo
+              </div>
+              <div className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-6">
+                Meet Your Cognitive
+              </div>
+              <div className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                Growth Partner
+              </div>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed mb-8">
+            <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
               A secure, general‑purpose companion that learns with you and maintains epistemic fidelity.
             </p>
           </div>
