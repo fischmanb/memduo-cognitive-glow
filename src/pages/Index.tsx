@@ -109,7 +109,7 @@ const Index = () => {
       <div className="fixed top-6 right-6 z-50">
         <Button
           onClick={() => scrollToNext(3)}
-          className="bg-[#68d5c4]/15 backdrop-blur-md border-2 border-[#68d5c4]/30 text-white hover:bg-[#68d5c4]/20 hover:border-[#68d5c4]/50 font-medium px-6 py-3 text-sm transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 hover:shadow-xl hover:shadow-[#68d5c4]/30 rounded-lg hover:scale-105 glassmorphic-card"
+          className="bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 text-white hover:bg-[#68d5c4]/20 hover:border-[#68d5c4]/50 font-medium px-6 py-3 text-sm transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 hover:shadow-[#68d5c4]/15 rounded-lg hover:scale-105"
         >
           Request Demo
         </Button>
