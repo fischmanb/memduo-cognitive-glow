@@ -163,13 +163,14 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="absolute bottom-12 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        {/* Enhanced mobile chevron positioning */}
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce safe-bottom">
           <button 
-            className="cursor-pointer touch-manipulation p-4 md:p-3 hover:scale-110 transition-all duration-300" 
+            className="cursor-pointer touch-manipulation p-6 hover:scale-110 transition-all duration-300 min-h-[44px] min-w-[44px] flex items-center justify-center" 
             onClick={() => scrollToNext(1)}
           >
             <ChevronDown 
-              size={28} 
+              size={32} 
               className="text-gray-400 hover:text-[#4A90E2] transition-colors duration-500 opacity-70 hover:opacity-100"
             />
           </button>
@@ -201,13 +202,13 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="absolute bottom-12 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce safe-bottom">
           <button 
-            className="cursor-pointer touch-manipulation p-4 md:p-3 hover:scale-110 transition-all duration-300" 
+            className="cursor-pointer touch-manipulation p-6 hover:scale-110 transition-all duration-300 min-h-[44px] min-w-[44px] flex items-center justify-center" 
             onClick={() => scrollToNext(2)}
           >
             <ChevronDown 
-              size={28} 
+              size={32} 
               className="text-gray-400 hover:text-[#4A90E2] transition-colors duration-500 opacity-70 hover:opacity-100"
             />
           </button>
@@ -286,31 +287,31 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-12 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce safe-bottom">
           <button 
-            className="cursor-pointer touch-manipulation p-4 md:p-3 hover:scale-110 transition-all duration-300" 
+            className="cursor-pointer touch-manipulation p-6 hover:scale-110 transition-all duration-300 min-h-[44px] min-w-[44px] flex items-center justify-center" 
             onClick={() => scrollToNext(3)}
           >
             <ChevronDown 
-              size={28} 
+              size={32} 
               className="text-gray-400 hover:text-[#4A90E2] transition-colors duration-500 opacity-70 hover:opacity-100"
             />
           </button>
         </div>
       </section>
 
-      {/* View 4 - Mobile-Optimized Form Section */}
-      <section className="relative z-10 flex flex-col justify-center items-center px-3 py-6 min-h-screen">
+      {/* View 4 - Enhanced Mobile Form Section */}
+      <section className="relative z-10 flex flex-col justify-center items-center px-4 py-8 min-h-screen">
         <div className="max-w-lg mx-auto w-full">
           <Card className="border-[#4A90E2]/30 backdrop-blur-xl bg-gradient-to-br from-slate-900/95 to-slate-800/95 relative overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-700 rounded-2xl hover:border-[#4A90E2]/50">
             
-            <CardContent className="p-3 sm:p-4 relative">
-              <div className="text-center mb-3">
-                <div className="inline-block p-2 rounded-xl backdrop-blur-md bg-gradient-to-br from-slate-800/60 to-slate-900/40 border-2 border-[#4A90E2]/30 shadow-xl hover:border-[#4A90E2]/50 transition-all duration-500">
+            <CardContent className="p-6 sm:p-8 relative">
+              <div className="text-center mb-6">
+                <div className="inline-block p-3 rounded-xl backdrop-blur-md bg-gradient-to-br from-slate-800/60 to-slate-900/40 border-2 border-[#4A90E2]/30 shadow-xl hover:border-[#4A90E2]/50 transition-all duration-500">
                   <img 
                     src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                     alt="MemDuo" 
-                    className="h-8 sm:h-12 w-auto transition-transform duration-500 hover:scale-110"
+                    className="h-12 sm:h-16 w-auto transition-transform duration-500 hover:scale-110"
                     style={{
                       filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 4px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 1px rgba(255, 255, 255, 1))',
                     }}
@@ -318,23 +319,23 @@ const Index = () => {
                 </div>
               </div>
 
-              <div className="text-center mb-3">
-                <h2 className="text-xs sm:text-sm font-light mb-2 text-slate-100 leading-tight px-2">
+              <div className="text-center mb-6">
+                <h2 className="text-sm sm:text-base font-light mb-3 text-slate-100 leading-relaxed px-2">
                   Private demo opportunities for select researchers, media, and investors.
                 </h2>
               </div>
 
-              <div className="text-center mb-3">
-                <div className="mt-1 mb-3">
-                  <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
+              <div className="text-center mb-6">
+                <div className="mt-2 mb-4">
+                  <div className="flex items-center justify-between text-xs text-slate-300 mb-2">
                     <span>Complete your application</span>
                     <span className={`transition-colors duration-300 font-medium ${getFormProgress() === 100 ? 'text-emerald-400' : 'text-[#4A90E2]'}`}>
                       {getFormProgress()}% complete
                     </span>
                   </div>
-                  <div className="w-full bg-slate-700/50 rounded-full h-1.5 backdrop-blur-sm overflow-hidden border border-slate-600/30">
+                  <div className="w-full bg-slate-700/50 rounded-full h-2 backdrop-blur-sm overflow-hidden border border-slate-600/30">
                     <div 
-                      className="bg-gradient-to-r from-[#4A90E2] via-[#5BA3F5] to-[#2E5BBA] h-1.5 rounded-full transition-all duration-700 ease-out relative overflow-hidden"
+                      className="bg-gradient-to-r from-[#4A90E2] via-[#5BA3F5] to-[#2E5BBA] h-2 rounded-full transition-all duration-700 ease-out relative overflow-hidden"
                       style={{ width: `${getFormProgress()}%` }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-pulse"></div>
@@ -343,12 +344,12 @@ const Index = () => {
                 </div>
               </div>
               
-              <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-3">
-                <div className="space-y-2 sm:space-y-3">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="group">
-                      <label htmlFor="firstName" className="flex items-center gap-2 text-xs font-medium text-slate-200 mb-1 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
-                        <User size={12} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
+                      <label htmlFor="firstName" className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
+                        <User size={14} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
                         First Name *
                       </label>
                       <div className="relative">
@@ -357,18 +358,18 @@ const Index = () => {
                           type="text"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
-                          className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-8 py-2 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85 min-h-[40px] touch-manipulation"
+                          className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-4 pr-10 py-3 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85 min-h-[48px] touch-manipulation"
                           placeholder="Enter your first name"
                           required
                         />
                         {firstName && (
-                          <CheckCircle size={12} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-400 animate-fade-in" />
+                          <CheckCircle size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 animate-fade-in" />
                         )}
                       </div>
                     </div>
                     <div className="group">
-                      <label htmlFor="lastName" className="flex items-center gap-2 text-xs font-medium text-slate-200 mb-1 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
-                        <User size={12} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
+                      <label htmlFor="lastName" className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
+                        <User size={14} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
                         Last Name *
                       </label>
                       <div className="relative">
@@ -377,12 +378,12 @@ const Index = () => {
                           type="text"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
-                          className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-8 py-2 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85 min-h-[40px] touch-manipulation"
+                          className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-4 pr-10 py-3 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85 min-h-[48px] touch-manipulation"
                           placeholder="Enter your last name"
                           required
                         />
                         {lastName && (
-                          <CheckCircle size={12} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-400 animate-fade-in" />
+                          <CheckCircle size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 animate-fade-in" />
                         )}
                       </div>
                     </div>
@@ -390,8 +391,8 @@ const Index = () => {
                 </div>
 
                 <div className="group">
-                  <label htmlFor="email" className="flex items-center gap-2 text-xs font-medium text-slate-200 mb-1 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
-                    <Mail size={12} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
+                  <label htmlFor="email" className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
+                    <Mail size={14} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
                     Email Address *
                   </label>
                   <div className="relative">
@@ -400,49 +401,49 @@ const Index = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-8 py-2 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85 min-h-[40px] touch-manipulation"
+                      className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-4 pr-10 py-3 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85 min-h-[48px] touch-manipulation"
                       placeholder="your@email.com"
                       required
                     />
                     {email && (
-                      <CheckCircle size={12} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-400 animate-fade-in" />
+                      <CheckCircle size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 animate-fade-in" />
                     )}
                   </div>
                 </div>
                 
                 <div className="group">
-                  <label htmlFor="interest" className="flex items-center gap-2 text-xs font-medium text-slate-200 mb-1 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
-                    <MessageSquare size={12} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
+                  <label htmlFor="interest" className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
+                    <MessageSquare size={14} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
                     Tell us about your interest
-                    <span className="text-slate-400 text-xs">(optional)</span>
+                    <span className="text-slate-400 text-sm">(optional)</span>
                   </label>
                   <div className="relative">
                     <Textarea
                       id="interest"
                       value={interest}
                       onChange={(e) => setInterest(e.target.value)}
-                      className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 min-h-[60px] p-2 rounded-lg text-sm resize-none hover:border-slate-500/70 hover:bg-slate-800/85 touch-manipulation"
+                      className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 min-h-[80px] p-4 rounded-lg text-sm resize-none hover:border-slate-500/70 hover:bg-slate-800/85 touch-manipulation"
                       placeholder="What draws you to MemDuo? How might you use it in your work or research?"
                       maxLength={150}
                     />
-                    <div className="absolute bottom-1 right-2 text-xs text-slate-400 bg-slate-900/70 backdrop-blur-sm px-1 py-0.5 rounded transition-colors duration-300">
+                    <div className="absolute bottom-2 right-3 text-xs text-slate-400 bg-slate-900/70 backdrop-blur-sm px-2 py-1 rounded transition-colors duration-300">
                       <span className={interest.length > 140 ? 'text-amber-400' : ''}>{interest.length}/150</span>
                     </div>
                   </div>
                 </div>
                 
-                <div className="pt-2">
+                <div className="pt-4">
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#4A90E2] via-[#5BA3F5] to-[#2E5BBA] hover:from-[#3A7BC8] hover:via-[#4B93E5] hover:to-[#1E4B9A] disabled:from-[#4A90E2]/50 disabled:to-[#2E5BBA]/50 text-white font-semibold py-2.5 text-sm transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[44px] touch-manipulation"
+                    className="w-full bg-gradient-to-r from-[#4A90E2] via-[#5BA3F5] to-[#2E5BBA] hover:from-[#3A7BC8] hover:via-[#4B93E5] hover:to-[#1E4B9A] disabled:from-[#4A90E2]/50 disabled:to-[#2E5BBA]/50 text-white font-semibold py-4 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     
                     <span className="relative z-10 flex items-center justify-center gap-2">
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <Loader2 className="w-5 h-5 animate-spin" />
                           Joining Queue...
                         </>
                       ) : (
@@ -452,8 +453,8 @@ const Index = () => {
                   </Button>
                 </div>
 
-                <div className="text-center pt-1 pb-2">
-                  <p className="text-slate-400 text-xs px-2">
+                <div className="text-center pt-3">
+                  <p className="text-slate-400 text-sm px-2 leading-relaxed">
                     We use your email only to share demo access and updates.
                   </p>
                 </div>
