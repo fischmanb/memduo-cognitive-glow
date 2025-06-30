@@ -116,7 +116,7 @@ const Index = () => {
           </div>
           
           {/* Header Text */}
-          <div className="-mt-12">
+          <div className="-mt-20">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
               Meet Your Cognitive Growth Partner
             </h1>
