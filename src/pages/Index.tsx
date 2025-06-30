@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,7 +28,7 @@ const Index = () => {
     setIsSafari(isSafariBrowser);
   }, []);
 
-  console.log('Index component rendered - enhanced with improved animations and UX');
+  console.log('Index component rendered - mobile optimized with improved touch navigation');
 
   const getFormProgress = () => {
     const fields = [firstName, lastName, email];
@@ -131,29 +132,29 @@ const Index = () => {
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <BackgroundVideo />
       
-      {/* Enhanced Request Early Access Button */}
-      <div className={`fixed top-4 sm:top-6 right-4 sm:right-6 z-50 transition-all duration-500 transform ${
+      {/* Mobile-Optimized Floating CTA */}
+      <div className={`fixed top-3 right-3 z-50 transition-all duration-500 transform ${
         showFloatingCTA 
           ? 'opacity-100 translate-y-0 scale-100' 
           : 'opacity-0 -translate-y-8 scale-90 pointer-events-none'
       }`}>
         <Button
           onClick={() => scrollToNext(3)}
-          className="bg-gradient-to-r from-[#4A90E2]/20 to-[#2E5BBA]/20 backdrop-blur-md border-2 border-[#4A90E2]/40 text-white hover:from-[#4A90E2]/30 hover:to-[#2E5BBA]/30 hover:border-[#4A90E2]/60 font-medium px-4 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm transition-all duration-500 shadow-xl shadow-[#4A90E2]/20 hover:shadow-[#4A90E2]/30 rounded-xl hover:scale-105 active:scale-95 group"
+          className="bg-gradient-to-r from-[#4A90E2]/20 to-[#2E5BBA]/20 backdrop-blur-md border-2 border-[#4A90E2]/40 text-white hover:from-[#4A90E2]/30 hover:to-[#2E5BBA]/30 hover:border-[#4A90E2]/60 font-medium px-3 py-2 text-xs transition-all duration-500 shadow-xl shadow-[#4A90E2]/20 hover:shadow-[#4A90E2]/30 rounded-lg hover:scale-105 active:scale-95 group min-h-[44px] touch-manipulation"
         >
-          <span className="relative z-10">Request Early Access</span>
+          <span className="relative z-10 whitespace-nowrap">Request Access</span>
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
         </Button>
       </div>
       
-      {/* View 1 - Enhanced Logo Section */}
+      {/* View 1 - Mobile-Optimized Logo Section */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="flex-1 flex items-center justify-center">
           <div className="relative group">
             <img 
               src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
               alt="MemDuo" 
-              className="h-72 sm:h-80 md:h-96 lg:h-[32rem] xl:h-[40rem] w-auto mx-auto animate-fade-in transition-all duration-700 group-hover:scale-105"
+              className="h-64 sm:h-80 md:h-96 lg:h-[32rem] xl:h-[40rem] w-auto mx-auto animate-fade-in transition-all duration-700 group-hover:scale-105"
               style={{
                 filter: 'drop-shadow(0 8px 24px rgba(74, 144, 226, 0.15)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
               }}
@@ -162,22 +163,24 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="relative group cursor-pointer" onClick={() => scrollToNext(1)}>
-            <ChevronDown 
-              size={28} 
-              className="text-gray-400 hover:text-[#4A90E2] transition-all duration-500 opacity-70 hover:opacity-100 group-hover:scale-110"
-            />
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="relative group cursor-pointer touch-manipulation" onClick={() => scrollToNext(1)}>
+            <div className="p-3 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
+              <ChevronDown 
+                size={24} 
+                className="text-gray-400 hover:text-[#4A90E2] transition-all duration-500 opacity-70 hover:opacity-100 group-hover:scale-110"
+              />
+            </div>
             <div className="absolute inset-0 bg-[#4A90E2]/20 rounded-full blur-xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           </div>
         </div>
       </section>
 
-      {/* View 2 - Enhanced Heading Section */}
+      {/* View 2 - Mobile-Optimized Heading Section */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="text-center max-w-5xl mx-auto animate-fade-in">
           <div className="space-y-6 sm:space-y-8">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold space-y-4 sm:space-y-6" style={{
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold space-y-3 sm:space-y-4 md:space-y-6" style={{
               lineHeight: '1.1',
               paddingTop: '0.1em',
               paddingBottom: '0.1em',
@@ -192,81 +195,83 @@ const Index = () => {
                 Growth Partner
               </div>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 font-light max-w-4xl mx-auto leading-relaxed transform hover:scale-105 transition-all duration-500">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 font-light max-w-4xl mx-auto leading-relaxed transform hover:scale-105 transition-all duration-500 px-2">
               A secure, general‑purpose companion that learns with you and maintains epistemic fidelity.
             </p>
           </div>
         </div>
         
-        <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="relative group cursor-pointer" onClick={() => scrollToNext(2)}>
-            <ChevronDown 
-              size={28} 
-              className="text-gray-400 hover:text-[#4A90E2] transition-all duration-500 opacity-70 hover:opacity-100 group-hover:scale-110"
-            />
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="relative group cursor-pointer touch-manipulation" onClick={() => scrollToNext(2)}>
+            <div className="p-3 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
+              <ChevronDown 
+                size={24} 
+                className="text-gray-400 hover:text-[#4A90E2] transition-all duration-500 opacity-70 hover:opacity-100 group-hover:scale-110"
+              />
+            </div>
             <div className="absolute inset-0 bg-[#4A90E2]/20 rounded-full blur-xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           </div>
         </div>
       </section>
 
-      {/* View 3 - Enhanced Features Section */}
-      <section className="relative z-10 flex flex-col justify-center px-4 min-h-screen py-16">
+      {/* View 3 - Mobile-Optimized Features Section */}
+      <section className="relative z-10 flex flex-col justify-center px-4 min-h-screen py-12">
         <div className="max-w-6xl mx-auto mb-12">
-          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             
-            <div className="group backdrop-blur-lg border-2 border-gray-700/60 rounded-xl p-6 sm:p-8 text-center transition-all duration-700 hover:bg-white/10 hover:border-[#4A90E2]/50 hover:shadow-2xl hover:shadow-[#4A90E2]/25 hover:-translate-y-2 animate-fade-in opacity-0 transform translate-y-8" style={{ animation: 'fade-in-up 0.8s ease-out 0s forwards' }}>
+            <div className="group backdrop-blur-lg border-2 border-gray-700/60 rounded-xl p-6 text-center transition-all duration-700 hover:bg-white/10 hover:border-[#4A90E2]/50 hover:shadow-2xl hover:shadow-[#4A90E2]/25 hover:-translate-y-2 animate-fade-in opacity-0 transform translate-y-8 touch-manipulation" style={{ animation: 'fade-in-up 0.8s ease-out 0s forwards' }}>
               <div className="w-16 h-16 mx-auto mb-6 rounded-xl flex items-center justify-center group-hover:scale-125 transition-all duration-500 shadow-lg shadow-[#4A90E2]/20 group-hover:shadow-[#4A90E2]/40 relative overflow-hidden" style={{
                 background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.15) 0%, rgba(46, 91, 186, 0.15) 100%)',
                 border: '2px solid rgba(74, 144, 226, 0.3)'
               }}>
-                <Shield size={32} className="text-[#4A90E2] relative z-10 transition-all duration-500 group-hover:rotate-12" strokeWidth={2} />
+                <Shield size={28} className="text-[#4A90E2] relative z-10 transition-all duration-500 group-hover:rotate-12" strokeWidth={2} />
                 <div className="absolute inset-0 bg-gradient-to-br from-[#4A90E2]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
-              <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2 transition-colors duration-300 group-hover:text-[#4A90E2]">
+              <h3 className="text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2 transition-colors duration-300 group-hover:text-[#4A90E2]">
                 <span className="block text-center">
                   Design Your Own<br />
                   Intelligence
                 </span>
               </h3>
-              <p className="text-gray-300 leading-relaxed transition-colors duration-300 group-hover:text-gray-200">
+              <p className="text-gray-300 leading-relaxed transition-colors duration-300 group-hover:text-gray-200 text-sm md:text-base">
                 Private customizable cognition seeded with timeless humanist thought.
               </p>
             </div>
 
-            <div className="group backdrop-blur-lg border-2 border-gray-700/60 rounded-xl p-6 sm:p-8 text-center transition-all duration-700 hover:bg-white/10 hover:border-[#4A90E2]/50 hover:shadow-2xl hover:shadow-[#4A90E2]/25 hover:-translate-y-2 animate-fade-in opacity-0 transform translate-y-8" style={{ animation: 'fade-in-up 0.8s ease-out 0.2s forwards' }}>
+            <div className="group backdrop-blur-lg border-2 border-gray-700/60 rounded-xl p-6 text-center transition-all duration-700 hover:bg-white/10 hover:border-[#4A90E2]/50 hover:shadow-2xl hover:shadow-[#4A90E2]/25 hover:-translate-y-2 animate-fade-in opacity-0 transform translate-y-8 touch-manipulation" style={{ animation: 'fade-in-up 0.8s ease-out 0.2s forwards' }}>
               <div className="w-16 h-16 mx-auto mb-6 rounded-xl flex items-center justify-center group-hover:scale-125 transition-all duration-500 shadow-lg shadow-[#4A90E2]/20 group-hover:shadow-[#4A90E2]/40 relative overflow-hidden" style={{
                 background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.15) 0%, rgba(46, 91, 186, 0.15) 100%)',
                 border: '2px solid rgba(74, 144, 226, 0.3)'
               }}>
-                <Brain size={32} className="text-[#4A90E2] relative z-10 transition-all duration-500 group-hover:rotate-12" strokeWidth={2} />
+                <Brain size={28} className="text-[#4A90E2] relative z-10 transition-all duration-500 group-hover:rotate-12" strokeWidth={2} />
                 <div className="absolute inset-0 bg-gradient-to-br from-[#4A90E2]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
-              <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2 transition-colors duration-300 group-hover:text-[#4A90E2]">
+              <h3 className="text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2 transition-colors duration-300 group-hover:text-[#4A90E2]">
                 <span className="block text-center">
                   Dynamic Contradiction<br />
                   Handling
                 </span>
               </h3>
-              <p className="text-gray-300 leading-relaxed transition-colors duration-300 group-hover:text-gray-200">
+              <p className="text-gray-300 leading-relaxed transition-colors duration-300 group-hover:text-gray-200 text-sm md:text-base">
                 Proactively surfaces critical drift to protect you, your goals and principles.
               </p>
             </div>
 
-            <div className="group backdrop-blur-lg border-2 border-gray-700/60 rounded-xl p-6 sm:p-8 text-center transition-all duration-700 hover:bg-white/10 hover:border-[#4A90E2]/50 hover:shadow-2xl hover:shadow-[#4A90E2]/25 hover:-translate-y-2 animate-fade-in opacity-0 transform translate-y-8" style={{ animation: 'fade-in-up 0.8s ease-out 0.4s forwards' }}>
+            <div className="group backdrop-blur-lg border-2 border-gray-700/60 rounded-xl p-6 text-center transition-all duration-700 hover:bg-white/10 hover:border-[#4A90E2]/50 hover:shadow-2xl hover:shadow-[#4A90E2]/25 hover:-translate-y-2 animate-fade-in opacity-0 transform translate-y-8 touch-manipulation" style={{ animation: 'fade-in-up 0.8s ease-out 0.4s forwards' }}>
               <div className="w-16 h-16 mx-auto mb-6 rounded-xl flex items-center justify-center group-hover:scale-125 transition-all duration-500 shadow-lg shadow-[#4A90E2]/20 group-hover:shadow-[#4A90E2]/40 relative overflow-hidden" style={{
                 background: 'linear-gradient(135deg, rgba(74, 144, 226, 0.15) 0%, rgba(46, 91, 186, 0.15) 100%)',
                 border: '2px solid rgba(74, 144, 226, 0.3)'
               }}>
-                <Eye size={32} className="text-[#4A90E2] relative z-10 transition-all duration-500 group-hover:rotate-12" strokeWidth={2} />
+                <Eye size={28} className="text-[#4A90E2] relative z-10 transition-all duration-500 group-hover:rotate-12" strokeWidth={2} />
                 <div className="absolute inset-0 bg-gradient-to-br from-[#4A90E2]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
-              <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2 transition-colors duration-300 group-hover:text-[#4A90E2]">
+              <h3 className="text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2 transition-colors duration-300 group-hover:text-[#4A90E2]">
                 <span className="block text-center">
                   Transparent Stateful<br />
                   Reasoning
                 </span>
               </h3>
-              <p className="text-gray-300 leading-relaxed transition-colors duration-300 group-hover:text-gray-200">
+              <p className="text-gray-300 leading-relaxed transition-colors duration-300 group-hover:text-gray-200 text-sm md:text-base">
                 Persistent, contextual memory enables fully auditable decisions.
               </p>
             </div>
@@ -275,35 +280,37 @@ const Index = () => {
 
         <div className="max-w-4xl mx-auto text-center">
           <div className="bg-gradient-to-br from-white/8 to-white/4 backdrop-blur-xl border border-white/20 rounded-2xl p-6 sm:p-8 animate-fade-in transform hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-[#4A90E2]/10 group">
-            <p className="text-lg sm:text-xl md:text-2xl font-light text-gray-200 leading-relaxed group-hover:text-white transition-colors duration-500">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-light text-gray-200 leading-relaxed group-hover:text-white transition-colors duration-500">
               MemDuo grows alongside you — adapting its knowledge, staying aligned with your short and long‑term intent, and never hallucinating — by design.
             </p>
           </div>
         </div>
 
-        <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="relative group cursor-pointer" onClick={() => scrollToNext(3)}>
-            <ChevronDown 
-              size={28} 
-              className="text-gray-400 hover:text-[#4A90E2] transition-all duration-500 opacity-70 hover:opacity-100 group-hover:scale-110"
-            />
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="relative group cursor-pointer touch-manipulation" onClick={() => scrollToNext(3)}>
+            <div className="p-3 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
+              <ChevronDown 
+                size={24} 
+                className="text-gray-400 hover:text-[#4A90E2] transition-all duration-500 opacity-70 hover:opacity-100 group-hover:scale-110"
+              />
+            </div>
             <div className="absolute inset-0 bg-[#4A90E2]/20 rounded-full blur-xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           </div>
         </div>
       </section>
 
-      {/* View 4 - Enhanced Form Section with Theme-Integrated Logo */}
-      <section className="relative z-10 flex flex-col justify-center items-center px-4 min-h-screen py-8">
-        <div className="max-w-xl mx-auto w-full">
+      {/* View 4 - Mobile-Optimized Form Section */}
+      <section className="relative z-10 flex flex-col justify-center items-center px-4 min-h-screen py-12">
+        <div className="max-w-lg mx-auto w-full">
           <Card className="border-[#4A90E2]/30 backdrop-blur-xl bg-gradient-to-br from-slate-900/95 to-slate-800/95 relative overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-700 rounded-2xl hover:border-[#4A90E2]/50">
             
             <CardContent className="p-4 sm:p-6 relative">
-              <div className="text-center mb-4">
-                <div className="inline-block p-4 rounded-xl backdrop-blur-md bg-gradient-to-br from-slate-800/60 to-slate-900/40 border-2 border-[#4A90E2]/30 shadow-xl hover:border-[#4A90E2]/50 transition-all duration-500">
+              <div className="text-center mb-6">
+                <div className="inline-block p-3 sm:p-4 rounded-xl backdrop-blur-md bg-gradient-to-br from-slate-800/60 to-slate-900/40 border-2 border-[#4A90E2]/30 shadow-xl hover:border-[#4A90E2]/50 transition-all duration-500">
                   <img 
                     src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                     alt="MemDuo" 
-                    className="h-20 sm:h-28 w-auto transition-transform duration-500 hover:scale-110"
+                    className="h-16 sm:h-20 md:h-24 w-auto transition-transform duration-500 hover:scale-110"
                     style={{
                       filter: 'drop-shadow(0 0 3px rgba(255, 255, 255, 1)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 1px rgba(255, 255, 255, 1))',
                     }}
@@ -311,14 +318,14 @@ const Index = () => {
                 </div>
               </div>
 
-              <div className="text-center mb-6 -mt-2">
-                <h2 className="text-base sm:text-lg md:text-xl font-light mb-2 text-slate-100 leading-tight">
-                  Private demo opportunities for select<br />researchers, media, and investors.
+              <div className="text-center mb-6">
+                <h2 className="text-base sm:text-lg md:text-xl font-light mb-3 text-slate-100 leading-tight px-2">
+                  Private demo opportunities for select researchers, media, and investors.
                 </h2>
               </div>
 
-              <div className="text-center mb-4">
-                <div className="mt-2 mb-2">
+              <div className="text-center mb-6">
+                <div className="mt-2 mb-4">
                   <div className="flex items-center justify-between text-sm text-slate-300 mb-2">
                     <span>Complete your application</span>
                     <span className={`transition-colors duration-300 font-medium ${getFormProgress() === 100 ? 'text-emerald-400' : 'text-[#4A90E2]'}`}>
@@ -337,8 +344,8 @@ const Index = () => {
               </div>
               
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-3">
-                  <div className="grid md:grid-cols-2 gap-3">
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="group">
                       <label htmlFor="firstName" className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
                         <User size={16} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
@@ -350,7 +357,7 @@ const Index = () => {
                           type="text"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
-                          className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-2 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85"
+                          className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-3 rounded-lg text-base hover:border-slate-500/70 hover:bg-slate-800/85 min-h-[48px] touch-manipulation"
                           placeholder="Enter your first name"
                           required
                         />
@@ -370,7 +377,7 @@ const Index = () => {
                           type="text"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
-                          className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-2 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85"
+                          className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-3 rounded-lg text-base hover:border-slate-500/70 hover:bg-slate-800/85 min-h-[48px] touch-manipulation"
                           placeholder="Enter your last name"
                           required
                         />
@@ -393,7 +400,7 @@ const Index = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-2 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85"
+                      className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-3 rounded-lg text-base hover:border-slate-500/70 hover:bg-slate-800/85 min-h-[48px] touch-manipulation"
                       placeholder="your@email.com"
                       required
                     />
@@ -414,7 +421,7 @@ const Index = () => {
                       id="interest"
                       value={interest}
                       onChange={(e) => setInterest(e.target.value)}
-                      className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 min-h-[70px] p-3 rounded-lg text-sm resize-none hover:border-slate-500/70 hover:bg-slate-800/85"
+                      className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 min-h-[80px] p-3 rounded-lg text-base resize-none hover:border-slate-500/70 hover:bg-slate-800/85 touch-manipulation"
                       placeholder="What draws you to MemDuo? How might you use it in your work or research?"
                       maxLength={150}
                     />
@@ -424,11 +431,11 @@ const Index = () => {
                   </div>
                 </div>
                 
-                <div className="pt-3">
+                <div className="pt-4">
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#4A90E2] via-[#5BA3F5] to-[#2E5BBA] hover:from-[#3A7BC8] hover:via-[#4B93E5] hover:to-[#1E4B9A] disabled:from-[#4A90E2]/50 disabled:to-[#2E5BBA]/50 text-white font-semibold py-3 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group"
+                    className="w-full bg-gradient-to-r from-[#4A90E2] via-[#5BA3F5] to-[#2E5BBA] hover:from-[#3A7BC8] hover:via-[#4B93E5] hover:to-[#1E4B9A] disabled:from-[#4A90E2]/50 disabled:to-[#2E5BBA]/50 text-white font-semibold py-4 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     
@@ -448,17 +455,17 @@ const Index = () => {
             </CardContent>
           </Card>
           
-          <div className="text-center mt-4">
-            <p className="text-slate-400 text-sm">
+          <div className="text-center mt-6">
+            <p className="text-slate-400 text-sm px-4">
               We use your email only to share demo access and updates.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Enhanced Footer */}
-      <footer className="relative z-10 py-8 sm:py-12 px-4 text-center border-t border-white/20 backdrop-blur-sm">
-        <p className="text-gray-600 text-xs mt-2">
+      {/* Mobile-Optimized Footer */}
+      <footer className="relative z-10 py-8 px-4 text-center border-t border-white/20 backdrop-blur-sm">
+        <p className="text-gray-600 text-xs">
           © 2025 MemDuo.com
         </p>
       </footer>
