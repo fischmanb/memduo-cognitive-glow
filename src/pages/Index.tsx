@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -293,10 +292,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* View 4 - Enhanced Form Section */}
+      {/* View 4 - Enhanced Form Section with Sophisticated Color Scheme */}
       <section className="relative z-10 flex flex-col justify-center items-center px-4 min-h-screen py-8">
         <div className="max-w-xl mx-auto w-full">
-          <Card className="border-white/20 backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 relative overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-700 rounded-2xl">
+          <Card className="border-[#4A90E2]/30 backdrop-blur-xl bg-gradient-to-br from-slate-900/95 to-slate-800/95 relative overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-700 rounded-2xl hover:border-[#4A90E2]/50">
             
             <CardContent className="p-4 sm:p-6 relative">
               <div className="text-center mb-4">
@@ -305,28 +304,28 @@ const Index = () => {
                   alt="MemDuo" 
                   className="h-24 sm:h-32 w-auto mx-auto transition-transform duration-500 hover:scale-110"
                   style={{
-                    filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
+                    filter: 'drop-shadow(0 4px 12px rgba(74, 144, 226, 0.3))',
                   }}
                 />
               </div>
 
               <div className="text-center mb-6 -mt-2">
-                <h2 className="text-base sm:text-lg md:text-xl font-light mb-2 text-white leading-tight">
+                <h2 className="text-base sm:text-lg md:text-xl font-light mb-2 text-slate-100 leading-tight">
                   Private demo opportunities for select<br />researchers, media, and investors.
                 </h2>
               </div>
 
               <div className="text-center mb-4">
                 <div className="mt-2 mb-2">
-                  <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
+                  <div className="flex items-center justify-between text-sm text-slate-300 mb-2">
                     <span>Complete your application</span>
-                    <span className={`transition-colors duration-300 ${getFormProgress() === 100 ? 'text-green-400' : ''}`}>
+                    <span className={`transition-colors duration-300 font-medium ${getFormProgress() === 100 ? 'text-emerald-400' : 'text-[#4A90E2]'}`}>
                       {getFormProgress()}% complete
                     </span>
                   </div>
-                  <div className="w-full bg-white/10 rounded-full h-2 backdrop-blur-sm overflow-hidden">
+                  <div className="w-full bg-slate-700/50 rounded-full h-2 backdrop-blur-sm overflow-hidden border border-slate-600/30">
                     <div 
-                      className="bg-gradient-to-r from-[#4A90E2] to-[#2E5BBA] h-2 rounded-full transition-all duration-700 ease-out relative overflow-hidden"
+                      className="bg-gradient-to-r from-[#4A90E2] via-[#5BA3F5] to-[#2E5BBA] h-2 rounded-full transition-all duration-700 ease-out relative overflow-hidden"
                       style={{ width: `${getFormProgress()}%` }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 animate-pulse"></div>
@@ -339,7 +338,7 @@ const Index = () => {
                 <div className="space-y-3">
                   <div className="grid md:grid-cols-2 gap-3">
                     <div className="group">
-                      <label htmlFor="firstName" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
+                      <label htmlFor="firstName" className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
                         <User size={16} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
                         First Name *
                       </label>
@@ -349,17 +348,17 @@ const Index = () => {
                           type="text"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
-                          className="enhanced-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-2 rounded-lg text-sm border-2 border-white/30 bg-black/30 hover:border-white/40 focus:bg-black/40"
+                          className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-2 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85"
                           placeholder="Enter your first name"
                           required
                         />
                         {firstName && (
-                          <CheckCircle size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-400 animate-fade-in" />
+                          <CheckCircle size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 animate-fade-in" />
                         )}
                       </div>
                     </div>
                     <div className="group">
-                      <label htmlFor="lastName" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
+                      <label htmlFor="lastName" className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
                         <User size={16} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
                         Last Name *
                       </label>
@@ -369,12 +368,12 @@ const Index = () => {
                           type="text"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
-                          className="enhanced-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-2 rounded-lg text-sm border-2 border-white/30 bg-black/30 hover:border-white/40 focus:bg-black/40"
+                          className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-2 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85"
                           placeholder="Enter your last name"
                           required
                         />
                         {lastName && (
-                          <CheckCircle size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-400 animate-fade-in" />
+                          <CheckCircle size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 animate-fade-in" />
                         )}
                       </div>
                     </div>
@@ -382,7 +381,7 @@ const Index = () => {
                 </div>
 
                 <div className="group">
-                  <label htmlFor="email" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
+                  <label htmlFor="email" className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
                     <Mail size={16} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
                     Email Address *
                   </label>
@@ -392,33 +391,33 @@ const Index = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="enhanced-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-2 rounded-lg text-sm border-2 border-white/30 bg-black/30 hover:border-white/40 focus:bg-black/40"
+                      className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 pl-3 pr-10 py-2 rounded-lg text-sm hover:border-slate-500/70 hover:bg-slate-800/85"
                       placeholder="your@email.com"
                       required
                     />
                     {email && (
-                      <CheckCircle size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-400 animate-fade-in" />
+                      <CheckCircle size={16} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400 animate-fade-in" />
                     )}
                   </div>
                 </div>
                 
                 <div className="group">
-                  <label htmlFor="interest" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
+                  <label htmlFor="interest" className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
                     <MessageSquare size={16} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
                     Tell us about your interest
-                    <span className="text-gray-500 text-xs">(optional)</span>
+                    <span className="text-slate-400 text-xs">(optional)</span>
                   </label>
                   <div className="relative">
                     <Textarea
                       id="interest"
                       value={interest}
                       onChange={(e) => setInterest(e.target.value)}
-                      className="enhanced-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 min-h-[70px] p-3 rounded-lg text-sm resize-none border-2 border-white/30 bg-black/30 hover:border-white/40 focus:bg-black/40"
+                      className="bg-slate-800/80 border-2 border-slate-600/50 text-slate-100 placeholder-slate-400 focus:border-[#4A90E2] focus:bg-slate-800/90 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-500 min-h-[70px] p-3 rounded-lg text-sm resize-none hover:border-slate-500/70 hover:bg-slate-800/85"
                       placeholder="What draws you to MemDuo? How might you use it in your work or research?"
                       maxLength={150}
                     />
-                    <div className="absolute bottom-2 right-3 text-xs text-gray-500 bg-black/50 backdrop-blur-sm px-2 py-1 rounded transition-colors duration-300">
-                      <span className={interest.length > 140 ? 'text-orange-400' : ''}>{interest.length}/150</span>
+                    <div className="absolute bottom-2 right-3 text-xs text-slate-400 bg-slate-900/70 backdrop-blur-sm px-2 py-1 rounded transition-colors duration-300">
+                      <span className={interest.length > 140 ? 'text-amber-400' : ''}>{interest.length}/150</span>
                     </div>
                   </div>
                 </div>
@@ -427,7 +426,7 @@ const Index = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#4A90E2] to-[#2E5BBA] hover:from-[#3A7BC8] hover:to-[#1E4B9A] disabled:from-[#4A90E2]/50 disabled:to-[#2E5BBA]/50 text-white font-semibold py-3 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group"
+                    className="w-full bg-gradient-to-r from-[#4A90E2] via-[#5BA3F5] to-[#2E5BBA] hover:from-[#3A7BC8] hover:via-[#4B93E5] hover:to-[#1E4B9A] disabled:from-[#4A90E2]/50 disabled:to-[#2E5BBA]/50 text-white font-semibold py-3 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     
@@ -448,7 +447,7 @@ const Index = () => {
           </Card>
           
           <div className="text-center mt-4">
-            <p className="text-gray-400 text-sm">
+            <p className="text-slate-400 text-sm">
               We use your email only to share demo access and updates.
             </p>
           </div>
