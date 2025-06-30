@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -260,15 +261,15 @@ const Index = () => {
       </section>
 
       {/* View 4 - Demo Form */}
-      <section className="relative z-10 flex flex-col justify-center items-center px-4 min-h-screen py-12">
+      <section className="relative z-10 flex flex-col justify-center items-center px-4 min-h-screen py-8">
         <div className="max-w-xl mx-auto w-full">
           <Card className="bg-white/5 border-white/10 backdrop-blur-md glassmorphic-card relative overflow-hidden">
             {/* Subtle background pattern */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#4A90E2]/5 via-transparent to-white/5 pointer-events-none"></div>
             
-            <CardContent className="p-6 relative">
+            <CardContent className="p-4 relative">
               {/* MemDuo Logo inside form - at the top */}
-              <div className="text-center mb-1">
+              <div className="text-center mb-0">
                 <img 
                   src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                   alt="MemDuo" 
@@ -279,13 +280,13 @@ const Index = () => {
                 />
               </div>
 
-              <div className="text-center mb-4">
-                <h2 className="text-xl md:text-2xl font-light mb-2 text-white leading-tight">
+              <div className="text-center mb-3">
+                <h2 className="text-lg md:text-xl font-light mb-2 text-white leading-tight">
                   Private demo opportunities for select researchers, media, and investors.
                 </h2>
               </div>
 
-              <div className="text-center mb-4">
+              <div className="text-center mb-3">
                 {/* Progress indicator */}
                 <div className="mt-2 mb-2">
                   <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
@@ -301,9 +302,9 @@ const Index = () => {
                 </div>
               </div>
               
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-3">
                 {/* Name Fields Group */}
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="grid md:grid-cols-2 gap-3">
                     <div className="group">
                       <label htmlFor="firstName" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2 transition-colors group-focus-within:text-[#4A90E2]">
@@ -382,7 +383,7 @@ const Index = () => {
                       id="interest"
                       value={interest}
                       onChange={(e) => setInterest(e.target.value)}
-                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 min-h-[80px] p-3 rounded-lg text-sm resize-none"
+                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 min-h-[70px] p-3 rounded-lg text-sm resize-none"
                       placeholder="What draws you to MemDuo? How might you use it in your work or research?"
                       maxLength={150}
                     />
@@ -393,7 +394,7 @@ const Index = () => {
                 </div>
                 
                 {/* Enhanced Submit Button */}
-                <div className="pt-3">
+                <div className="pt-2">
                   <Button
                     type="submit"
                     disabled={isSubmitting}
@@ -419,7 +420,7 @@ const Index = () => {
           </Card>
           
           {/* Footer text moved just below the form card */}
-          <div className="text-center mt-2">
+          <div className="text-center mt-1">
             <p className="text-gray-400 text-sm">
               We use your email only to share demo access and updates.
             </p>
