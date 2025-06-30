@@ -1,19 +1,19 @@
 
-import { Eye, Settings, Brain } from "lucide-react";
+import { Eye, Brain, Settings } from "lucide-react";
 
 const Features = () => {
   const features = [
     {
-      icon: Settings,
-      title: "Dynamic Contradiction Handling",
+      icon: Brain,
+      title: "Dynamic Contradiction Handling", 
       description: "Surfaces critical drift before to protect your short and long-term goals.",
-      ariaLabel: "settings outline icon"
+      ariaLabel: "brain outline icon"
     },
     {
-      icon: Brain,
+      icon: Settings,
       title: "Ownable Knowledge", 
       description: "Your private, customizable library seeded with timeless humanist thought.",
-      ariaLabel: "brain outline icon"
+      ariaLabel: "settings outline icon"
     },
     {
       icon: Eye,
@@ -22,6 +22,8 @@ const Features = () => {
       ariaLabel: "eye outline icon"
     }
   ];
+
+  console.log("Features component rendering with icons:", features.map(f => f.icon.name));
 
   return (
     <section className="relative z-10 py-20 px-4 snap-start">
