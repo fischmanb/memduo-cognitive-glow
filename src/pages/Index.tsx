@@ -103,12 +103,12 @@ const Index = () => {
       {/* Combined Header and Hero Section - Centered in viewport */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
-          {/* Logo */}
-          <div className="mb-5">
+          {/* Logo - 50% larger */}
+          <div className="mb-2">
             <img 
               src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
               alt="MemDuo" 
-              className="h-64 w-auto mx-auto"
+              className="h-96 w-auto mx-auto"
               style={{
                 filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
               }}
