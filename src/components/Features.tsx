@@ -1,13 +1,12 @@
-
-import { Eye, Shield, Brain } from "lucide-react";
+import { Eye, ShieldCheck, Brain } from "lucide-react";
 
 const Features = () => {
   const features = [
     {
-      icon: Shield,
+      icon: ShieldCheck,
       title: "Dynamic Contradiction Handling",
       description: "Surfaces critical drift before to protect your short and long-term goals.",
-      ariaLabel: "shield outline icon"
+      ariaLabel: "shield check outline icon"
     },
     {
       icon: Brain,
