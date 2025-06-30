@@ -252,9 +252,9 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Elegant Summary Card */}
+        {/* Elegant Summary Card - Made more transparent */}
         <div className="max-w-5xl mx-auto text-center">
-          <div className="backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 rounded-3xl p-12 sm:p-16 shadow-2xl">
+          <div className="backdrop-blur-2xl bg-gradient-to-br from-white/5 to-white/3 rounded-3xl p-12 sm:p-16 shadow-2xl">
             <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-relaxed text-gray-100">
               MemDuo grows alongside you — adapting its knowledge, staying aligned with your short and long‑term intent, and never hallucinating — by design.
             </p>
