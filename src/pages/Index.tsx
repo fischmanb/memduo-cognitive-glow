@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -305,27 +304,27 @@ const Index = () => {
         <div className="max-w-lg mx-auto w-full">
           <Card className="border-[#4A90E2]/30 backdrop-blur-xl bg-gradient-to-br from-slate-900/95 to-slate-800/95 relative overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-700 rounded-2xl hover:border-[#4A90E2]/50">
             
-            <CardContent className="p-6 sm:p-8 relative">
-              <div className="text-center mb-6">
+            <CardContent className="p-5 sm:p-6 relative">
+              <div className="text-center mb-4">
                 <div className="inline-block p-3 rounded-xl backdrop-blur-md bg-gradient-to-br from-slate-800/60 to-slate-900/40 border-2 border-[#4A90E2]/30 shadow-xl hover:border-[#4A90E2]/50 transition-all duration-500">
                   <img 
                     src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                     alt="MemDuo" 
                     className="h-12 sm:h-16 w-auto transition-transform duration-500 hover:scale-110"
                     style={{
-                      filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 4px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 1px rgba(255, 255, 255, 1))',
+                      filter: 'drop-shadow(0 0 8px rgba(74, 144, 226, 0.4)) drop-shadow(0 2px 8px rgba(74, 144, 226, 0.2)) drop-shadow(0 0 2px rgba(74, 144, 226, 0.6))',
                     }}
                   />
                 </div>
               </div>
 
-              <div className="text-center mb-6">
-                <h2 className="text-sm sm:text-base font-light mb-3 text-slate-100 leading-relaxed px-2">
+              <div className="text-center mb-4">
+                <h2 className="text-base sm:text-lg font-medium mb-3 bg-gradient-to-r from-slate-100 via-[#4A90E2] to-slate-100 bg-clip-text text-transparent leading-relaxed px-2">
                   Private demo opportunities for select researchers, media, and investors.
                 </h2>
               </div>
 
-              <div className="text-center mb-6">
+              <div className="text-center mb-4">
                 <div className="mt-2 mb-4">
                   <div className="flex items-center justify-between text-xs text-slate-300 mb-2">
                     <span>Complete your application</span>
@@ -344,9 +343,9 @@ const Index = () => {
                 </div>
               </div>
               
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-3">
+                <div className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="group">
                       <label htmlFor="firstName" className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
                         <User size={14} className="text-[#4A90E2] transition-transform duration-300 group-focus-within:scale-110" />
@@ -432,13 +431,13 @@ const Index = () => {
                   </div>
                 </div>
                 
-                <div className="pt-4">
+                <div className="pt-3">
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#4A90E2] via-[#5BA3F5] to-[#2E5BBA] hover:from-[#3A7BC8] hover:via-[#4B93E5] hover:to-[#1E4B9A] disabled:from-[#4A90E2]/50 disabled:to-[#2E5BBA]/50 text-white font-semibold py-4 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
+                    className="w-full bg-gradient-to-r from-[#4A90E2] via-[#4A7FD0] to-[#2E5BBA] hover:from-[#3A7BC8] hover:via-[#3A6FB5] hover:to-[#1E4B9A] disabled:from-[#4A90E2]/50 disabled:to-[#2E5BBA]/50 text-white font-semibold py-4 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     
                     <span className="relative z-10 flex items-center justify-center gap-2">
                       {isSubmitting ? (
@@ -453,7 +452,7 @@ const Index = () => {
                   </Button>
                 </div>
 
-                <div className="text-center pt-3">
+                <div className="text-center pt-2">
                   <p className="text-slate-400 text-sm px-2 leading-relaxed">
                     We use your email only to share demo access and updates.
                   </p>
