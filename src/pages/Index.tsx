@@ -214,7 +214,7 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             
             {/* Feature Card 1 - Simplified */}
-            <div className="backdrop-blur-xl bg-gradient-to-br from-white/15 to-white/5 rounded-2xl p-8 text-center transition-all duration-700 hover:bg-white/20 hover:shadow-2xl hover:shadow-cyan-500/20 hover:-translate-y-2">
+            <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-8 text-center transition-all duration-700 hover:bg-white/20 hover:shadow-2xl hover:shadow-cyan-500/20 hover:-translate-y-2">
               <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-xl flex items-center justify-center">
                 <Shield size={32} className="text-cyan-400" />
               </div>
@@ -226,7 +226,7 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="backdrop-blur-xl bg-gradient-to-br from-white/15 to-white/5 rounded-2xl p-8 text-center transition-all duration-700 hover:bg-white/20 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-2">
+            <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-8 text-center transition-all duration-700 hover:bg-white/20 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-2">
               <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-purple-400/20 to-pink-500/20 rounded-xl flex items-center justify-center">
                 <Brain size={32} className="text-purple-400" />
               </div>
@@ -238,7 +238,7 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="backdrop-blur-xl bg-gradient-to-br from-white/15 to-white/5 rounded-2xl p-8 text-center transition-all duration-700 hover:bg-white/20 hover:shadow-2xl hover:shadow-emerald-500/20 hover:-translate-y-2">
+            <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 rounded-2xl p-8 text-center transition-all duration-700 hover:bg-white/20 hover:shadow-2xl hover:shadow-emerald-500/20 hover:-translate-y-2">
               <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-emerald-400/20 to-cyan-500/20 rounded-xl flex items-center justify-center">
                 <Eye size={32} className="text-emerald-400" />
               </div>
@@ -254,7 +254,7 @@ const Index = () => {
 
         {/* Elegant Summary Card */}
         <div className="max-w-5xl mx-auto text-center">
-          <div className="backdrop-blur-2xl bg-gradient-to-br from-white/15 to-white/5 rounded-3xl p-12 sm:p-16 shadow-2xl">
+          <div className="backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 rounded-3xl p-12 sm:p-16 shadow-2xl">
             <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-relaxed text-gray-100">
               MemDuo grows alongside you — adapting its knowledge, staying aligned with your short and long‑term intent, and never hallucinating — by design.
             </p>
