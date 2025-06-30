@@ -377,6 +377,25 @@ All colors MUST be HSL.
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     backdrop-filter: blur(16px) saturate(180%);
   }
+
+  /* Force Safari form fields to be transparent */
+  .safari-form-field {
+    background-color: transparent !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
+  }
+
+  input.safari-form-field {
+    background-color: transparent !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
+  }
+
+  textarea.safari-form-field {
+    background-color: transparent !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
+  }
 }
 
 /* Fallback for older browsers without backdrop-filter support */
