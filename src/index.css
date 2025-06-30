@@ -390,18 +390,16 @@ All colors MUST be HSL.
   }
 }
 
-/* Safari-specific overrides */
+/* Safari-specific overrides - FIXED VERSION */
 @supports (-webkit-appearance: none) {
   .safari-icon-container {
-    /* Force transparent background in Safari */
-    background: transparent !important;
+    /* Simplified Safari background - no conflicting rules */
     background-color: rgba(74, 144, 226, 0.15) !important;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
   }
   
   .safari-icon-container:hover {
-    background: transparent !important;
     background-color: rgba(74, 144, 226, 0.2) !important;
   }
 
