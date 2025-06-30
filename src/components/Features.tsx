@@ -40,6 +40,10 @@ const Features = () => {
                   fill="none"
                   stroke="currentColor"
                   aria-label={feature.ariaLabel}
+                  style={{ 
+                    background: 'transparent !important',
+                    backgroundColor: 'transparent !important'
+                  }}
                 />
               </div>
               <h3 className="text-xl font-semibold mb-4 text-white">
