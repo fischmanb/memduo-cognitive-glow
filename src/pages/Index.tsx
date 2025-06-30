@@ -412,7 +412,7 @@ const Index = () => {
           We use your email only to share demo access and updates.
         </p>
         <p className="text-gray-600 text-xs mt-2">
-          © 2024 MemDuo.com
+          © 2025 MemDuo.com
         </p>
       </footer>
     </div>
