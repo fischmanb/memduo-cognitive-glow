@@ -170,9 +170,10 @@ All colors MUST be HSL.
     -webkit-backdrop-filter: blur(16px);
   }
 
-  /* Safari-specific icon container fix */
+  /* Unified Safari-specific icon container fix */
   .safari-icon-container {
-    background: rgba(74, 144, 226, 0.15) !important;
+    background: transparent !important;
+    background-color: rgba(74, 144, 226, 0.15) !important;
     border: 2px solid rgba(74, 144, 226, 0.3) !important;
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -180,11 +181,25 @@ All colors MUST be HSL.
     /* Force transparent background on Safari */
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
+    /* Ensure SVG icons render without background artifacts */
+    position: relative;
+    overflow: hidden;
   }
 
   .safari-icon-container:hover {
-    background: rgba(74, 144, 226, 0.2) !important;
+    background: transparent !important;
+    background-color: rgba(74, 144, 226, 0.2) !important;
     border-color: rgba(74, 144, 226, 0.5) !important;
+  }
+
+  /* Specific fix for lucide-react SVG icons in Safari */
+  .safari-icon-container svg {
+    background: transparent !important;
+    background-color: transparent !important;
+    fill: none !important;
+    stroke: currentColor !important;
+    position: relative;
+    z-index: 1;
   }
 
   .glassmorphic-card {
@@ -399,6 +414,13 @@ All colors MUST be HSL.
   .safari-icon-container {
     background: transparent !important;
     background-color: rgba(74, 144, 226, 0.15) !important;
+  }
+
+  /* Ensure lucide-react SVG icons render properly in Safari */
+  .safari-icon-container svg {
+    background: transparent !important;
+    fill: none !important;
+    stroke: currentColor !important;
   }
 }
 
