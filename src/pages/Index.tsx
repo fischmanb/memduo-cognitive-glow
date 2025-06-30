@@ -278,13 +278,7 @@ const Index = () => {
       {/* View 4 - Demo Form */}
       <section className="relative z-10 flex flex-col justify-center items-center px-4 min-h-screen py-8">
         <div className="max-w-xl mx-auto w-full">
-          <Card className={`border-white/10 backdrop-blur-md glassmorphic-card relative overflow-hidden ${
-            isSafari ? '' : 'bg-white/5'
-          }`}>
-            {/* Subtle background pattern - conditionally render for Safari */}
-            {!isSafari && (
-              <div className="absolute inset-0 bg-gradient-to-br from-[#4A90E2]/5 via-transparent to-white/5 pointer-events-none"></div>
-            )}
+          <Card className={`border-white/10 backdrop-blur-md glassmorphic-card relative overflow-hidden`}>
             
             <CardContent className="p-4 relative">
               {/* MemDuo Logo inside form - at the top */}
@@ -337,11 +331,6 @@ const Index = () => {
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
                           className="safari-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
-                          style={{
-                            border: '1px solid rgba(255, 255, 255, 0.15)',
-                            borderRadius: '6px',
-                            background: 'transparent'
-                          }}
                           placeholder="Enter your first name"
                           required
                         />
@@ -362,11 +351,6 @@ const Index = () => {
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
                           className="safari-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
-                          style={{
-                            border: '1px solid rgba(255, 255, 255, 0.15)',
-                            borderRadius: '6px',
-                            background: 'transparent'
-                          }}
                           placeholder="Enter your last name"
                           required
                         />
@@ -391,11 +375,6 @@ const Index = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="safari-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
-                      style={{
-                        border: '1px solid rgba(255, 255, 255, 0.15)',
-                        borderRadius: '6px',
-                        background: 'transparent'
-                      }}
                       placeholder="your@email.com"
                       required
                     />
@@ -418,11 +397,6 @@ const Index = () => {
                       value={interest}
                       onChange={(e) => setInterest(e.target.value)}
                       className="safari-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 min-h-[70px] p-3 rounded-lg text-sm resize-none"
-                      style={{
-                        border: '1px solid rgba(255, 255, 255, 0.15)',
-                        borderRadius: '6px',
-                        background: 'transparent'
-                      }}
                       placeholder="What draws you to MemDuo? How might you use it in your work or research?"
                       maxLength={150}
                     />

@@ -378,23 +378,21 @@ All colors MUST be HSL.
     backdrop-filter: blur(16px) saturate(180%);
   }
 
-  /* Force Safari form fields to be transparent */
+  /* STRONGER Safari form field override */
+  input.safari-form-field,
+  textarea.safari-form-field,
   .safari-form-field {
-    background-color: transparent !important;
-    background: transparent !important;
+    background: rgba(0, 0, 0, 0.1) !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
     -webkit-appearance: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
   }
 
-  input.safari-form-field {
-    background-color: transparent !important;
-    background: transparent !important;
-    -webkit-appearance: none !important;
-  }
-
-  textarea.safari-form-field {
-    background-color: transparent !important;
-    background: transparent !important;
-    -webkit-appearance: none !important;
+  input.safari-form-field:focus,
+  textarea.safari-form-field:focus {
+    background: rgba(0, 0, 0, 0.15) !important;
+    background-color: rgba(0, 0, 0, 0.15) !important;
+    border-color: rgba(74, 144, 226, 1) !important;
   }
 }
 
