@@ -187,16 +187,6 @@ All colors MUST be HSL.
     border-color: rgba(74, 144, 226, 0.5);
   }
 
-  /* Force SVG icons to be transparent */
-  .safari-icon-container svg {
-    background: transparent !important;
-    background-color: transparent !important;
-    fill: none !important;
-    stroke: currentColor !important;
-    position: relative;
-    z-index: 1;
-  }
-
   .glassmorphic-card {
     /* Enhanced Safari compatibility */
     background: rgba(255, 255, 255, 0.08) !important;
@@ -387,7 +377,7 @@ All colors MUST be HSL.
   .justify-center {
     justify-content: center;
     -webkit-justify-content: center;
-  }
+    }
 }
 
 /* Safari-specific overrides - FIXED VERSION */
