@@ -324,7 +324,7 @@ const Index = () => {
                         type="text"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
-                        className="!bg-black/30 !border-white/20 !text-white placeholder:!text-gray-400 focus:!border-cyan-400 focus:!bg-black/40 transition-all duration-500 py-4 rounded-xl font-medium"
+                        className="py-4 rounded-xl font-medium"
                         placeholder="Enter your first name"
                         required
                       />
@@ -344,7 +344,7 @@ const Index = () => {
                         type="text"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
-                        className="!bg-black/30 !border-white/20 !text-white placeholder:!text-gray-400 focus:!border-cyan-400 focus:!bg-black/40 transition-all duration-500 py-4 rounded-xl font-medium"
+                        className="py-4 rounded-xl font-medium"
                         placeholder="Enter your last name"
                         required
                       />
@@ -366,7 +366,7 @@ const Index = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="!bg-black/30 !border-white/20 !text-white placeholder:!text-gray-400 focus:!border-cyan-400 focus:!bg-black/40 transition-all duration-500 py-4 rounded-xl font-medium"
+                      className="py-4 rounded-xl font-medium"
                       placeholder="your@email.com"
                       required
                     />
@@ -387,7 +387,7 @@ const Index = () => {
                       id="interest"
                       value={interest}
                       onChange={(e) => setInterest(e.target.value)}
-                      className="!bg-black/30 !border-white/20 !text-white placeholder:!text-gray-400 focus:!border-cyan-400 focus:!bg-black/40 transition-all duration-500 min-h-[100px] p-4 rounded-xl resize-none font-medium"
+                      className="min-h-[100px] p-4 rounded-xl font-medium"
                       placeholder="What draws you to MemDuo? How might you use it in your work or research?"
                       maxLength={150}
                     />
