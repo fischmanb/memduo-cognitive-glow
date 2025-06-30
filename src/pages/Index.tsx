@@ -305,7 +305,7 @@ const Index = () => {
                     alt="MemDuo" 
                     className="h-20 sm:h-28 w-auto transition-transform duration-500 hover:scale-110"
                     style={{
-                      filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 16px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 24px rgba(255, 255, 255, 0.2))',
+                      filter: 'drop-shadow(0 0 3px rgba(255, 255, 255, 1)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 1px rgba(255, 255, 255, 1))',
                     }}
                   />
                 </div>
