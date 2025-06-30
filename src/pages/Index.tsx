@@ -268,7 +268,7 @@ const Index = () => {
             
             <CardContent className="p-6 relative">
               {/* MemDuo Logo inside form - at the top */}
-              <div className="text-center mb-3">
+              <div className="text-center mb-1">
                 <img 
                   src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                   alt="MemDuo" 
