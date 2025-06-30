@@ -319,7 +319,7 @@ const Index = () => {
               </div>
 
               <div className="text-center mb-4">
-                <h2 className="text-base sm:text-lg font-medium mb-3 bg-gradient-to-r from-slate-100 via-[#4A90E2] to-slate-100 bg-clip-text text-transparent leading-relaxed px-2">
+                <h2 className="text-base sm:text-lg font-medium mb-3 text-slate-200 leading-relaxed px-2">
                   Private demo opportunities for select researchers, media, and investors.
                 </h2>
               </div>
@@ -435,7 +435,7 @@ const Index = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#4A90E2] via-[#4A7FD0] to-[#2E5BBA] hover:from-[#3A7BC8] hover:via-[#3A6FB5] hover:to-[#1E4B9A] disabled:from-[#4A90E2]/50 disabled:to-[#2E5BBA]/50 text-white font-semibold py-4 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
+                    className="w-full bg-gradient-to-r from-[#3A7BC8] via-[#365AA0] to-[#1E4B9A] hover:from-[#2E6BB5] hover:via-[#2B4E8A] hover:to-[#143A82] disabled:from-[#4A90E2]/50 disabled:to-[#2E5BBA]/50 text-white font-semibold py-4 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     
