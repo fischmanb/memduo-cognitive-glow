@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -146,7 +147,7 @@ const Index = () => {
         </Button>
       </div>
       
-      {/* View 1 - Logo Section - Restored original size */}
+      {/* View 1 - Mobile-Optimized Logo Section */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="flex-1 flex items-center justify-center">
           <div className="relative group">
@@ -163,7 +164,7 @@ const Index = () => {
         </div>
         
         {/* Enhanced mobile chevron positioning */}
-        <div className="absolute bottom-16 sm:bottom-12 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce safe-bottom">
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce safe-bottom">
           <button 
             className="cursor-pointer touch-manipulation p-6 hover:scale-110 transition-all duration-300 min-h-[44px] min-w-[44px] flex items-center justify-center" 
             onClick={() => scrollToNext(1)}
@@ -176,7 +177,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* View 2 - Heading Section */}
+      {/* View 2 - Mobile-Optimized Heading Section */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="text-center max-w-5xl mx-auto animate-fade-in">
           <div className="space-y-6 sm:space-y-8">
@@ -201,7 +202,7 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="absolute bottom-16 sm:bottom-12 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce safe-bottom">
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce safe-bottom">
           <button 
             className="cursor-pointer touch-manipulation p-6 hover:scale-110 transition-all duration-300 min-h-[44px] min-w-[44px] flex items-center justify-center" 
             onClick={() => scrollToNext(2)}
@@ -214,7 +215,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* View 3 - Features Section */}
+      {/* View 3 - Mobile-Optimized Features Section */}
       <section className="relative z-10 flex flex-col justify-center px-4 min-h-screen py-12">
         <div className="max-w-6xl mx-auto mb-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
@@ -286,7 +287,7 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-16 sm:bottom-12 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce safe-bottom">
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce safe-bottom">
           <button 
             className="cursor-pointer touch-manipulation p-6 hover:scale-110 transition-all duration-300 min-h-[44px] min-w-[44px] flex items-center justify-center" 
             onClick={() => scrollToNext(3)}
@@ -299,18 +300,18 @@ const Index = () => {
         </div>
       </section>
 
-      {/* View 4 - Form Section - Restored proper spacing */}
-      <section className="relative z-10 flex flex-col justify-center items-center px-4 py-16 min-h-screen">
+      {/* View 4 - Enhanced Mobile Form Section */}
+      <section className="relative z-10 flex flex-col justify-center items-center px-4 py-8 min-h-screen">
         <div className="max-w-lg mx-auto w-full">
           <Card className="border-[#4A90E2]/30 backdrop-blur-xl bg-gradient-to-br from-slate-900/95 to-slate-800/95 relative overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-700 rounded-2xl hover:border-[#4A90E2]/50">
             
             <CardContent className="p-6 sm:p-8 relative">
-              <div className="text-center mb-8">
+              <div className="text-center mb-6">
                 <div className="inline-block p-3 rounded-xl backdrop-blur-md bg-gradient-to-br from-slate-800/60 to-slate-900/40 border-2 border-[#4A90E2]/30 shadow-xl hover:border-[#4A90E2]/50 transition-all duration-500">
                   <img 
                     src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                     alt="MemDuo" 
-                    className="h-16 sm:h-20 w-auto transition-transform duration-500 hover:scale-110"
+                    className="h-12 sm:h-16 w-auto transition-transform duration-500 hover:scale-110"
                     style={{
                       filter: 'drop-shadow(0 0 2px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 4px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 1px rgba(255, 255, 255, 1))',
                     }}
@@ -318,14 +319,14 @@ const Index = () => {
                 </div>
               </div>
 
-              <div className="text-center mb-8">
-                <h2 className="text-sm sm:text-base font-light mb-4 text-slate-100 leading-relaxed px-2">
+              <div className="text-center mb-6">
+                <h2 className="text-sm sm:text-base font-light mb-3 text-slate-100 leading-relaxed px-2">
                   Private demo opportunities for select researchers, media, and investors.
                 </h2>
               </div>
 
-              <div className="text-center mb-8">
-                <div className="mt-2 mb-6">
+              <div className="text-center mb-6">
+                <div className="mt-2 mb-4">
                   <div className="flex items-center justify-between text-xs text-slate-300 mb-2">
                     <span>Complete your application</span>
                     <span className={`transition-colors duration-300 font-medium ${getFormProgress() === 100 ? 'text-emerald-400' : 'text-[#4A90E2]'}`}>
@@ -343,8 +344,8 @@ const Index = () => {
                 </div>
               </div>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="group">
                       <label htmlFor="firstName" className="flex items-center gap-2 text-sm font-medium text-slate-200 mb-2 transition-colors duration-300 group-focus-within:text-[#4A90E2]">
@@ -431,7 +432,7 @@ const Index = () => {
                   </div>
                 </div>
                 
-                <div className="pt-6">
+                <div className="pt-4">
                   <Button
                     type="submit"
                     disabled={isSubmitting}
@@ -452,7 +453,7 @@ const Index = () => {
                   </Button>
                 </div>
 
-                <div className="text-center pt-4">
+                <div className="text-center pt-3">
                   <p className="text-slate-400 text-sm px-2 leading-relaxed">
                     We use your email only to share demo access and updates.
                   </p>
