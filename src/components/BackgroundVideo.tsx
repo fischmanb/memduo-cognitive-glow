@@ -50,9 +50,9 @@ const BackgroundVideo = () => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
 
-    // Check connection speed
+    // Check connection speed - but don't disable animation for Safari automatically
     const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
-    if (connection) {
+    if (connection && !isSafariBrowser) {
       const slowConnections = ['slow-2g', '2g'];
       const effectiveSpeed = connection.downlink || 0;
       if (slowConnections.includes(connection.effectiveType) || effectiveSpeed < 1) {
@@ -60,8 +60,8 @@ const BackgroundVideo = () => {
       }
     }
 
-    // Safari performance optimization
-    if (isSafariBrowser && window.devicePixelRatio > 1) {
+    // Only disable for very old Safari versions or extremely slow devices
+    if (isSafariBrowser && window.devicePixelRatio > 2.5) {
       setIsSlowConnection(true);
     }
   }, []);
@@ -72,24 +72,31 @@ const BackgroundVideo = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d', { 
+    // Safari-optimized canvas context
+    const contextOptions = isSafari ? {
       alpha: true,
-      // Safari optimization
+      desynchronized: true,
+      preserveDrawingBuffer: false,
+      powerPreference: 'default' as const
+    } : {
+      alpha: true,
       willReadFrequently: false,
-      powerPreference: 'high-performance'
-    }) as CanvasRenderingContext2D | null;
+      powerPreference: 'high-performance' as const
+    };
+
+    const ctx = canvas.getContext('2d', contextOptions) as CanvasRenderingContext2D | null;
     
     if (!ctx) return;
 
-    console.log('Starting animation setup');
+    console.log('Starting Safari-optimized animation setup');
 
-    // Set canvas size with device pixel ratio support
+    // Safari-optimized canvas sizing
     const updateCanvasSize = () => {
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
       
-      // Safari optimization - limit DPR for performance
-      const safeDpr = isSafari ? Math.min(dpr, 2) : dpr;
+      // Safari optimization - use lower DPR for better performance
+      const safeDpr = isSafari ? Math.min(dpr, 1.5) : dpr;
       
       canvas.width = rect.width * safeDpr;
       canvas.height = rect.height * safeDpr;
@@ -97,18 +104,23 @@ const BackgroundVideo = () => {
       canvas.style.height = rect.height + 'px';
       
       ctx.scale(safeDpr, safeDpr);
+      
+      // Safari-specific rendering optimizations
+      if (isSafari) {
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'medium';
+      }
     };
     
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
 
-    // Generate biologically-inspired neural network
+    // Generate neural network - Safari optimized
     const generateNeuralNetwork = () => {
-      const nodeCount = isSafari ? 20 : 25; // Reduce nodes for Safari
+      const nodeCount = isSafari ? 18 : 25;
       const hubRatio = 0.15;
       const layers = 3;
       
-      // Create nodes with biological properties
       const nodes: Node[] = [];
       for (let i = 0; i < nodeCount; i++) {
         const layer = Math.floor(i / (nodeCount / layers));
@@ -118,10 +130,10 @@ const BackgroundVideo = () => {
           id: i,
           x: Math.random() * (canvas.style.width ? parseInt(canvas.style.width) : window.innerWidth),
           y: Math.random() * (canvas.style.height ? parseInt(canvas.style.height) : window.innerHeight),
-          vx: (Math.random() - 0.5) * 0.2,
-          vy: (Math.random() - 0.5) * 0.2,
+          vx: (Math.random() - 0.5) * (isSafari ? 0.15 : 0.2),
+          vy: (Math.random() - 0.5) * (isSafari ? 0.15 : 0.2),
           color: colors[Math.floor(Math.random() * colors.length)],
-          size: isHub ? 6 + Math.random() * 3 : 3 + Math.random() * 2,
+          size: isHub ? (isSafari ? 5 : 6) + Math.random() * 2 : (isSafari ? 2.5 : 3) + Math.random() * 1.5,
           connections: [],
           pulsePhase: Math.random() * Math.PI * 2,
           colorIndex: Math.floor(Math.random() * colors.length),
@@ -133,12 +145,12 @@ const BackgroundVideo = () => {
 
       const edges: Edge[] = [];
       
-      // Create hub connections (hubs connect to many nodes)
+      // Create connections with Safari optimization
       const hubs = nodes.filter(n => n.isHub);
       const regularNodes = nodes.filter(n => !n.isHub);
       
       hubs.forEach(hub => {
-        const targetConnections = 3 + Math.floor(Math.random() * 3);
+        const targetConnections = isSafari ? 2 + Math.floor(Math.random() * 2) : 3 + Math.floor(Math.random() * 3);
         const availableNodes = nodes.filter(n => n.id !== hub.id);
         
         availableNodes.sort((a, b) => {
@@ -150,7 +162,7 @@ const BackgroundVideo = () => {
         for (let i = 0; i < Math.min(targetConnections, availableNodes.length); i++) {
           const target = availableNodes[i];
           if (!hub.connections.includes(target.id)) {
-            const strength = hub.isHub && target.isHub ? 0.8 : 0.6;
+            const strength = hub.isHub && target.isHub ? 0.7 : 0.5;
             
             edges.push({
               from: hub.id,
@@ -168,10 +180,9 @@ const BackgroundVideo = () => {
         }
       });
       
-      // Create local clustering
       regularNodes.forEach(node => {
         if (node.connections.length < 2) {
-          const targetConnections = 1 + Math.floor(Math.random() * 2);
+          const targetConnections = 1 + Math.floor(Math.random() * (isSafari ? 1 : 2));
           const nearbyNodes = nodes
             .filter(n => n.id !== node.id && !node.connections.includes(n.id))
             .sort((a, b) => {
@@ -182,7 +193,7 @@ const BackgroundVideo = () => {
           
           for (let i = 0; i < Math.min(targetConnections, nearbyNodes.length); i++) {
             const target = nearbyNodes[i];
-            const strength = 0.4 + Math.random() * 0.3;
+            const strength = 0.3 + Math.random() * 0.2;
             
             edges.push({
               from: node.id,
@@ -202,45 +213,46 @@ const BackgroundVideo = () => {
 
       nodesRef.current = nodes;
       edgesRef.current = edges;
-      console.log('Neural network generated with', nodes.length, 'nodes and', edges.length, 'edges');
+      console.log('Safari-optimized neural network generated with', nodes.length, 'nodes and', edges.length, 'edges');
     };
 
     generateNeuralNetwork();
 
-    // Animation loop with Safari optimizations
+    // Safari-optimized animation loop
     const animate = () => {
-      const animationSpeed = isSafari ? 0.005 : 0.01;
+      const animationSpeed = isSafari ? 0.008 : 0.01;
       timeRef.current += animationSpeed;
       
-      // Clear with solid background for better performance
       const canvasWidth = canvas.style.width ? parseInt(canvas.style.width) : canvas.width;
       const canvasHeight = canvas.style.height ? parseInt(canvas.style.height) : canvas.height;
       
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+      // Safari-optimized clearing
+      if (isSafari) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+      } else {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+      }
 
       const nodes = nodesRef.current;
       const edges = edgesRef.current;
 
-      // Update node positions and neural activity
+      // Update node positions with Safari optimization
       nodes.forEach(node => {
         node.x += node.vx;
         node.y += node.vy;
 
-        // Bounce off edges
         if (node.x <= 0 || node.x >= canvasWidth) node.vx *= -1;
         if (node.y <= 0 || node.y >= canvasHeight) node.vy *= -1;
 
-        // Keep in bounds
         node.x = Math.max(0, Math.min(canvasWidth, node.x));
         node.y = Math.max(0, Math.min(canvasHeight, node.y));
 
-        // Neural firing patterns - slower for Safari
-        const pulseSpeed = isSafari ? 0.02 : 0.03;
+        const pulseSpeed = isSafari ? 0.015 : 0.03;
         node.pulsePhase += node.isHub ? pulseSpeed : pulseSpeed * 0.7;
 
-        // Color changes - less frequent for Safari
-        const activityRate = isSafari ? 12 : 8;
+        const activityRate = isSafari ? 15 : 8;
         if (timeRef.current - node.lastColorChange > activityRate + Math.random() * 5) {
           node.colorIndex = (node.colorIndex + 1) % colors.length;
           node.color = colors[node.colorIndex];
@@ -248,52 +260,50 @@ const BackgroundVideo = () => {
         }
       });
 
-      // Update synaptic activity
+      // Update edges with Safari optimization
       edges.forEach(edge => {
-        const pulseSpeed = isSafari ? 0.005 : 0.01;
+        const pulseSpeed = isSafari ? 0.008 : 0.01;
         edge.pulsePhase += pulseSpeed + (edge.strength * pulseSpeed);
         
-        const plasticityRate = isSafari ? 8 : 5;
+        const plasticityRate = isSafari ? 12 : 5;
         if (timeRef.current - edge.lastColorChange > plasticityRate + Math.random() * 4) {
           edge.colorIndex = (edge.colorIndex + 1) % colors.length;
           edge.lastColorChange = timeRef.current;
         }
       });
 
-      // Draw synaptic connections
+      // Draw connections with Safari optimization
       edges.forEach(edge => {
         const fromNode = nodes[edge.from];
         const toNode = nodes[edge.to];
         
-        const transmissionIntensity = 0.2 + edge.strength * 0.3 * (Math.sin(edge.pulsePhase) * 0.5 + 0.5);
+        const transmissionIntensity = 0.15 + edge.strength * (isSafari ? 0.25 : 0.3) * (Math.sin(edge.pulsePhase) * 0.5 + 0.5);
         const edgeColor = colors[edge.colorIndex];
         
-        // Parse hex color with Safari compatibility
         const r = parseInt(edgeColor.slice(1, 3), 16);
         const g = parseInt(edgeColor.slice(3, 5), 16);
         const b = parseInt(edgeColor.slice(5, 7), 16);
         
         ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${transmissionIntensity})`;
-        ctx.lineWidth = 0.3 + edge.strength * 0.5;
+        ctx.lineWidth = 0.2 + edge.strength * (isSafari ? 0.4 : 0.5);
         ctx.beginPath();
         ctx.moveTo(fromNode.x, fromNode.y);
         ctx.lineTo(toNode.x, toNode.y);
         ctx.stroke();
       });
 
-      // Draw neurons
+      // Draw nodes with Safari optimization
       nodes.forEach(node => {
-        const firingIntensity = node.size + Math.sin(node.pulsePhase) * (node.isHub ? 1.5 : 1);
-        const neuralActivity = 0.6 + 0.4 * (Math.sin(node.pulsePhase) * 0.5 + 0.5);
+        const firingIntensity = node.size + Math.sin(node.pulsePhase) * (node.isHub ? (isSafari ? 1.2 : 1.5) : (isSafari ? 0.8 : 1));
+        const neuralActivity = 0.5 + 0.4 * (Math.sin(node.pulsePhase) * 0.5 + 0.5);
         
-        // Parse hex color with Safari compatibility
         const r = parseInt(node.color.slice(1, 3), 16);
         const g = parseInt(node.color.slice(3, 5), 16);
         const b = parseInt(node.color.slice(5, 7), 16);
         
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${neuralActivity})`;
         ctx.strokeStyle = node.color;
-        ctx.lineWidth = node.isHub ? 1 : 0.8;
+        ctx.lineWidth = node.isHub ? (isSafari ? 0.8 : 1) : (isSafari ? 0.6 : 0.8);
         
         ctx.beginPath();
         ctx.arc(node.x, node.y, firingIntensity, 0, Math.PI * 2);
@@ -301,26 +311,19 @@ const BackgroundVideo = () => {
         ctx.stroke();
         
         if (node.isHub) {
-          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, 0.15)`;
-          ctx.lineWidth = 0.3;
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, 0.12)`;
+          ctx.lineWidth = 0.2;
           ctx.beginPath();
-          ctx.arc(node.x, node.y, firingIntensity + 3, 0, Math.PI * 2);
+          ctx.arc(node.x, node.y, firingIntensity + (isSafari ? 2 : 3), 0, Math.PI * 2);
           ctx.stroke();
         }
       });
 
-      // Use appropriate animation method for Safari
-      if (isSafari) {
-        // Use setTimeout for Safari for better performance
-        setTimeout(() => {
-          animationRef.current = requestAnimationFrame(animate);
-        }, 16);
-      } else {
-        animationRef.current = requestAnimationFrame(animate);
-      }
+      // Use requestAnimationFrame for all browsers including Safari
+      animationRef.current = requestAnimationFrame(animate);
     };
 
-    console.log('Starting animation');
+    console.log('Starting Safari-compatible animation');
     animate();
 
     return () => {
@@ -331,7 +334,7 @@ const BackgroundVideo = () => {
     };
   }, [isSlowConnection, prefersReducedMotion, isSafari]);
 
-  // Fallback for slow connections, reduced motion, or Safari with performance issues
+  // Only show fallback for actual slow connections or reduced motion preference
   if (isSlowConnection || prefersReducedMotion) {
     return (
       <div 
@@ -356,7 +359,6 @@ const BackgroundVideo = () => {
         }}
       />
       
-      {/* Overlay for text legibility with Safari compatibility */}
       <div 
         className="fixed inset-0 z-0"
         style={{
