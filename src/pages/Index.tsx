@@ -104,22 +104,22 @@ const Index = () => {
       {/* Combined Header and Hero Section - Centered in viewport */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
-          {/* Logo Icon Only */}
-          <div className="mb-8">
-            <div className="relative w-32 h-32 mx-auto">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center shadow-lg shadow-[#68d5c4]/10">
-                <Brain size={32} className="text-[#68d5c4]" strokeWidth={2} />
-              </div>
-            </div>
+          {/* Logo */}
+          <div className="mb-6">
+            <img 
+              src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+              alt="MemDuo" 
+              className="h-20 w-auto mx-auto"
+              style={{
+                filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
+              }}
+            />
           </div>
           
-          {/* Unified Header Text */}
+          {/* Header Text with consistent spacing */}
           <div className="space-y-6">
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-              <div className="bg-gradient-to-r from-[#68d5c4] to-[#5bc4b1] bg-clip-text text-transparent mb-6">
-                MemDuo
-              </div>
-              <div className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-6">
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight space-y-6">
+              <div className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 Meet Your Cognitive
               </div>
               <div className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
