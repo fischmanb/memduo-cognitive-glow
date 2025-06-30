@@ -104,31 +104,40 @@ const Index = () => {
       {/* Combined Header and Hero Section - Centered in viewport */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
-          {/* Logo */}
-          <div className="mb-6">
-            <img 
-              src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
-              alt="MemDuo" 
-              className="h-32 md:h-48 w-auto mx-auto"
-              style={{
-                filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
-              }}
-            />
-          </div>
-          
-          {/* Header Text with consistent spacing */}
-          <div className="space-y-6">
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight space-y-6">
+          {/* Unified Heading with consistent spacing */}
+          <div className="space-y-8">
+            {/* Logo as first line of heading */}
+            <div>
+              <img 
+                src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+                alt="MemDuo" 
+                className="h-56 md:h-80 w-auto mx-auto"
+                style={{
+                  filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
+                }}
+              />
+            </div>
+            
+            {/* Second line of heading */}
+            <div className="text-5xl md:text-7xl font-bold leading-tight">
               <div className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 Meet Your Cognitive
               </div>
+            </div>
+            
+            {/* Third line of heading */}
+            <div className="text-5xl md:text-7xl font-bold leading-tight">
               <div className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 Growth Partner
               </div>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
-              A secure, general‑purpose companion that learns with you and maintains epistemic fidelity.
-            </p>
+            </div>
+            
+            {/* Subtitle with proper spacing */}
+            <div className="pt-4">
+              <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
+                A secure, general‑purpose companion that learns with you and maintains epistemic fidelity.
+              </p>
+            </div>
           </div>
         </div>
         
