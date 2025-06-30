@@ -1,18 +1,7 @@
 
 import { Eye, Shield, Zap } from "lucide-react";
-import { useState, useEffect } from 'react';
 
 const Features = () => {
-  const [isSafari, setIsSafari] = useState(false);
-
-  useEffect(() => {
-    // Detect Safari
-    const userAgent = navigator.userAgent;
-    const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(userAgent) || 
-                          /iPad|iPhone|iPod/.test(userAgent);
-    setIsSafari(isSafariBrowser);
-  }, []);
-
   const features = [
     {
       icon: Eye,
@@ -44,11 +33,7 @@ const Features = () => {
               className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
-              <div className={`w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15 ${
-                isSafari 
-                  ? 'safari-icon-container' 
-                  : 'bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 group-hover:bg-[#4A90E2]/20 group-hover:border-[#4A90E2]/50'
-              }`}>
+              <div className="safari-icon-container w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15">
                 <feature.icon 
                   className="w-8 h-8 text-[#4A90E2]" 
                   strokeWidth={2}

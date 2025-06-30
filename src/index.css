@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -170,29 +169,25 @@ All colors MUST be HSL.
     -webkit-backdrop-filter: blur(16px);
   }
 
-  /* Unified Safari-specific icon container fix */
+  /* Universal icon container that works on all browsers, especially Safari */
   .safari-icon-container {
-    background: transparent !important;
-    background-color: rgba(74, 144, 226, 0.15) !important;
-    border: 2px solid rgba(74, 144, 226, 0.3) !important;
+    /* Default styling for non-Safari browsers */
+    background: rgba(74, 144, 226, 0.15);
+    border: 2px solid rgba(74, 144, 226, 0.3);
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     border-radius: 8px;
-    /* Force transparent background on Safari */
-    -webkit-background-clip: padding-box;
-    background-clip: padding-box;
-    /* Ensure SVG icons render without background artifacts */
     position: relative;
     overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .safari-icon-container:hover {
-    background: transparent !important;
-    background-color: rgba(74, 144, 226, 0.2) !important;
-    border-color: rgba(74, 144, 226, 0.5) !important;
+    background: rgba(74, 144, 226, 0.2);
+    border-color: rgba(74, 144, 226, 0.5);
   }
 
-  /* Specific fix for lucide-react SVG icons in Safari */
+  /* Force SVG icons to be transparent */
   .safari-icon-container svg {
     background: transparent !important;
     background-color: transparent !important;
@@ -395,8 +390,28 @@ All colors MUST be HSL.
   }
 }
 
-/* Safari-specific fixes */
+/* Safari-specific overrides */
 @supports (-webkit-appearance: none) {
+  .safari-icon-container {
+    /* Force transparent background in Safari */
+    background: transparent !important;
+    background-color: rgba(74, 144, 226, 0.15) !important;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+  }
+  
+  .safari-icon-container:hover {
+    background: transparent !important;
+    background-color: rgba(74, 144, 226, 0.2) !important;
+  }
+
+  .safari-icon-container svg {
+    background: transparent !important;
+    background-color: transparent !important;
+    fill: none !important;
+    stroke: currentColor !important;
+  }
+  
   .glassmorphic-card {
     /* Enhanced Safari support */
     background: rgba(255, 255, 255, 0.06) !important;
@@ -408,19 +423,6 @@ All colors MUST be HSL.
     /* Ensure backdrop-filter works on Safari */
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     backdrop-filter: blur(16px) saturate(180%);
-  }
-
-  /* Safari icon container specific fix */
-  .safari-icon-container {
-    background: transparent !important;
-    background-color: rgba(74, 144, 226, 0.15) !important;
-  }
-
-  /* Ensure lucide-react SVG icons render properly in Safari */
-  .safari-icon-container svg {
-    background: transparent !important;
-    fill: none !important;
-    stroke: currentColor !important;
   }
 }
 
