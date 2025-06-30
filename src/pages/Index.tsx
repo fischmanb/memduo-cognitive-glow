@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,6 +14,7 @@ const Index = () => {
   const [email, setEmail] = useState('');
   const [interest, setInterest] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showFloatingCTA, setShowFloatingCTA] = useState(true);
   const { toast } = useToast();
 
   console.log('Index component rendered - restructured into 4 full-viewport views');
@@ -95,6 +96,25 @@ const Index = () => {
     }
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const fourthViewStart = viewportHeight * 3; // 4th view starts at 3 viewport heights
+      const fourthViewEnd = viewportHeight * 4; // 4th view ends at 4 viewport heights
+      
+      // Hide button when in 4th view (form section)
+      if (scrollY >= fourthViewStart - 100 && scrollY < fourthViewEnd) {
+        setShowFloatingCTA(false);
+      } else {
+        setShowFloatingCTA(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const scrollToNext = (sectionNumber: number) => {
     const targetY = window.innerHeight * sectionNumber;
     window.scrollTo({ top: targetY, behavior: 'smooth' });
@@ -105,7 +125,9 @@ const Index = () => {
       <BackgroundVideo />
       
       {/* Fixed Request Early Access Button - Top Right */}
-      <div className="fixed top-6 right-6 z-50">
+      <div className={`fixed top-6 right-6 z-50 transition-all duration-300 ${
+        showFloatingCTA ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
+      }`}>
         <Button
           onClick={() => scrollToNext(3)}
           className="bg-[#4A90E2]/25 backdrop-blur-sm border-2 border-[#4A90E2]/30 text-white hover:bg-[#4A90E2]/30 hover:border-[#4A90E2]/50 font-medium px-6 py-3 text-sm transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 hover:shadow-[#4A90E2]/15 rounded-lg hover:scale-105"
