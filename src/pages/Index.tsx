@@ -275,7 +275,7 @@ const Index = () => {
       {/* Fixed Dark Glassmorphic Form Section */}
       <section className="relative z-10 flex flex-col justify-center items-center px-4 py-12 min-h-screen">
         <div className="max-w-2xl mx-auto w-full">
-          <Card className="bg-black/90 backdrop-blur-2xl rounded-3xl shadow-2xl border-white/20" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
+          <Card className="backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 rounded-3xl shadow-2xl border border-white/20">
             <CardContent className="p-8 sm:p-12">
               {/* Prominent Logo */}
               <div className="text-center mb-8">
