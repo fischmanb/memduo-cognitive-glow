@@ -132,7 +132,7 @@ const Index = () => {
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <BackgroundVideo />
       
-      {/* Mobile-Optimized Floating CTA */}
+      {/* Enhanced Glassmorphic Floating CTA */}
       <div className={`fixed top-3 right-3 z-50 transition-all duration-500 transform ${
         showFloatingCTA 
           ? 'opacity-100 translate-y-0 scale-100' 
@@ -140,10 +140,29 @@ const Index = () => {
       }`}>
         <Button
           onClick={() => scrollToNext(3)}
-          className="bg-gradient-to-r from-[#4A90E2]/20 to-[#2E5BBA]/20 backdrop-blur-md border-2 border-[#4A90E2]/40 text-white hover:from-[#4A90E2]/30 hover:to-[#2E5BBA]/30 hover:border-[#4A90E2]/60 font-medium px-3 py-2 text-xs transition-all duration-500 shadow-xl shadow-[#4A90E2]/20 hover:shadow-[#4A90E2]/30 rounded-lg hover:scale-105 active:scale-95 group min-h-[44px] touch-manipulation"
+          className="bg-white/5 backdrop-blur-xl border-2 border-white/20 text-white hover:bg-white/10 hover:border-white/30 font-medium px-3 py-2 text-xs transition-all duration-500 shadow-2xl shadow-black/30 hover:shadow-black/40 rounded-lg hover:scale-105 active:scale-95 group min-h-[44px] touch-manipulation relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0.08) 100%)',
+            backdropFilter: 'blur(20px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+          }}
         >
           <span className="relative z-10 whitespace-nowrap">Request Access</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+          
+          {/* Subtle texture overlay */}
+          <div 
+            className="absolute inset-0 opacity-20 mix-blend-overlay pointer-events-none"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+              backgroundSize: '8px 8px'
+            }}
+          ></div>
+          
+          {/* Glass shine effect */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          {/* Animated shine sweep */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
         </Button>
       </div>
       
