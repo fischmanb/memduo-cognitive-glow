@@ -111,7 +111,7 @@ const Index = () => {
           <img 
             src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
             alt="MemDuo" 
-            className="h-48 md:h-64 lg:h-80 w-auto mx-auto animate-fade-in"
+            className="h-[36rem] md:h-[48rem] lg:h-[60rem] w-auto mx-auto animate-fade-in"
             style={{
               filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
             }}
