@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -209,7 +210,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto mb-12">
           <div className="grid md:grid-cols-3 gap-8">
             
-            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0s forwards' }}>
+            <div className="group backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0s forwards' }}>
               <div className={`w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15 ${isSafari ? 'safari-icon-container' : 'bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 group-hover:bg-[#4A90E2]/20 group-hover:border-[#4A90E2]/50'}`}>
                 <Shield size={32} className="text-[#4A90E2]" strokeWidth={2} />
               </div>
@@ -224,7 +225,7 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.2s forwards' }}>
+            <div className="group backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.2s forwards' }}>
               <div className={`w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15 ${isSafari ? 'safari-icon-container' : 'bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 group-hover:bg-[#4A90E2]/20 group-hover:border-[#4A90E2]/50'}`}>
                 <Brain size={32} className="text-[#4A90E2]" strokeWidth={2} />
               </div>
@@ -239,7 +240,7 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.4s forwards' }}>
+            <div className="group backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.4s forwards' }}>
               <div className={`w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15 ${isSafari ? 'safari-icon-container' : 'bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 group-hover:bg-[#4A90E2]/20 group-hover:border-[#4A90E2]/50'}`}>
                 <Eye size={32} className="text-[#4A90E2]" strokeWidth={2} />
               </div>
