@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -98,7 +99,6 @@ All colors MUST be HSL.
 
   html {
     scroll-behavior: smooth;
-    /* Safari compatibility */
     -webkit-scroll-behavior: smooth;
     scroll-snap-type: y mandatory;
     -webkit-scroll-snap-type: y mandatory;
@@ -111,36 +111,47 @@ All colors MUST be HSL.
     -webkit-scroll-snap-stop: always;
   }
 
-  /* Ensure proper box-sizing across all browsers */
   *, *::before, *::after {
     box-sizing: border-box;
   }
 
-  /* Safari text rendering fixes */
   h1, h2, h3, h4, h5, h6 {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    /* Fix for Safari text cutoff */
     line-height: 1.2;
     padding: 0.1em 0;
   }
 }
 
 @layer utilities {
+  /* Enhanced animations with better performance and more sophisticated effects */
   .animate-fade-in {
-    animation: fade-in 0.8s ease-out forwards;
+    animation: fade-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     opacity: 0;
     transform: translateY(20px);
   }
 
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
   .animate-scale-in {
-    animation: scale-in 0.3s ease-out forwards;
+    animation: scale-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     opacity: 0;
     transform: scale(0.8);
   }
 
   @keyframes fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in-up {
     to {
       opacity: 1;
       transform: translateY(0);
@@ -154,142 +165,118 @@ All colors MUST be HSL.
     }
   }
 
-  .animate-pulse-slow {
-    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  /* Enhanced pulse with smoother timing */
+  .animate-pulse-smooth {
+    animation: pulse-smooth 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  /* Enhanced backdrop-blur with fallbacks for Safari */
+  @keyframes pulse-smooth {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Enhanced backdrop blur with better browser support */
   .backdrop-blur-sm {
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px) saturate(180%);
+    -webkit-backdrop-filter: blur(4px) saturate(180%);
   }
 
   .backdrop-blur-md {
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
   }
 
-  /* Universal icon container that works on all browsers, especially Safari */
-  .safari-icon-container {
-    /* Default styling for non-Safari browsers */
-    background: rgba(74, 144, 226, 0.15);
-    border: 2px solid rgba(74, 144, 226, 0.3);
+  .backdrop-blur-lg {
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .safari-icon-container:hover {
-    background: rgba(74, 144, 226, 0.2);
-    border-color: rgba(74, 144, 226, 0.5);
+  .backdrop-blur-xl {
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
   }
 
-  /* Safari-optimized form fields */
-  .safari-form-field {
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    border-radius: 6px !important;
-    background: rgba(0, 0, 0, 0.4) !important;
-    color: white !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  .safari-form-field:focus {
-    border-color: rgba(74, 144, 226, 1) !important;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2) !important;
-    background: rgba(0, 0, 0, 0.6) !important;
-  }
-
-  .safari-form-field::placeholder {
-    color: rgba(255, 255, 255, 0.6) !important;
-    opacity: 1 !important;
-  }
-
-  /* Enhanced form input focus effects with Safari support */
-  .group:focus-within label {
-    color: rgba(74, 144, 226, 1);
-  }
-
-  /* Smooth transitions for all interactive elements with Safari support */
-  input, textarea, button {
+  /* Enhanced form fields with better visual feedback */
+  .enhanced-form-field {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Custom scrollbar for textarea with Safari support */
+  .enhanced-form-field:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.15), 0 0 0 3px rgba(74, 144, 226, 0.1);
+  }
+
+  .enhanced-form-field:hover:not(:focus) {
+    transform: translateY(-0.5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Enhanced group focus effects */
+  .group:focus-within label {
+    color: rgba(74, 144, 226, 1);
+    transform: translateY(-1px);
+  }
+
+  /* Improved button hover effects */
+  .group:hover .group-hover\:translate-x-full {
+    transform: translateX(100%);
+  }
+
+  /* Enhanced scrollbar with better styling */
   textarea::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
   }
 
   textarea::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
   }
 
   textarea::-webkit-scrollbar-thumb {
-    background: rgba(74, 144, 226, 0.5);
-    border-radius: 3px;
+    background: linear-gradient(180deg, rgba(74, 144, 226, 0.6), rgba(46, 91, 186, 0.6));
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   textarea::-webkit-scrollbar-thumb:hover {
-    background: rgba(74, 144, 226, 0.7);
+    background: linear-gradient(180deg, rgba(74, 144, 226, 0.8), rgba(46, 91, 186, 0.8));
   }
 
-  /* Enhanced cross-browser gradient support */
-  .bg-gradient-to-r {
-    background: linear-gradient(to right, var(--tw-gradient-stops));
-  }
-
-  .bg-gradient-to-br {
-    background: linear-gradient(to bottom right, var(--tw-gradient-stops));
-  }
-
-  /* Ensure proper text rendering across browsers */
+  /* Enhanced gradient text with better browser support */
   .bg-clip-text {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    /* Fallback for older browsers */
     color: transparent;
+    background-image: linear-gradient(135deg, var(--tw-gradient-stops));
   }
 
-  /* Safari headline fix */
-  .safari-headline-fix {
-    /* Prevent text cutoff in Safari */
-    line-height: 1.1 !important;
-    padding: 0.05em 0 !important;
-    overflow: visible !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
-
-  /* Enhanced animation support */
-  @keyframes bounce {
+  /* Enhanced bounce animation with better timing */
+  @keyframes bounce-smooth {
     0%, 100% {
-      transform: translateY(-25%);
-      -webkit-transform: translateY(-25%);
+      transform: translateY(-15%);
       animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
     }
     50% {
       transform: none;
-      -webkit-transform: none;
       animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
     }
   }
 
   .animate-bounce {
-    animation: bounce 1s infinite;
-    -webkit-animation: bounce 1s infinite;
+    animation: bounce-smooth 2s infinite;
   }
 
-  /* Enhanced transform support for Safari */
+  /* Enhanced transform support with hardware acceleration */
   .transform {
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
+    will-change: transform;
   }
 
   .hover\:scale-105:hover {
@@ -302,6 +289,11 @@ All colors MUST be HSL.
     -webkit-transform: scale(1.1) translateZ(0);
   }
 
+  .hover\:scale-125:hover {
+    transform: scale(1.25) translateZ(0);
+    -webkit-transform: scale(1.25) translateZ(0);
+  }
+
   .hover\:scale-\[1\.02\]:hover {
     transform: scale(1.02) translateZ(0);
     -webkit-transform: scale(1.02) translateZ(0);
@@ -312,10 +304,10 @@ All colors MUST be HSL.
     -webkit-transform: scale(0.98) translateZ(0);
   }
 
-  /* Ensure proper opacity transitions */
+  /* Enhanced opacity transitions */
   .transition-opacity {
-    transition: opacity 0.3s ease;
-    -webkit-transition: opacity 0.3s ease;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Enhanced filter support */
@@ -324,7 +316,12 @@ All colors MUST be HSL.
     -webkit-filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
   }
 
-  /* Ensure proper flex support */
+  /* Enhanced shadow utilities */
+  .shadow-3xl {
+    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  /* Enhanced flex support */
   .flex {
     display: flex;
     display: -webkit-flex;
@@ -343,99 +340,89 @@ All colors MUST be HSL.
   .justify-center {
     justify-content: center;
     -webkit-justify-content: center;
-    }
+  }
 }
 
-/* Safari-specific overrides - COMPLETELY REWRITTEN FOR FORM FIELDS */
+/* Enhanced Safari-specific optimizations */
 @supports (-webkit-appearance: none) {
-  .safari-icon-container {
-    /* Simplified Safari background - no conflicting rules */
-    background-color: rgba(74, 144, 226, 0.15) !important;
-    -webkit-background-clip: padding-box;
-    background-clip: padding-box;
-  }
-  
-  .safari-icon-container:hover {
-    background-color: rgba(74, 144, 226, 0.2) !important;
+  .enhanced-form-field {
+    -webkit-appearance: none !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  .safari-icon-container svg {
-    background: transparent !important;
-    background-color: transparent !important;
-    fill: none !important;
-    stroke: currentColor !important;
+  .enhanced-form-field:focus {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border-color: rgba(74, 144, 226, 1) !important;
   }
-  
-  .glassmorphic-card {
-    /* Enhanced Safari support */
-    background: rgba(255, 255, 255, 0.06) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+
+  .enhanced-form-field:hover:not(:focus) {
+    border-color: rgba(255, 255, 255, 0.4) !important;
+  }
+
+  .enhanced-form-field::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+    opacity: 1 !important;
   }
   
   .backdrop-blur-sm,
-  .backdrop-blur-md {
-    /* Ensure backdrop-filter works on Safari */
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl {
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     backdrop-filter: blur(16px) saturate(180%);
   }
+}
 
-  /* COMPLETELY NEW Safari form field override - NO MORE WHITE BACKGROUNDS */
-  input.safari-form-field,
-  textarea.safari-form-field,
-  .safari-form-field {
-    background: transparent !important;
-    background-color: transparent !important;
-    -webkit-appearance: none !important;
-    border: 2px solid rgba(255, 255, 255, 0.4) !important;
-    color: white !important;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+/* Fallback for browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(1px)) {
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl {
+    background: rgba(0, 0, 0, 0.8) !important;
   }
 
-  input.safari-form-field:focus,
-  textarea.safari-form-field:focus {
-    background: transparent !important;
-    background-color: transparent !important;
-    border-color: rgba(74, 144, 226, 1) !important;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(74, 144, 226, 0.2) !important;
-  }
-
-  input.safari-form-field::placeholder,
-  textarea.safari-form-field::placeholder {
-    color: rgba(255, 255, 255, 0.7) !important;
-    opacity: 1 !important;
+  .enhanced-form-field {
+    background: rgba(0, 0, 0, 0.6) !important;
   }
 }
 
-/* Fallback for older browsers without backdrop-filter support */
-@supports not (backdrop-filter: blur(1px)) {
-  .glassmorphic-card {
-    background: rgba(0, 0, 0, 0.8) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+/* Additional performance optimizations */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-scale-in,
+  .animate-bounce {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
   
-  .backdrop-blur-sm,
-  .backdrop-blur-md {
-    background: rgba(0, 0, 0, 0.1);
-  }
-
-  .safari-form-field {
-    background: rgba(0, 0, 0, 0.4) !important;
-    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  .transition-all,
+  .transition-opacity,
+  .enhanced-form-field {
+    transition: none;
   }
 }
 
-/* Additional Safari text rendering fixes */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  .safari-headline-fix {
-    -webkit-text-stroke: 0.01em transparent;
+/* Enhanced mobile responsiveness */
+@media (max-width: 640px) {
+  .animate-fade-in,
+  .animate-fade-in-up {
+    animation-duration: 0.6s;
   }
-}
-
-/* Safari WebKit backdrop-filter fix - MUST come after Tailwind */
-form input,
-form textarea,
-form select {
-  background: rgba(0,0,0,0.15) !important;   /* dark translucent tint */
-  -webkit-backdrop-filter: none !important;  /* disable blur on the field itself */
-  backdrop-filter: none !important;
+  
+  .enhanced-form-field:focus {
+    transform: none;
+  }
+  
+  .hover\:scale-105:hover,
+  .hover\:scale-110:hover,
+  .hover\:scale-125:hover {
+    transform: none;
+  }
 }
