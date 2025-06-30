@@ -281,8 +281,10 @@ const Index = () => {
           <Card className={`border-white/10 backdrop-blur-md glassmorphic-card relative overflow-hidden ${
             isSafari ? '' : 'bg-white/5'
           }`}>
-            {/* Subtle background pattern */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#4A90E2]/5 via-transparent to-white/5 pointer-events-none"></div>
+            {/* Subtle background pattern - conditionally render for Safari */}
+            {!isSafari && (
+              <div className="absolute inset-0 bg-gradient-to-br from-[#4A90E2]/5 via-transparent to-white/5 pointer-events-none"></div>
+            )}
             
             <CardContent className="p-4 relative">
               {/* MemDuo Logo inside form - at the top */}
