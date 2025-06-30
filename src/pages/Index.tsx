@@ -401,6 +401,13 @@ const Index = () => {
                   </Button>
                 </div>
               </form>
+              
+              {/* Footer text moved here */}
+              <div className="text-center mt-6 pt-4 border-t border-white/10">
+                <p className="text-gray-400 text-sm">
+                  We use your email only to share demo access and updates.
+                </p>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -408,9 +415,6 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="relative z-10 py-12 px-4 text-center border-t border-white/10">
-        <p className="text-gray-400 text-sm">
-          We use your email only to share demo access and updates.
-        </p>
         <p className="text-gray-600 text-xs mt-2">
           © 2025 MemDuo.com
         </p>
