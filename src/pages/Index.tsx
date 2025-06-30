@@ -132,7 +132,7 @@ const Index = () => {
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <BackgroundVideo />
       
-      {/* Enhanced Glassmorphic Floating CTA */}
+      {/* Glassmorphic Floating CTA */}
       <div className={`fixed top-3 right-3 z-50 transition-all duration-500 transform ${
         showFloatingCTA 
           ? 'opacity-100 translate-y-0 scale-100' 
@@ -140,29 +140,24 @@ const Index = () => {
       }`}>
         <Button
           onClick={() => scrollToNext(3)}
-          className="bg-white/5 backdrop-blur-xl border-2 border-white/20 text-white hover:bg-white/10 hover:border-white/30 font-medium px-3 py-2 text-xs transition-all duration-500 shadow-2xl shadow-black/30 hover:shadow-black/40 rounded-lg hover:scale-105 active:scale-95 group min-h-[44px] touch-manipulation relative overflow-hidden"
-          style={{
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0.08) 100%)',
-            backdropFilter: 'blur(20px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-          }}
+          className="bg-white/8 backdrop-blur-xl border-2 border-white/15 text-white hover:bg-white/12 hover:border-white/25 font-medium px-3 py-2 text-xs transition-all duration-500 shadow-2xl shadow-black/30 hover:shadow-black/40 rounded-lg hover:scale-105 active:scale-95 group min-h-[44px] touch-manipulation relative overflow-hidden"
         >
           <span className="relative z-10 whitespace-nowrap">Request Access</span>
           
           {/* Subtle texture overlay */}
           <div 
-            className="absolute inset-0 opacity-20 mix-blend-overlay pointer-events-none"
+            className="absolute inset-0 opacity-15 mix-blend-overlay pointer-events-none"
             style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
-              backgroundSize: '8px 8px'
+              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)`,
+              backgroundSize: '6px 6px'
             }}
           ></div>
           
-          {/* Glass shine effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          {/* Simple shine effect without gradients */}
+          <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
-          {/* Animated shine sweep */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+          {/* Animated shine sweep without gradients */}
+          <div className="absolute inset-0 bg-white/10 -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 opacity-50"></div>
         </Button>
       </div>
       
@@ -455,7 +450,7 @@ const Index = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-slate-900/40 backdrop-blur-md border-2 border-[#4A90E2]/50 hover:bg-slate-800/60 hover:border-[#4A90E2]/70 disabled:bg-slate-900/20 disabled:border-slate-600/30 text-white font-semibold py-4 text-base transition-all duration-500 shadow-2xl hover:shadow-[#4A90E2]/30 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
+                    className="w-full bg-white/8 backdrop-blur-xl border-2 border-white/15 hover:bg-white/12 hover:border-white/25 disabled:bg-white/4 disabled:border-white/8 text-white font-semibold py-4 text-base transition-all duration-500 shadow-2xl hover:shadow-white/10 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
                       {isSubmitting ? (
@@ -467,6 +462,21 @@ const Index = () => {
                         'Request Early Access'
                       )}
                     </span>
+                    
+                    {/* Subtle texture overlay */}
+                    <div 
+                      className="absolute inset-0 opacity-15 mix-blend-overlay pointer-events-none"
+                      style={{
+                        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)`,
+                        backgroundSize: '6px 6px'
+                      }}
+                    ></div>
+                    
+                    {/* Simple shine effect without gradients */}
+                    <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    {/* Animated shine sweep without gradients */}
+                    <div className="absolute inset-0 bg-white/10 -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 opacity-50"></div>
                   </Button>
                 </div>
 
