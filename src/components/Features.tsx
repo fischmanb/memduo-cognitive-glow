@@ -4,22 +4,22 @@ import { Eye, Shield, Zap } from "lucide-react";
 const Features = () => {
   const features = [
     {
-      icon: Eye,
+      icon: Shield,
       title: "Dynamic Contradiction Handling",
       description: "Surfaces critical drift before to protect your short and long-term goals.",
-      ariaLabel: "eye outline icon"
-    },
-    {
-      icon: Shield,
-      title: "Ownable Knowledge", 
-      description: "Your private, customizable library seeded with timeless humanist thought.",
       ariaLabel: "shield outline icon"
     },
     {
-      icon: Zap,
+      icon: Eye,
+      title: "Ownable Knowledge", 
+      description: "Your private, customizable library seeded with timeless humanist thought.",
+      ariaLabel: "eye outline icon"
+    },
+    {
+      icon: Eye,
       title: "Stateful, Adaptive & Transparent Reasoning",
       description: "Persistent, contextual memory enables fully auditable decisions.",
-      ariaLabel: "zap outline icon"
+      ariaLabel: "eye outline icon"
     }
   ];
 
@@ -37,6 +37,8 @@ const Features = () => {
                 <feature.icon 
                   className="w-8 h-8 text-[#4A90E2]" 
                   strokeWidth={2}
+                  fill={feature.icon === Shield ? "none" : undefined}
+                  stroke={feature.icon === Shield ? "currentColor" : undefined}
                   aria-label={feature.ariaLabel}
                 />
               </div>
