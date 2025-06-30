@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Shield, Eye, User, Mail, MessageSquare, CheckCircle, ChevronDown } from "lucide-react";
 import BackgroundVideo from "../components/BackgroundVideo";
-import Header from "../components/Header";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -18,7 +17,7 @@ const Index = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  console.log('Index component rendered - feature title updated to Transparent Stateful Reasoning');
+  console.log('Index component rendered - restructured into 4 full-viewport views');
 
   const getFormProgress = () => {
     const fields = [firstName, lastName, email];
@@ -97,26 +96,41 @@ const Index = () => {
     }
   };
 
+  const scrollToNext = (sectionNumber: number) => {
+    const targetY = window.innerHeight * sectionNumber;
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+  };
+
   return (
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <BackgroundVideo />
       
-      {/* Combined Header and Hero Section - Centered in viewport */}
+      {/* View 1 - ATF: Just the Logo */}
+      <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
+        <div className="flex-1 flex items-center justify-center">
+          <img 
+            src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+            alt="MemDuo" 
+            className="h-48 md:h-64 lg:h-80 w-auto mx-auto animate-fade-in"
+            style={{
+              filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
+            }}
+          />
+        </div>
+        
+        {/* Scroll indicator */}
+        <div className="animate-bounce pb-8">
+          <ChevronDown 
+            size={32} 
+            className="text-gray-400 hover:text-[#68d5c4] transition-colors duration-300 cursor-pointer opacity-70"
+            onClick={() => scrollToNext(1)}
+          />
+        </div>
+      </section>
+
+      {/* View 2 - Heading & Subheading */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
-          {/* Logo */}
-          <div className="mb-6">
-            <img 
-              src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
-              alt="MemDuo" 
-              className="h-32 md:h-48 w-auto mx-auto"
-              style={{
-                filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
-              }}
-            />
-          </div>
-          
-          {/* Header Text with consistent spacing */}
           <div className="space-y-6">
             <h1 className="text-5xl md:text-7xl font-bold leading-tight space-y-6">
               <div className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
@@ -137,14 +151,15 @@ const Index = () => {
           <ChevronDown 
             size={32} 
             className="text-gray-400 hover:text-[#68d5c4] transition-colors duration-300 cursor-pointer opacity-70"
-            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+            onClick={() => scrollToNext(2)}
           />
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="relative z-10 py-12 px-4 snap-start">
-        <div className="max-w-6xl mx-auto">
+      {/* View 3 - Features & Benefits */}
+      <section className="relative z-10 flex flex-col justify-center px-4 min-h-screen py-12">
+        {/* Features Section */}
+        <div className="max-w-6xl mx-auto mb-16">
           <div className="grid md:grid-cols-3 gap-8">
             
             <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#68d5c4]/40 hover:shadow-lg hover:shadow-[#68d5c4]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0s forwards' }}>
@@ -193,10 +208,8 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Benefit Section */}
-      <section className="relative z-10 py-12 px-4 snap-start">
+        {/* Benefit Section */}
         <div className="max-w-4xl mx-auto text-center">
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-12 animate-fade-in glassmorphic-card">
             <p className="text-2xl md:text-3xl font-light text-gray-200 leading-relaxed">
@@ -204,10 +217,19 @@ const Index = () => {
             </p>
           </div>
         </div>
+
+        {/* Scroll indicator */}
+        <div className="animate-bounce absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <ChevronDown 
+            size={32} 
+            className="text-gray-400 hover:text-[#68d5c4] transition-colors duration-300 cursor-pointer opacity-70"
+            onClick={() => scrollToNext(3)}
+          />
+        </div>
       </section>
 
-      {/* Enhanced Waitlist Form Section */}
-      <section className="relative z-10 py-12 px-4 snap-start">
+      {/* View 4 - Demo Form */}
+      <section className="relative z-10 flex flex-col justify-center px-4 min-h-screen py-12">
         <div className="max-w-2xl mx-auto">
           <Card className="bg-white/5 border-white/10 backdrop-blur-md glassmorphic-card relative overflow-hidden">
             {/* Subtle background pattern */}
