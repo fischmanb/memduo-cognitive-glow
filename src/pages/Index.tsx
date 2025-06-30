@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -103,7 +102,7 @@ const Index = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center px-4 snap-start mt-32 mb-32">
+      <section className="relative z-10 flex flex-col items-center justify-center px-4 snap-start pt-16">
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
           <div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
