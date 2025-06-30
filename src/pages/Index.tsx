@@ -163,16 +163,16 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="relative group cursor-pointer touch-manipulation" onClick={() => scrollToNext(1)}>
-            <div className="p-3 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
-              <ChevronDown 
-                size={24} 
-                className="text-gray-400 hover:text-[#4A90E2] transition-all duration-500 opacity-70 hover:opacity-100 group-hover:scale-110"
-              />
-            </div>
-            <div className="absolute inset-0 bg-[#4A90E2]/20 rounded-full blur-xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          </div>
+        <div className="absolute bottom-12 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <button 
+            className="cursor-pointer touch-manipulation p-4 md:p-3 hover:scale-110 transition-all duration-300" 
+            onClick={() => scrollToNext(1)}
+          >
+            <ChevronDown 
+              size={28} 
+              className="text-gray-400 hover:text-[#4A90E2] transition-colors duration-500 opacity-70 hover:opacity-100"
+            />
+          </button>
         </div>
       </section>
 
@@ -201,16 +201,16 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="relative group cursor-pointer touch-manipulation" onClick={() => scrollToNext(2)}>
-            <div className="p-3 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
-              <ChevronDown 
-                size={24} 
-                className="text-gray-400 hover:text-[#4A90E2] transition-all duration-500 opacity-70 hover:opacity-100 group-hover:scale-110"
-              />
-            </div>
-            <div className="absolute inset-0 bg-[#4A90E2]/20 rounded-full blur-xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          </div>
+        <div className="absolute bottom-12 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <button 
+            className="cursor-pointer touch-manipulation p-4 md:p-3 hover:scale-110 transition-all duration-300" 
+            onClick={() => scrollToNext(2)}
+          >
+            <ChevronDown 
+              size={28} 
+              className="text-gray-400 hover:text-[#4A90E2] transition-colors duration-500 opacity-70 hover:opacity-100"
+            />
+          </button>
         </div>
       </section>
 
@@ -286,22 +286,22 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="relative group cursor-pointer touch-manipulation" onClick={() => scrollToNext(3)}>
-            <div className="p-3 rounded-full bg-white/5 backdrop-blur-sm border border-white/10">
-              <ChevronDown 
-                size={24} 
-                className="text-gray-400 hover:text-[#4A90E2] transition-all duration-500 opacity-70 hover:opacity-100 group-hover:scale-110"
-              />
-            </div>
-            <div className="absolute inset-0 bg-[#4A90E2]/20 rounded-full blur-xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          </div>
+        <div className="absolute bottom-12 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <button 
+            className="cursor-pointer touch-manipulation p-4 md:p-3 hover:scale-110 transition-all duration-300" 
+            onClick={() => scrollToNext(3)}
+          >
+            <ChevronDown 
+              size={28} 
+              className="text-gray-400 hover:text-[#4A90E2] transition-colors duration-500 opacity-70 hover:opacity-100"
+            />
+          </button>
         </div>
       </section>
 
       {/* View 4 - Mobile-Optimized Form Section */}
-      <section className="relative z-10 flex flex-col justify-center items-center px-3 py-4 max-h-screen overflow-y-auto">
-        <div className="max-w-lg mx-auto w-full space-y-2">
+      <section className="relative z-10 flex flex-col justify-center items-center px-3 py-6 min-h-screen">
+        <div className="max-w-lg mx-auto w-full">
           <Card className="border-[#4A90E2]/30 backdrop-blur-xl bg-gradient-to-br from-slate-900/95 to-slate-800/95 relative overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-700 rounded-2xl hover:border-[#4A90E2]/50">
             
             <CardContent className="p-3 sm:p-4 relative">
@@ -452,7 +452,7 @@ const Index = () => {
                   </Button>
                 </div>
 
-                <div className="text-center pt-1">
+                <div className="text-center pt-1 pb-2">
                   <p className="text-slate-400 text-xs px-2">
                     We use your email only to share demo access and updates.
                   </p>
