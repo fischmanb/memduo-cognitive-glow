@@ -33,7 +33,7 @@ const Features = () => {
               className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
-              <div className="safari-icon-container w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300">
                 <feature.icon 
                   className="w-8 h-8 text-[#4A90E2]" 
                   strokeWidth={2}
