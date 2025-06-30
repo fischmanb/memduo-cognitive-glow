@@ -105,6 +105,16 @@ const Index = () => {
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <BackgroundVideo />
       
+      {/* Fixed Request Demo Button - Top Right */}
+      <div className="fixed top-6 right-6 z-50">
+        <Button
+          onClick={() => scrollToNext(3)}
+          className="bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/15 hover:border-white/30 font-medium px-6 py-3 text-sm transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-[#68d5c4]/20 rounded-lg glassmorphic-card"
+        >
+          Request Demo
+        </Button>
+      </div>
+      
       {/* View 1 - ATF: Just the Logo */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="flex-1 flex items-center justify-center">
