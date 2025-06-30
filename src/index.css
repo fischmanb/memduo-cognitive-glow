@@ -116,6 +116,16 @@ All colors MUST be HSL.
   *, *::before, *::after {
     box-sizing: border-box;
   }
+
+  /* Safari text rendering fixes */
+  h1, h2, h3, h4, h5, h6 {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Fix for Safari text cutoff */
+    line-height: 1.2;
+    padding: 0.1em 0;
+  }
 }
 
 @layer utilities {
@@ -160,42 +170,46 @@ All colors MUST be HSL.
     -webkit-backdrop-filter: blur(16px);
   }
 
-  .glassmorphic-card {
-    /* Primary backdrop blur with Safari support */
+  /* Safari-specific icon container fix */
+  .safari-icon-container {
+    background: rgba(74, 144, 226, 0.15) !important;
+    border: 2px solid rgba(74, 144, 226, 0.3) !important;
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
-    
-    /* Fallback background for browsers without backdrop-filter support */
-    background: rgba(255, 255, 255, 0.1);
-    
-    /* Enhanced background for better visibility on Safari */
-    background: linear-gradient(135deg, 
-      rgba(255, 255, 255, 0.1) 0%, 
-      rgba(255, 255, 255, 0.05) 100%
-    );
-    
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    /* Force transparent background on Safari */
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+  }
+
+  .safari-icon-container:hover {
+    background: rgba(74, 144, 226, 0.2) !important;
+    border-color: rgba(74, 144, 226, 0.5) !important;
+  }
+
+  .glassmorphic-card {
+    /* Enhanced Safari compatibility */
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 12px;
-    
-    /* Enhanced shadow for Safari */
     box-shadow: 
       0 8px 32px 0 rgba(31, 38, 135, 0.37),
       0 4px 16px 0 rgba(0, 0, 0, 0.1),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-    
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Improve rendering on Safari */
+    /* Safari rendering optimization */
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     will-change: transform, opacity;
+    /* Force hardware acceleration */
+    -webkit-perspective: 1000;
+    perspective: 1000;
   }
 
   .glassmorphic-card:hover {
-    background: linear-gradient(135deg, 
-      rgba(255, 255, 255, 0.15) 0%, 
-      rgba(255, 255, 255, 0.08) 100%
-    );
+    background: rgba(255, 255, 255, 0.12) !important;
     border-color: rgba(74, 144, 226, 0.4);
     box-shadow: 
       0 12px 40px 0 rgba(74, 144, 226, 0.15),
@@ -203,6 +217,29 @@ All colors MUST be HSL.
       inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
     transform: translateY(-2px) translateZ(0);
     -webkit-transform: translateY(-2px) translateZ(0);
+  }
+
+  /* Safari form fixes */
+  .safari-form-input {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: white !important;
+    /* Safari text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .safari-form-input:focus {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(74, 144, 226, 1) !important;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2) !important;
+  }
+
+  .safari-form-input::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+    opacity: 1 !important;
   }
 
   /* Enhanced form input focus effects with Safari support */
@@ -251,6 +288,17 @@ All colors MUST be HSL.
     -webkit-text-fill-color: transparent;
     /* Fallback for older browsers */
     color: transparent;
+  }
+
+  /* Safari headline fix */
+  .safari-headline-fix {
+    /* Prevent text cutoff in Safari */
+    line-height: 1.1 !important;
+    padding: 0.05em 0 !important;
+    overflow: visible !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   /* Enhanced animation support */
@@ -336,8 +384,8 @@ All colors MUST be HSL.
 @supports (-webkit-appearance: none) {
   .glassmorphic-card {
     /* Enhanced Safari support */
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
   }
   
   .backdrop-blur-sm,
@@ -346,17 +394,34 @@ All colors MUST be HSL.
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     backdrop-filter: blur(16px) saturate(180%);
   }
+
+  /* Safari icon container specific fix */
+  .safari-icon-container {
+    background: transparent !important;
+    background-color: rgba(74, 144, 226, 0.15) !important;
+  }
 }
 
 /* Fallback for older browsers without backdrop-filter support */
 @supports not (backdrop-filter: blur(1px)) {
   .glassmorphic-card {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.8) !important;
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
   
   .backdrop-blur-sm,
   .backdrop-blur-md {
     background: rgba(0, 0, 0, 0.1);
+  }
+
+  .safari-form-input {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+/* Additional Safari text rendering fixes */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  .safari-headline-fix {
+    -webkit-text-stroke: 0.01em transparent;
   }
 }
