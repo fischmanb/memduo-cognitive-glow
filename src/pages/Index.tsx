@@ -292,20 +292,20 @@ const Index = () => {
         </div>
       </section>
 
-      {/* View 4 - Enhanced Form Section with Improved Logo Visibility */}
+      {/* View 4 - Enhanced Form Section with Theme-Integrated Logo */}
       <section className="relative z-10 flex flex-col justify-center items-center px-4 min-h-screen py-8">
         <div className="max-w-xl mx-auto w-full">
           <Card className="border-[#4A90E2]/30 backdrop-blur-xl bg-gradient-to-br from-slate-900/95 to-slate-800/95 relative overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-700 rounded-2xl hover:border-[#4A90E2]/50">
             
             <CardContent className="p-4 sm:p-6 relative">
               <div className="text-center mb-4">
-                <div className="inline-block p-4 rounded-xl backdrop-blur-md bg-gradient-to-br from-white/45 to-white/30 border border-white/50 shadow-xl">
+                <div className="inline-block p-4 rounded-xl backdrop-blur-md bg-gradient-to-br from-slate-800/60 to-slate-900/40 border-2 border-[#4A90E2]/30 shadow-xl hover:border-[#4A90E2]/50 transition-all duration-500">
                   <img 
                     src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                     alt="MemDuo" 
                     className="h-20 sm:h-28 w-auto transition-transform duration-500 hover:scale-110"
                     style={{
-                      filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2))',
+                      filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 16px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 24px rgba(255, 255, 255, 0.2))',
                     }}
                   />
                 </div>
