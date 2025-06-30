@@ -1,9 +1,7 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Shield, Eye, User, Mail, MessageSquare, CheckCircle, ChevronDown, Loader2 } from "lucide-react";
 import BackgroundVideo from "../components/BackgroundVideo";
 import { useToast } from "@/hooks/use-toast";
@@ -276,8 +274,8 @@ const Index = () => {
       {/* Fixed Dark Glassmorphic Form Section */}
       <section className="relative z-10 flex flex-col justify-center items-center px-4 py-12 min-h-screen">
         <div className="max-w-2xl mx-auto w-full">
-          <Card className="backdrop-blur-xl bg-gradient-to-br from-white/15 to-white/5 rounded-3xl shadow-2xl border border-white/10">
-            <CardContent className="p-8 sm:p-12">
+          <div className="backdrop-blur-xl bg-gradient-to-br from-white/15 to-white/5 rounded-3xl shadow-2xl border border-white/10">
+            <div className="p-8 sm:p-12">
               {/* Prominent Logo */}
               <div className="text-center mb-8">
                 <div className="inline-block p-4 rounded-2xl backdrop-blur-xl bg-white/10">
@@ -424,8 +422,8 @@ const Index = () => {
                   </p>
                 </div>
               </form>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </section>
 
