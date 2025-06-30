@@ -172,7 +172,14 @@ const Index = () => {
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
           <div className="space-y-6">
-            <h1 className={`text-5xl md:text-7xl font-bold leading-tight space-y-6 ${isSafari ? 'safari-headline-fix' : ''}`}>
+            <h1 className="text-5xl md:text-7xl font-bold space-y-6" style={{
+              lineHeight: '1.15',
+              paddingTop: '0.2em',
+              paddingBottom: '0.2em',
+              WebkitFontSmoothing: 'antialiased',
+              MozOsxFontSmoothing: 'grayscale',
+              textRendering: 'optimizeLegibility'
+            }}>
               <div className="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 Meet Your Cognitive
               </div>
