@@ -131,7 +131,7 @@ const Index = () => {
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <BackgroundVideo />
       
-      {/* Glassmorphic Floating CTA */}
+      {/* True Glassmorphic Floating CTA */}
       <div className={`fixed top-3 right-3 z-50 transition-all duration-500 transform ${
         showFloatingCTA 
           ? 'opacity-100 translate-y-0 scale-100' 
@@ -139,24 +139,9 @@ const Index = () => {
       }`}>
         <Button
           onClick={() => scrollToNext(3)}
-          className="bg-white/8 backdrop-blur-xl border-2 border-white/15 text-white hover:bg-white/12 hover:border-white/25 font-medium px-3 py-2 text-xs transition-all duration-500 shadow-2xl shadow-black/30 hover:shadow-black/40 rounded-lg hover:scale-105 active:scale-95 group min-h-[44px] touch-manipulation relative overflow-hidden"
+          className="backdrop-blur-lg bg-white/10 border border-white/20 text-white hover:bg-white/15 hover:border-white/30 font-medium px-4 py-2 text-sm transition-all duration-300 shadow-lg shadow-black/25 hover:shadow-xl hover:shadow-black/25 rounded-lg min-h-[44px] touch-manipulation group"
         >
           <span className="relative z-10 whitespace-nowrap">Request Access</span>
-          
-          {/* Much more subtle texture overlay */}
-          <div 
-            className="absolute inset-0 opacity-5 mix-blend-overlay pointer-events-none"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
-              backgroundSize: '8px 8px'
-            }}
-          ></div>
-          
-          {/* Simple hover effect */}
-          <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          
-          {/* Simple shine sweep */}
-          <div className="absolute inset-0 bg-white/8 -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 opacity-30"></div>
         </Button>
       </div>
       
@@ -449,7 +434,7 @@ const Index = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-white/8 backdrop-blur-xl border-2 border-white/15 hover:bg-white/12 hover:border-white/25 disabled:bg-white/4 disabled:border-white/8 text-white font-semibold py-4 text-base transition-all duration-500 shadow-2xl hover:shadow-white/10 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
+                    className="w-full backdrop-blur-lg bg-white/8 border border-white/15 hover:bg-white/12 hover:border-white/25 disabled:bg-white/4 disabled:border-white/8 text-white font-semibold py-4 text-base transition-all duration-300 shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/25 rounded-xl min-h-[52px] touch-manipulation group"
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
                       {isSubmitting ? (
@@ -461,21 +446,6 @@ const Index = () => {
                         'Request Early Access'
                       )}
                     </span>
-                    
-                    {/* Much more subtle texture overlay */}
-                    <div 
-                      className="absolute inset-0 opacity-3 mix-blend-overlay pointer-events-none"
-                      style={{
-                        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.2) 0.5px, transparent 0)`,
-                        backgroundSize: '12px 12px'
-                      }}
-                    ></div>
-                    
-                    {/* Simple hover effect */}
-                    <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    
-                    {/* Simple shine sweep */}
-                    <div className="absolute inset-0 bg-white/8 -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000 opacity-30"></div>
                   </Button>
                 </div>
 
