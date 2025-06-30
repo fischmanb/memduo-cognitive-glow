@@ -99,11 +99,23 @@ const Index = () => {
   return (
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <BackgroundVideo />
-      <Header />
       
-      {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center px-4 snap-start pt-16">
+      {/* Combined Header and Hero Section - Centered in viewport */}
+      <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
+          {/* Logo */}
+          <div className="mb-5">
+            <img 
+              src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+              alt="MemDuo" 
+              className="h-64 w-auto mx-auto"
+              style={{
+                filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
+              }}
+            />
+          </div>
+          
+          {/* Header Text */}
           <div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
               Meet Your Cognitive Growth Partner
@@ -115,7 +127,7 @@ const Index = () => {
         </div>
         
         {/* Scroll indicator */}
-        <div className="animate-bounce">
+        <div className="animate-bounce absolute bottom-8">
           <ChevronDown 
             size={32} 
             className="text-gray-400 hover:text-[#68d5c4] transition-colors duration-300 cursor-pointer opacity-70"
