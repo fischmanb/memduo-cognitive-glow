@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -109,7 +108,7 @@ const Index = () => {
             <img 
               src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
               alt="MemDuo" 
-              className="h-80 w-auto mx-auto"
+              className="h-64 w-auto mx-auto"
               style={{
                 filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
               }}
