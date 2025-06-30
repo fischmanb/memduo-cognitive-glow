@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -116,7 +117,7 @@ const Index = () => {
           </div>
           
           {/* Header Text */}
-          <div className="-mt-20">
+          <div className="-mt-18">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
               Meet Your Cognitive Growth Partner
             </h1>
