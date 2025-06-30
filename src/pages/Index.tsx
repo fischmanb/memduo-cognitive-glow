@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -333,7 +332,7 @@ const Index = () => {
                           type="text"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
-                          className={`${isSafari ? 'safari-form-input' : 'bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm'} transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm`}
+                          className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
                           placeholder="Enter your first name"
                           required
                         />
@@ -353,7 +352,7 @@ const Index = () => {
                           type="text"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
-                          className={`${isSafari ? 'safari-form-input' : 'bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm'} transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm`}
+                          className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
                           placeholder="Enter your last name"
                           required
                         />
@@ -377,7 +376,7 @@ const Index = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className={`${isSafari ? 'safari-form-input' : 'bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm'} transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm`}
+                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
                       placeholder="your@email.com"
                       required
                     />
@@ -399,7 +398,7 @@ const Index = () => {
                       id="interest"
                       value={interest}
                       onChange={(e) => setInterest(e.target.value)}
-                      className={`${isSafari ? 'safari-form-input' : 'bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm'} transition-all duration-300 min-h-[70px] p-3 rounded-lg text-sm resize-none`}
+                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 min-h-[70px] p-3 rounded-lg text-sm resize-none"
                       placeholder="What draws you to MemDuo? How might you use it in your work or research?"
                       maxLength={150}
                     />
