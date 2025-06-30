@@ -278,7 +278,9 @@ const Index = () => {
       {/* View 4 - Demo Form */}
       <section className="relative z-10 flex flex-col justify-center items-center px-4 min-h-screen py-8">
         <div className="max-w-xl mx-auto w-full">
-          <Card className="bg-white/5 border-white/10 backdrop-blur-md glassmorphic-card relative overflow-hidden">
+          <Card className={`border-white/10 backdrop-blur-md glassmorphic-card relative overflow-hidden ${
+            isSafari ? '' : 'bg-white/5'
+          }`}>
             {/* Subtle background pattern */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#4A90E2]/5 via-transparent to-white/5 pointer-events-none"></div>
             
