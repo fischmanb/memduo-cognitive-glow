@@ -435,7 +435,7 @@ const Index = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#3A7BC8] via-[#365AA0] to-[#1E4B9A] hover:from-[#2E6BB5] hover:via-[#2B4E8A] hover:to-[#143A82] disabled:from-[#4A90E2]/50 disabled:to-[#2E5BBA]/50 text-white font-semibold py-4 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
+                    className="w-full bg-[#2E5BBA] hover:bg-[#1E4B9A] disabled:bg-[#4A90E2]/50 text-white font-semibold py-4 text-base transition-all duration-500 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/40 transform hover:scale-[1.02] active:scale-[0.98] disabled:scale-100 rounded-xl relative overflow-hidden group min-h-[52px] touch-manipulation"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                     
