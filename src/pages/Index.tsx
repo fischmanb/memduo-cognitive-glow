@@ -263,23 +263,23 @@ const Index = () => {
       {/* View 4 - Demo Form */}
       <section className="relative z-10 flex flex-col justify-center items-center px-4 min-h-screen py-12">
         <div className="max-w-xl mx-auto w-full">
-          {/* MemDuo Logo */}
-          <div className="text-center mb-8">
-            <img 
-              src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
-              alt="MemDuo" 
-              className="h-32 w-auto mx-auto opacity-90"
-              style={{
-                filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3))',
-              }}
-            />
-          </div>
-          
           <Card className="bg-white/5 border-white/10 backdrop-blur-md glassmorphic-card relative overflow-hidden">
             {/* Subtle background pattern */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#4A90E2]/5 via-transparent to-white/5 pointer-events-none"></div>
             
             <CardContent className="p-6 relative">
+              {/* MemDuo Logo inside form */}
+              <div className="text-center mb-6">
+                <img 
+                  src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+                  alt="MemDuo" 
+                  className="h-20 w-auto mx-auto opacity-90"
+                  style={{
+                    filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3))',
+                  }}
+                />
+              </div>
+
               <div className="text-center mb-6">
                 <h2 className="text-xl md:text-2xl font-light mb-3 text-white leading-tight">
                   Private demo opportunities for select researchers, media, and investors.
