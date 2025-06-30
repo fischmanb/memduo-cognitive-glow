@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -102,20 +103,20 @@ const Index = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center px-4 snap-start" style={{ minHeight: '8vh' }}>
-        <div className="text-center max-w-4xl mx-auto animate-fade-in flex-1 flex items-center">
+      <section className="relative z-10 flex flex-col items-center justify-center px-4 py-8 snap-start">
+        <div className="text-center max-w-4xl mx-auto animate-fade-in">
           <div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
               Meet Your Cognitive Growth Partner
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed mb-8">
               A secure, general‑purpose companion that learns with you and maintains epistemic fidelity.
             </p>
           </div>
         </div>
         
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="animate-bounce">
           <ChevronDown 
             size={32} 
             className="text-gray-400 hover:text-[#68d5c4] transition-colors duration-300 cursor-pointer opacity-70"
