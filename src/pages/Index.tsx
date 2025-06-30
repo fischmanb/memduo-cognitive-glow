@@ -272,10 +272,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Readable Form Section */}
+      {/* Fixed Dark Glassmorphic Form Section */}
       <section className="relative z-10 flex flex-col justify-center items-center px-4 py-12 min-h-screen">
         <div className="max-w-2xl mx-auto w-full">
-          <Card className="backdrop-blur-2xl bg-gradient-to-br from-white/15 to-white/5 rounded-3xl shadow-2xl">
+          <Card className="backdrop-blur-2xl bg-gradient-to-br from-white/15 to-white/5 rounded-3xl shadow-2xl border-white/10">
             <CardContent className="p-8 sm:p-12">
               {/* Prominent Logo */}
               <div className="text-center mb-8">
@@ -324,7 +324,7 @@ const Index = () => {
                         type="text"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
-                        className="backdrop-blur-xl bg-black/30 border-2 border-white/20 text-white placeholder-gray-400 focus:border-cyan-400 focus:bg-black/40 transition-all duration-500 py-4 rounded-xl font-medium"
+                        className="!bg-black/30 !border-white/20 !text-white placeholder:!text-gray-400 focus:!border-cyan-400 focus:!bg-black/40 transition-all duration-500 py-4 rounded-xl font-medium"
                         placeholder="Enter your first name"
                         required
                       />
@@ -344,7 +344,7 @@ const Index = () => {
                         type="text"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
-                        className="backdrop-blur-xl bg-black/30 border-2 border-white/20 text-white placeholder-gray-400 focus:border-cyan-400 focus:bg-black/40 transition-all duration-500 py-4 rounded-xl font-medium"
+                        className="!bg-black/30 !border-white/20 !text-white placeholder:!text-gray-400 focus:!border-cyan-400 focus:!bg-black/40 transition-all duration-500 py-4 rounded-xl font-medium"
                         placeholder="Enter your last name"
                         required
                       />
@@ -366,7 +366,7 @@ const Index = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="backdrop-blur-xl bg-black/30 border-2 border-white/20 text-white placeholder-gray-400 focus:border-cyan-400 focus:bg-black/40 transition-all duration-500 py-4 rounded-xl font-medium"
+                      className="!bg-black/30 !border-white/20 !text-white placeholder:!text-gray-400 focus:!border-cyan-400 focus:!bg-black/40 transition-all duration-500 py-4 rounded-xl font-medium"
                       placeholder="your@email.com"
                       required
                     />
@@ -387,7 +387,7 @@ const Index = () => {
                       id="interest"
                       value={interest}
                       onChange={(e) => setInterest(e.target.value)}
-                      className="backdrop-blur-xl bg-black/30 border-2 border-white/20 text-white placeholder-gray-400 focus:border-cyan-400 focus:bg-black/40 transition-all duration-500 min-h-[100px] p-4 rounded-xl resize-none font-medium"
+                      className="!bg-black/30 !border-white/20 !text-white placeholder:!text-gray-400 focus:!border-cyan-400 focus:!bg-black/40 transition-all duration-500 min-h-[100px] p-4 rounded-xl resize-none font-medium"
                       placeholder="What draws you to MemDuo? How might you use it in your work or research?"
                       maxLength={150}
                     />
