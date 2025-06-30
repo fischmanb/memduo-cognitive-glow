@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -106,7 +104,7 @@ const Index = () => {
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="text-center max-w-4xl mx-auto animate-fade-in">
           {/* Logo - 50% larger */}
-          <div className="mb-0">
+          <div>
             <img 
               src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
               alt="MemDuo" 
@@ -118,7 +116,7 @@ const Index = () => {
           </div>
           
           {/* Header Text */}
-          <div className="mt-8">
+          <div className="-mt-12">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
               Meet Your Cognitive Growth Partner
             </h1>
@@ -363,4 +361,3 @@ const Index = () => {
 };
 
 export default Index;
-
