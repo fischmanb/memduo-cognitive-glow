@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Shield, Eye, User, Mail, MessageSquare, CheckCircle, ChevronDown } from "lucide-react";
 import BackgroundVideo from "../components/BackgroundVideo";
+import Header from "../components/Header";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -98,9 +99,10 @@ const Index = () => {
   return (
     <div className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <BackgroundVideo />
+      <Header />
       
       {/* Hero Section */}
-      <section className="relative z-10 flex flex-col items-center justify-center px-4 snap-start" style={{ minHeight: '100vh', paddingTop: '10vh' }}>
+      <section className="relative z-10 flex flex-col items-center justify-center px-4 snap-start" style={{ minHeight: '100vh', paddingTop: '15vh' }}>
         <div className="text-center max-w-4xl mx-auto animate-fade-in flex-1 flex items-center">
           <div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
