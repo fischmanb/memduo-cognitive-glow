@@ -187,57 +187,22 @@ All colors MUST be HSL.
     border-color: rgba(74, 144, 226, 0.5);
   }
 
-  .glassmorphic-card {
-    /* Enhanced Safari compatibility */
-    background: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    box-shadow: 
-      0 8px 32px 0 rgba(31, 38, 135, 0.37),
-      0 4px 16px 0 rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    /* Safari rendering optimization */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    will-change: transform, opacity;
-    /* Force hardware acceleration */
-    -webkit-perspective: 1000;
-    perspective: 1000;
-  }
-
-  .glassmorphic-card:hover {
-    background: rgba(255, 255, 255, 0.12) !important;
-    border-color: rgba(74, 144, 226, 0.4);
-    box-shadow: 
-      0 12px 40px 0 rgba(74, 144, 226, 0.15),
-      0 8px 24px 0 rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px) translateZ(0);
-    -webkit-transform: translateY(-2px) translateZ(0);
-  }
-
-  /* Safari form fixes */
-  .safari-form-input {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+  /* Safari-optimized form fields */
+  .safari-form-field {
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 6px !important;
+    background: transparent !important;
     color: white !important;
-    /* Safari text rendering */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  .safari-form-input:focus {
-    background: rgba(255, 255, 255, 0.12) !important;
+  .safari-form-field:focus {
     border-color: rgba(74, 144, 226, 1) !important;
     box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2) !important;
   }
 
-  .safari-form-input::placeholder {
+  .safari-form-field::placeholder {
     color: rgba(255, 255, 255, 0.6) !important;
     opacity: 1 !important;
   }
@@ -426,7 +391,7 @@ All colors MUST be HSL.
     background: rgba(0, 0, 0, 0.1);
   }
 
-  .safari-form-input {
+  .safari-form-field {
     background: rgba(255, 255, 255, 0.1) !important;
   }
 }

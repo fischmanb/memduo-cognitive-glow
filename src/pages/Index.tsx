@@ -210,7 +210,7 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-8">
             
             <div className="group backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0s forwards' }}>
-              <div className={`w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15 ${isSafari ? 'safari-icon-container' : 'bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 group-hover:bg-[#4A90E2]/20 group-hover:border-[#4A90E2]/50'}`}>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15 safari-icon-container">
                 <Shield size={32} className="text-[#4A90E2]" strokeWidth={2} />
               </div>
               <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2">
@@ -225,7 +225,7 @@ const Index = () => {
             </div>
 
             <div className="group backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.2s forwards' }}>
-              <div className={`w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15 ${isSafari ? 'safari-icon-container' : 'bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 group-hover:bg-[#4A90E2]/20 group-hover:border-[#4A90E2]/50'}`}>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15 safari-icon-container">
                 <Brain size={32} className="text-[#4A90E2]" strokeWidth={2} />
               </div>
               <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2">
@@ -240,7 +240,7 @@ const Index = () => {
             </div>
 
             <div className="group backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.4s forwards' }}>
-              <div className={`w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15 ${isSafari ? 'safari-icon-container' : 'bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 group-hover:bg-[#4A90E2]/20 group-hover:border-[#4A90E2]/50'}`}>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15 safari-icon-container">
                 <Eye size={32} className="text-[#4A90E2]" strokeWidth={2} />
               </div>
               <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2">
@@ -332,7 +332,12 @@ const Index = () => {
                           type="text"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
-                          className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
+                          className="safari-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
+                          style={{
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            borderRadius: '6px',
+                            background: 'transparent'
+                          }}
                           placeholder="Enter your first name"
                           required
                         />
@@ -352,7 +357,12 @@ const Index = () => {
                           type="text"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
-                          className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
+                          className="safari-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
+                          style={{
+                            border: '1px solid rgba(255, 255, 255, 0.15)',
+                            borderRadius: '6px',
+                            background: 'transparent'
+                          }}
                           placeholder="Enter your last name"
                           required
                         />
@@ -376,7 +386,12 @@ const Index = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
+                      className="safari-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-3 pr-10 py-2 rounded-lg text-sm"
+                      style={{
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        borderRadius: '6px',
+                        background: 'transparent'
+                      }}
                       placeholder="your@email.com"
                       required
                     />
@@ -398,7 +413,12 @@ const Index = () => {
                       id="interest"
                       value={interest}
                       onChange={(e) => setInterest(e.target.value)}
-                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 min-h-[70px] p-3 rounded-lg text-sm resize-none"
+                      className="safari-form-field text-white placeholder-gray-400 focus:border-[#4A90E2] focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 min-h-[70px] p-3 rounded-lg text-sm resize-none"
+                      style={{
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        borderRadius: '6px',
+                        background: 'transparent'
+                      }}
                       placeholder="What draws you to MemDuo? How might you use it in your work or research?"
                       maxLength={150}
                     />
