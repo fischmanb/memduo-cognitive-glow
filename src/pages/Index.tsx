@@ -401,15 +401,15 @@ const Index = () => {
                   </Button>
                 </div>
               </form>
-              
-              {/* Footer text moved here */}
-              <div className="text-center mt-6 pt-4 border-t border-white/10">
-                <p className="text-gray-400 text-sm">
-                  We use your email only to share demo access and updates.
-                </p>
-              </div>
             </CardContent>
           </Card>
+          
+          {/* Footer text moved just below the form card */}
+          <div className="text-center mt-2">
+            <p className="text-gray-400 text-sm">
+              We use your email only to share demo access and updates.
+            </p>
+          </div>
         </div>
       </section>
 
