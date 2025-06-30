@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -294,7 +293,7 @@ const Index = () => {
                 />
               </div>
 
-              <div className="text-center mb-3">
+              <div className="text-center mb-6 -mt-4">
                 <h2 className="text-lg md:text-xl font-light mb-2 text-white leading-tight">
                   Private demo opportunities for select<br />researchers, media, and investors.
                 </h2>
