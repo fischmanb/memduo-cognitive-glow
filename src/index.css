@@ -154,14 +154,14 @@ All colors MUST be HSL.
 
   .glassmorphic-card:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(104, 213, 196, 0.3);
-    box-shadow: 0 12px 40px 0 rgba(104, 213, 196, 0.15);
+    border-color: rgba(74, 144, 226, 0.3);
+    box-shadow: 0 12px 40px 0 rgba(74, 144, 226, 0.15);
     transform: translateY(-2px);
   }
 
   /* Enhanced form input focus effects */
   .group:focus-within label {
-    color: rgba(104, 213, 196, 1);
+    color: rgba(74, 144, 226, 1);
   }
 
   /* Smooth transitions for all interactive elements */
@@ -180,11 +180,11 @@ All colors MUST be HSL.
   }
 
   textarea::-webkit-scrollbar-thumb {
-    background: rgba(104, 213, 196, 0.5);
+    background: rgba(74, 144, 226, 0.5);
     border-radius: 3px;
   }
 
   textarea::-webkit-scrollbar-thumb:hover {
-    background: rgba(104, 213, 196, 0.7);
+    background: rgba(74, 144, 226, 0.7);
   }
 }

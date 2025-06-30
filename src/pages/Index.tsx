@@ -109,7 +109,7 @@ const Index = () => {
       <div className="fixed top-6 right-6 z-50">
         <Button
           onClick={() => scrollToNext(3)}
-          className="bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 text-white hover:bg-[#68d5c4]/20 hover:border-[#68d5c4]/50 font-medium px-6 py-3 text-sm transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 hover:shadow-[#68d5c4]/15 rounded-lg hover:scale-105"
+          className="bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 text-white hover:bg-[#4A90E2]/20 hover:border-[#4A90E2]/50 font-medium px-6 py-3 text-sm transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 hover:shadow-[#4A90E2]/15 rounded-lg hover:scale-105"
         >
           Request Demo
         </Button>
@@ -132,7 +132,7 @@ const Index = () => {
         <div className="animate-bounce pb-8">
           <ChevronDown 
             size={32} 
-            className="text-gray-400 hover:text-[#68d5c4] transition-colors duration-300 cursor-pointer opacity-70"
+            className="text-gray-400 hover:text-[#4A90E2] transition-colors duration-300 cursor-pointer opacity-70"
             onClick={() => scrollToNext(1)}
           />
         </div>
@@ -160,7 +160,7 @@ const Index = () => {
         <div className="animate-bounce absolute bottom-8">
           <ChevronDown 
             size={32} 
-            className="text-gray-400 hover:text-[#68d5c4] transition-colors duration-300 cursor-pointer opacity-70"
+            className="text-gray-400 hover:text-[#4A90E2] transition-colors duration-300 cursor-pointer opacity-70"
             onClick={() => scrollToNext(2)}
           />
         </div>
@@ -172,9 +172,9 @@ const Index = () => {
         <div className="max-w-6xl mx-auto mb-16">
           <div className="grid md:grid-cols-3 gap-8">
             
-            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#68d5c4]/40 hover:shadow-lg hover:shadow-[#68d5c4]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0s forwards' }}>
-              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
-                <Shield size={32} className="text-[#68d5c4]" strokeWidth={2} />
+            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0s forwards' }}>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 flex items-center justify-center group-hover:bg-[#4A90E2]/20 group-hover:border-[#4A90E2]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15">
+                <Shield size={32} className="text-[#4A90E2]" strokeWidth={2} />
               </div>
               <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2">
                 <span className="block text-center whitespace-nowrap">
@@ -187,9 +187,9 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#68d5c4]/40 hover:shadow-lg hover:shadow-[#68d5c4]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.2s forwards' }}>
-              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
-                <Brain size={32} className="text-[#68d5c4]" strokeWidth={2} />
+            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.2s forwards' }}>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 flex items-center justify-center group-hover:bg-[#4A90E2]/20 group-hover:border-[#4A90E2]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15">
+                <Brain size={32} className="text-[#4A90E2]" strokeWidth={2} />
               </div>
               <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2">
                 <span className="block text-center whitespace-nowrap">
@@ -202,9 +202,9 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#68d5c4]/40 hover:shadow-lg hover:shadow-[#68d5c4]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.4s forwards' }}>
-              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
-                <Eye size={32} className="text-[#68d5c4]" strokeWidth={2} />
+            <div className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in opacity-0" style={{ animation: 'fade-in 0.8s ease-out 0.4s forwards' }}>
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 flex items-center justify-center group-hover:bg-[#4A90E2]/20 group-hover:border-[#4A90E2]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15">
+                <Eye size={32} className="text-[#4A90E2]" strokeWidth={2} />
               </div>
               <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-4 text-white leading-tight min-h-[3.5rem] flex items-center justify-center px-2">
                 <span className="block text-center whitespace-nowrap">
@@ -232,7 +232,7 @@ const Index = () => {
         <div className="animate-bounce absolute bottom-8 left-1/2 transform -translate-x-1/2">
           <ChevronDown 
             size={32} 
-            className="text-gray-400 hover:text-[#68d5c4] transition-colors duration-300 cursor-pointer opacity-70"
+            className="text-gray-400 hover:text-[#4A90E2] transition-colors duration-300 cursor-pointer opacity-70"
             onClick={() => scrollToNext(3)}
           />
         </div>
@@ -243,7 +243,7 @@ const Index = () => {
         <div className="max-w-2xl mx-auto">
           <Card className="bg-white/5 border-white/10 backdrop-blur-md glassmorphic-card relative overflow-hidden">
             {/* Subtle background pattern */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#68d5c4]/5 via-transparent to-white/5 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#4A90E2]/5 via-transparent to-white/5 pointer-events-none"></div>
             
             <CardContent className="p-10 relative">
               <div className="text-center mb-10">
@@ -259,7 +259,7 @@ const Index = () => {
                   </div>
                   <div className="w-full bg-white/10 rounded-full h-2 backdrop-blur-sm">
                     <div 
-                      className="bg-gradient-to-r from-[#68d5c4] to-[#5bc4b1] h-2 rounded-full transition-all duration-500 ease-out"
+                      className="bg-gradient-to-r from-[#4A90E2] to-[#2E5BBA] h-2 rounded-full transition-all duration-500 ease-out"
                       style={{ width: `${getFormProgress()}%` }}
                     ></div>
                   </div>
@@ -271,8 +271,8 @@ const Index = () => {
                 <div className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="group">
-                      <label htmlFor="firstName" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3 transition-colors group-focus-within:text-[#68d5c4]">
-                        <User size={16} className="text-[#68d5c4]" />
+                      <label htmlFor="firstName" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3 transition-colors group-focus-within:text-[#4A90E2]">
+                        <User size={16} className="text-[#4A90E2]" />
                         First Name *
                       </label>
                       <div className="relative">
@@ -281,18 +281,18 @@ const Index = () => {
                           type="text"
                           value={firstName}
                           onChange={(e) => setFirstName(e.target.value)}
-                          className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#68d5c4] focus:bg-white/10 focus:shadow-lg focus:shadow-[#68d5c4]/20 backdrop-blur-sm transition-all duration-300 pl-4 pr-10 py-3 rounded-lg text-base"
+                          className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-4 pr-10 py-3 rounded-lg text-base"
                           placeholder="Enter your first name"
                           required
                         />
                         {firstName && (
-                          <CheckCircle size={18} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#68d5c4] animate-scale-in" />
+                          <CheckCircle size={18} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#4A90E2] animate-scale-in" />
                         )}
                       </div>
                     </div>
                     <div className="group">
-                      <label htmlFor="lastName" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3 transition-colors group-focus-within:text-[#68d5c4]">
-                        <User size={16} className="text-[#68d5c4]" />
+                      <label htmlFor="lastName" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3 transition-colors group-focus-within:text-[#4A90E2]">
+                        <User size={16} className="text-[#4A90E2]" />
                         Last Name *
                       </label>
                       <div className="relative">
@@ -301,12 +301,12 @@ const Index = () => {
                           type="text"
                           value={lastName}
                           onChange={(e) => setLastName(e.target.value)}
-                          className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#68d5c4] focus:bg-white/10 focus:shadow-lg focus:shadow-[#68d5c4]/20 backdrop-blur-sm transition-all duration-300 pl-4 pr-10 py-3 rounded-lg text-base"
+                          className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-4 pr-10 py-3 rounded-lg text-base"
                           placeholder="Enter your last name"
                           required
                         />
                         {lastName && (
-                          <CheckCircle size={18} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#68d5c4] animate-scale-in" />
+                          <CheckCircle size={18} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#4A90E2] animate-scale-in" />
                         )}
                       </div>
                     </div>
@@ -315,8 +315,8 @@ const Index = () => {
 
                 {/* Email Field Group */}
                 <div className="group">
-                  <label htmlFor="email" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3 transition-colors group-focus-within:text-[#68d5c4]">
-                    <Mail size={16} className="text-[#68d5c4]" />
+                  <label htmlFor="email" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3 transition-colors group-focus-within:text-[#4A90E2]">
+                    <Mail size={16} className="text-[#4A90E2]" />
                     Email Address *
                   </label>
                   <div className="relative">
@@ -325,20 +325,20 @@ const Index = () => {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#68d5c4] focus:bg-white/10 focus:shadow-lg focus:shadow-[#68d5c4]/20 backdrop-blur-sm transition-all duration-300 pl-4 pr-10 py-3 rounded-lg text-base"
+                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 pl-4 pr-10 py-3 rounded-lg text-base"
                       placeholder="your@email.com"
                       required
                     />
                     {email && (
-                      <CheckCircle size={18} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#68d5c4] animate-scale-in" />
+                      <CheckCircle size={18} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#4A90E2] animate-scale-in" />
                     )}
                   </div>
                 </div>
                 
                 {/* Interest Field Group */}
                 <div className="group">
-                  <label htmlFor="interest" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3 transition-colors group-focus-within:text-[#68d5c4]">
-                    <MessageSquare size={16} className="text-[#68d5c4]" />
+                  <label htmlFor="interest" className="flex items-center gap-2 text-sm font-medium text-gray-300 mb-3 transition-colors group-focus-within:text-[#4A90E2]">
+                    <MessageSquare size={16} className="text-[#4A90E2]" />
                     Tell us about your interest
                     <span className="text-gray-500 text-xs">(optional)</span>
                   </label>
@@ -347,7 +347,7 @@ const Index = () => {
                       id="interest"
                       value={interest}
                       onChange={(e) => setInterest(e.target.value)}
-                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#68d5c4] focus:bg-white/10 focus:shadow-lg focus:shadow-[#68d5c4]/20 backdrop-blur-sm transition-all duration-300 min-h-[140px] p-4 rounded-lg text-base resize-none"
+                      className="bg-white/5 border-white/20 text-white placeholder-gray-400 focus:border-[#4A90E2] focus:bg-white/10 focus:shadow-lg focus:shadow-[#4A90E2]/20 backdrop-blur-sm transition-all duration-300 min-h-[140px] p-4 rounded-lg text-base resize-none"
                       placeholder="What draws you to MemDuo? How might you use it in your work or research?"
                       maxLength={150}
                     />
@@ -362,7 +362,7 @@ const Index = () => {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-[#68d5c4] to-[#5bc4b1] hover:from-[#5bc4b1] hover:to-[#4fb69e] text-[#0b0d10] font-semibold py-4 text-lg transition-all duration-300 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#68d5c4]/30 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg relative overflow-hidden group"
+                    className="w-full bg-gradient-to-r from-[#4A90E2] to-[#2E5BBA] hover:from-[#3A7BC8] hover:to-[#1E4B9A] text-white font-semibold py-4 text-lg transition-all duration-300 border-0 backdrop-blur-sm shadow-2xl hover:shadow-[#4A90E2]/30 transform hover:scale-[1.02] active:scale-[0.98] rounded-lg relative overflow-hidden group"
                   >
                     {/* Button shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>

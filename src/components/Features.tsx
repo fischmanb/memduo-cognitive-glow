@@ -30,12 +30,12 @@ const Features = () => {
           {features.map((feature, index) => (
             <div 
               key={index}
-              className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#68d5c4]/40 hover:shadow-lg hover:shadow-[#68d5c4]/20 hover:-translate-y-1 animate-fade-in"
+              className="group bg-white/5 backdrop-blur-md border-2 border-gray-700 rounded-lg p-8 text-center transition-all duration-500 hover:bg-white/8 hover:border-[#4A90E2]/40 hover:shadow-lg hover:shadow-[#4A90E2]/20 hover:-translate-y-1 animate-fade-in"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
-              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#68d5c4]/15 backdrop-blur-sm border-2 border-[#68d5c4]/30 flex items-center justify-center group-hover:bg-[#68d5c4]/20 group-hover:border-[#68d5c4]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#68d5c4]/10 group-hover:shadow-[#68d5c4]/15">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-lg bg-[#4A90E2]/15 backdrop-blur-sm border-2 border-[#4A90E2]/30 flex items-center justify-center group-hover:bg-[#4A90E2]/20 group-hover:border-[#4A90E2]/50 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-[#4A90E2]/10 group-hover:shadow-[#4A90E2]/15">
                 <feature.icon 
-                  className="w-8 h-8 text-[#68d5c4]" 
+                  className="w-8 h-8 text-[#4A90E2]" 
                   strokeWidth={2}
                   aria-label={feature.ariaLabel}
                 />
