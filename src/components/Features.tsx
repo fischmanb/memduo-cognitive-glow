@@ -1,5 +1,5 @@
 
-import { Eye, Shield, Zap } from "lucide-react";
+import { Eye, Shield, Brain } from "lucide-react";
 
 const Features = () => {
   const features = [
@@ -10,10 +10,10 @@ const Features = () => {
       ariaLabel: "shield outline icon"
     },
     {
-      icon: Eye,
+      icon: Brain,
       title: "Ownable Knowledge", 
       description: "Your private, customizable library seeded with timeless humanist thought.",
-      ariaLabel: "eye outline icon"
+      ariaLabel: "brain outline icon"
     },
     {
       icon: Eye,
@@ -37,8 +37,8 @@ const Features = () => {
                 <feature.icon 
                   className="w-8 h-8 text-[#4A90E2]" 
                   strokeWidth={2}
-                  fill={feature.icon === Shield ? "none" : undefined}
-                  stroke={feature.icon === Shield ? "currentColor" : undefined}
+                  fill="none"
+                  stroke="currentColor"
                   aria-label={feature.ariaLabel}
                 />
               </div>
