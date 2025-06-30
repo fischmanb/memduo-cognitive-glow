@@ -99,12 +99,22 @@ All colors MUST be HSL.
 
   html {
     scroll-behavior: smooth;
+    /* Safari compatibility */
+    -webkit-scroll-behavior: smooth;
     scroll-snap-type: y mandatory;
+    -webkit-scroll-snap-type: y mandatory;
   }
 
   section {
     scroll-snap-align: start;
     scroll-snap-stop: always;
+    -webkit-scroll-snap-align: start;
+    -webkit-scroll-snap-stop: always;
+  }
+
+  /* Ensure proper box-sizing across all browsers */
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
 }
 
@@ -139,37 +149,74 @@ All colors MUST be HSL.
     animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
+  /* Enhanced backdrop-blur with fallbacks for Safari */
   .backdrop-blur-sm {
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .backdrop-blur-md {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   .glassmorphic-card {
+    /* Primary backdrop blur with Safari support */
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.125);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    
+    /* Fallback background for browsers without backdrop-filter support */
+    background: rgba(255, 255, 255, 0.1);
+    
+    /* Enhanced background for better visibility on Safari */
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.1) 0%, 
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    
+    /* Enhanced shadow for Safari */
+    box-shadow: 
+      0 8px 32px 0 rgba(31, 38, 135, 0.37),
+      0 4px 16px 0 rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Improve rendering on Safari */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform, opacity;
   }
 
   .glassmorphic-card:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(74, 144, 226, 0.3);
-    box-shadow: 0 12px 40px 0 rgba(74, 144, 226, 0.15);
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.15) 0%, 
+      rgba(255, 255, 255, 0.08) 100%
+    );
+    border-color: rgba(74, 144, 226, 0.4);
+    box-shadow: 
+      0 12px 40px 0 rgba(74, 144, 226, 0.15),
+      0 8px 24px 0 rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px) translateZ(0);
+    -webkit-transform: translateY(-2px) translateZ(0);
   }
 
-  /* Enhanced form input focus effects */
+  /* Enhanced form input focus effects with Safari support */
   .group:focus-within label {
     color: rgba(74, 144, 226, 1);
   }
 
-  /* Smooth transitions for all interactive elements */
+  /* Smooth transitions for all interactive elements with Safari support */
   input, textarea, button {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Custom scrollbar for textarea */
+  /* Custom scrollbar for textarea with Safari support */
   textarea::-webkit-scrollbar {
     width: 6px;
   }
@@ -186,5 +233,130 @@ All colors MUST be HSL.
 
   textarea::-webkit-scrollbar-thumb:hover {
     background: rgba(74, 144, 226, 0.7);
+  }
+
+  /* Enhanced cross-browser gradient support */
+  .bg-gradient-to-r {
+    background: linear-gradient(to right, var(--tw-gradient-stops));
+  }
+
+  .bg-gradient-to-br {
+    background: linear-gradient(to bottom right, var(--tw-gradient-stops));
+  }
+
+  /* Ensure proper text rendering across browsers */
+  .bg-clip-text {
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Fallback for older browsers */
+    color: transparent;
+  }
+
+  /* Enhanced animation support */
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(-25%);
+      -webkit-transform: translateY(-25%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: none;
+      -webkit-transform: none;
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  .animate-bounce {
+    animation: bounce 1s infinite;
+    -webkit-animation: bounce 1s infinite;
+  }
+
+  /* Enhanced transform support for Safari */
+  .transform {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+
+  .hover\:scale-105:hover {
+    transform: scale(1.05) translateZ(0);
+    -webkit-transform: scale(1.05) translateZ(0);
+  }
+
+  .hover\:scale-110:hover {
+    transform: scale(1.1) translateZ(0);
+    -webkit-transform: scale(1.1) translateZ(0);
+  }
+
+  .hover\:scale-\[1\.02\]:hover {
+    transform: scale(1.02) translateZ(0);
+    -webkit-transform: scale(1.02) translateZ(0);
+  }
+
+  .active\:scale-\[0\.98\]:active {
+    transform: scale(0.98) translateZ(0);
+    -webkit-transform: scale(0.98) translateZ(0);
+  }
+
+  /* Ensure proper opacity transitions */
+  .transition-opacity {
+    transition: opacity 0.3s ease;
+    -webkit-transition: opacity 0.3s ease;
+  }
+
+  /* Enhanced filter support */
+  .drop-shadow-lg {
+    filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+    -webkit-filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+  }
+
+  /* Ensure proper flex support */
+  .flex {
+    display: flex;
+    display: -webkit-flex;
+  }
+
+  .flex-col {
+    flex-direction: column;
+    -webkit-flex-direction: column;
+  }
+
+  .items-center {
+    align-items: center;
+    -webkit-align-items: center;
+  }
+
+  .justify-center {
+    justify-content: center;
+    -webkit-justify-content: center;
+  }
+}
+
+/* Safari-specific fixes */
+@supports (-webkit-appearance: none) {
+  .glassmorphic-card {
+    /* Enhanced Safari support */
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  
+  .backdrop-blur-sm,
+  .backdrop-blur-md {
+    /* Ensure backdrop-filter works on Safari */
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+  }
+}
+
+/* Fallback for older browsers without backdrop-filter support */
+@supports not (backdrop-filter: blur(1px)) {
+  .glassmorphic-card {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .backdrop-blur-sm,
+  .backdrop-blur-md {
+    background: rgba(0, 0, 0, 0.1);
   }
 }

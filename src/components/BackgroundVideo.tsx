@@ -29,6 +29,7 @@ interface Edge {
 const BackgroundVideo = () => {
   const [isSlowConnection, setIsSlowConnection] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isSafari, setIsSafari] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
   const nodesRef = useRef<Node[]>([]);
@@ -38,6 +39,12 @@ const BackgroundVideo = () => {
   const colors = ["#00ffff", "#00ccff", "#33aaff", "#6699ff", "#9966ff", "#9b59ff"];
 
   useEffect(() => {
+    // Check for Safari browser
+    const userAgent = navigator.userAgent;
+    const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(userAgent) || 
+                          /iPad|iPhone|iPod/.test(userAgent);
+    setIsSafari(isSafariBrowser);
+
     // Check for reduced motion preference
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
@@ -51,6 +58,11 @@ const BackgroundVideo = () => {
         setIsSlowConnection(true);
       }
     }
+
+    // Safari performance optimization
+    if (isSafariBrowser && window.devicePixelRatio > 1) {
+      setIsSlowConnection(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -59,15 +71,30 @@ const BackgroundVideo = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { 
+      alpha: true,
+      // Safari optimization
+      willReadFrequently: false,
+      powerPreference: 'high-performance'
+    });
     if (!ctx) return;
 
     console.log('Starting animation setup');
 
-    // Set canvas size
+    // Set canvas size with device pixel ratio support
     const updateCanvasSize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      
+      // Safari optimization - limit DPR for performance
+      const safeDpr = isSafari ? Math.min(dpr, 2) : dpr;
+      
+      canvas.width = rect.width * safeDpr;
+      canvas.height = rect.height * safeDpr;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+      
+      ctx.scale(safeDpr, safeDpr);
     };
     
     updateCanvasSize();
@@ -75,7 +102,7 @@ const BackgroundVideo = () => {
 
     // Generate biologically-inspired neural network
     const generateNeuralNetwork = () => {
-      const nodeCount = 25;
+      const nodeCount = isSafari ? 20 : 25; // Reduce nodes for Safari
       const hubRatio = 0.15;
       const layers = 3;
       
@@ -87,8 +114,8 @@ const BackgroundVideo = () => {
         
         nodes.push({
           id: i,
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
+          x: Math.random() * (canvas.style.width ? parseInt(canvas.style.width) : window.innerWidth),
+          y: Math.random() * (canvas.style.height ? parseInt(canvas.style.height) : window.innerHeight),
           vx: (Math.random() - 0.5) * 0.2,
           vy: (Math.random() - 0.5) * 0.2,
           color: colors[Math.floor(Math.random() * colors.length)],
@@ -178,12 +205,17 @@ const BackgroundVideo = () => {
 
     generateNeuralNetwork();
 
-    // Animation loop
+    // Animation loop with Safari optimizations
     const animate = () => {
-      timeRef.current += 0.01;
+      const animationSpeed = isSafari ? 0.005 : 0.01;
+      timeRef.current += animationSpeed;
+      
+      // Clear with solid background for better performance
+      const canvasWidth = canvas.style.width ? parseInt(canvas.style.width) : canvas.width;
+      const canvasHeight = canvas.style.height ? parseInt(canvas.style.height) : canvas.height;
       
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
       const nodes = nodesRef.current;
       const edges = edgesRef.current;
@@ -194,18 +226,19 @@ const BackgroundVideo = () => {
         node.y += node.vy;
 
         // Bounce off edges
-        if (node.x <= 0 || node.x >= canvas.width) node.vx *= -1;
-        if (node.y <= 0 || node.y >= canvas.height) node.vy *= -1;
+        if (node.x <= 0 || node.x >= canvasWidth) node.vx *= -1;
+        if (node.y <= 0 || node.y >= canvasHeight) node.vy *= -1;
 
         // Keep in bounds
-        node.x = Math.max(0, Math.min(canvas.width, node.x));
-        node.y = Math.max(0, Math.min(canvas.height, node.y));
+        node.x = Math.max(0, Math.min(canvasWidth, node.x));
+        node.y = Math.max(0, Math.min(canvasHeight, node.y));
 
-        // Neural firing patterns
-        node.pulsePhase += node.isHub ? 0.03 : 0.02;
+        // Neural firing patterns - slower for Safari
+        const pulseSpeed = isSafari ? 0.02 : 0.03;
+        node.pulsePhase += node.isHub ? pulseSpeed : pulseSpeed * 0.7;
 
-        // Color changes
-        const activityRate = node.isHub ? 8 : 10;
+        // Color changes - less frequent for Safari
+        const activityRate = isSafari ? 12 : 8;
         if (timeRef.current - node.lastColorChange > activityRate + Math.random() * 5) {
           node.colorIndex = (node.colorIndex + 1) % colors.length;
           node.color = colors[node.colorIndex];
@@ -215,10 +248,11 @@ const BackgroundVideo = () => {
 
       // Update synaptic activity
       edges.forEach(edge => {
-        edge.pulsePhase += 0.01 + (edge.strength * 0.01);
+        const pulseSpeed = isSafari ? 0.005 : 0.01;
+        edge.pulsePhase += pulseSpeed + (edge.strength * pulseSpeed);
         
-        const plasticityRate = 5 + Math.random() * 4;
-        if (timeRef.current - edge.lastColorChange > plasticityRate) {
+        const plasticityRate = isSafari ? 8 : 5;
+        if (timeRef.current - edge.lastColorChange > plasticityRate + Math.random() * 4) {
           edge.colorIndex = (edge.colorIndex + 1) % colors.length;
           edge.lastColorChange = timeRef.current;
         }
@@ -232,6 +266,7 @@ const BackgroundVideo = () => {
         const transmissionIntensity = 0.2 + edge.strength * 0.3 * (Math.sin(edge.pulsePhase) * 0.5 + 0.5);
         const edgeColor = colors[edge.colorIndex];
         
+        // Parse hex color with Safari compatibility
         const r = parseInt(edgeColor.slice(1, 3), 16);
         const g = parseInt(edgeColor.slice(3, 5), 16);
         const b = parseInt(edgeColor.slice(5, 7), 16);
@@ -249,6 +284,7 @@ const BackgroundVideo = () => {
         const firingIntensity = node.size + Math.sin(node.pulsePhase) * (node.isHub ? 1.5 : 1);
         const neuralActivity = 0.6 + 0.4 * (Math.sin(node.pulsePhase) * 0.5 + 0.5);
         
+        // Parse hex color with Safari compatibility
         const r = parseInt(node.color.slice(1, 3), 16);
         const g = parseInt(node.color.slice(3, 5), 16);
         const b = parseInt(node.color.slice(5, 7), 16);
@@ -271,7 +307,15 @@ const BackgroundVideo = () => {
         }
       });
 
-      animationRef.current = requestAnimationFrame(animate);
+      // Use appropriate animation method for Safari
+      if (isSafari) {
+        // Use setTimeout for Safari for better performance
+        setTimeout(() => {
+          animationRef.current = requestAnimationFrame(animate);
+        }, 16);
+      } else {
+        animationRef.current = requestAnimationFrame(animate);
+      }
     };
 
     console.log('Starting animation');
@@ -283,9 +327,9 @@ const BackgroundVideo = () => {
       }
       window.removeEventListener('resize', updateCanvasSize);
     };
-  }, [isSlowConnection, prefersReducedMotion]);
+  }, [isSlowConnection, prefersReducedMotion, isSafari]);
 
-  // Fallback for slow connections or reduced motion
+  // Fallback for slow connections, reduced motion, or Safari with performance issues
   if (isSlowConnection || prefersReducedMotion) {
     return (
       <div 
@@ -303,10 +347,14 @@ const BackgroundVideo = () => {
       <canvas 
         ref={canvasRef}
         className="fixed inset-0 z-0"
-        style={{ background: '#000000' }}
+        style={{ 
+          background: '#000000',
+          width: '100%',
+          height: '100%'
+        }}
       />
       
-      {/* Overlay for text legibility */}
+      {/* Overlay for text legibility with Safari compatibility */}
       <div 
         className="fixed inset-0 z-0"
         style={{
