@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -268,22 +267,22 @@ const Index = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-[#4A90E2]/5 via-transparent to-white/5 pointer-events-none"></div>
             
             <CardContent className="p-6 relative">
-              {/* MemDuo Logo inside form */}
-              <div className="text-center mb-6">
-                <img 
-                  src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
-                  alt="MemDuo" 
-                  className="h-32 w-auto mx-auto"
-                  style={{
-                    filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
-                  }}
-                />
-              </div>
-
-              <div className="text-center mb-6">
-                <h2 className="text-xl md:text-2xl font-light mb-3 text-white leading-tight">
+              <div className="text-center mb-8">
+                <h2 className="text-xl md:text-2xl font-light mb-6 text-white leading-tight">
                   Private demo opportunities for select researchers, media, and investors.
                 </h2>
+                
+                {/* MemDuo Logo centered between text sections */}
+                <div className="mb-6">
+                  <img 
+                    src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+                    alt="MemDuo" 
+                    className="h-32 w-auto mx-auto"
+                    style={{
+                      filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
+                    }}
+                  />
+                </div>
                 
                 {/* Progress indicator */}
                 <div className="mt-4 mb-2">
