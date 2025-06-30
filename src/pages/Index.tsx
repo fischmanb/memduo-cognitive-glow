@@ -299,7 +299,7 @@ const Index = () => {
             
             <CardContent className="p-4 sm:p-6 relative">
               <div className="text-center mb-4">
-                <div className="inline-block p-4 rounded-xl backdrop-blur-md bg-gradient-to-br from-white/35 to-white/20 border border-white/40 shadow-xl">
+                <div className="inline-block p-4 rounded-xl backdrop-blur-md bg-gradient-to-br from-white/45 to-white/30 border border-white/50 shadow-xl">
                   <img 
                     src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                     alt="MemDuo" 
