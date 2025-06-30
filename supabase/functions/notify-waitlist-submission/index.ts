@@ -30,8 +30,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification email
     const emailResponse = await resend.emails.send({
-      from: "MemDuo Notifications <onboarding@resend.dev>", // Change this to your verified domain
-      to: ["your-email@example.com"], // Replace with your actual email
+      from: "MemDuo Notifications <onboarding@resend.dev>",
+      to: ["fischmanb@gmail.com"],
       subject: "New MemDuo Waitlist Submission",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
