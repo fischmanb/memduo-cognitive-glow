@@ -1,7 +1,9 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import NeuralBackground from "../components/NeuralBackground";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -76,17 +78,9 @@ const PasswordEntry = () => {
                     }}
                   />
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight">
-                  <span className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
-                    Private Access
-                  </span>
-                </h1>
-                <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                  Enter your access code to continue to the MemDuo demonstration interface.
-                </p>
                 
                 {/* Tagline */}
-                <div className="border-t border-white/10 pt-6 mb-2">
+                <div className="mb-6">
                   <p className="text-sm leading-relaxed text-gray-300">
                     The world's first{" "}
                     <span className="bg-gradient-to-r from-cyan-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent font-semibold">
@@ -95,6 +89,17 @@ const PasswordEntry = () => {
                     .
                   </p>
                 </div>
+                
+                <Separator className="mb-6 bg-white/10" />
+                
+                <h1 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight">
+                  <span className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
+                    Private Access
+                  </span>
+                </h1>
+                <p className="text-gray-300 text-lg leading-relaxed">
+                  Enter your access code to continue to the MemDuo demonstration interface.
+                </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
