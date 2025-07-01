@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -71,22 +72,20 @@ const PasswordEntry = () => {
                   <img 
                     src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                     alt="MemDuo" 
-                    className="h-20 w-auto"
+                    className="h-20 w-auto mb-3"
                     style={{
                       filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))',
                     }}
                   />
-                </div>
-                
-                {/* Tagline */}
-                <div className="mb-4">
-                  <p className="text-sm leading-relaxed text-gray-300">
-                    The world's first{" "}
-                    <span className="bg-gradient-to-r from-cyan-300 via-purple-300 to-cyan-200 bg-clip-text text-transparent font-semibold">
-                      co-evolving intelligence scaffold
-                    </span>
-                    .
-                  </p>
+                  <div className="mt-3">
+                    <p className="text-xs leading-relaxed text-gray-400">
+                      The world's first{" "}
+                      <span className="bg-gradient-to-r from-cyan-300 via-purple-300 to-cyan-200 bg-clip-text text-transparent font-medium">
+                        co-evolving intelligence scaffold
+                      </span>
+                      .
+                    </p>
+                  </div>
                 </div>
                 
                 <h1 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight">
