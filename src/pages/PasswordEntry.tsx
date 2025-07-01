@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -80,7 +79,7 @@ const PasswordEntry = () => {
                 </div>
                 
                 {/* Tagline */}
-                <div className="mb-6">
+                <div className="mb-4">
                   <p className="text-sm leading-relaxed text-gray-300">
                     The world's first{" "}
                     <span className="bg-gradient-to-r from-cyan-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent font-semibold">
@@ -89,8 +88,6 @@ const PasswordEntry = () => {
                     .
                   </p>
                 </div>
-                
-                <Separator className="mb-6 bg-white/10" />
                 
                 <h1 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight">
                   <span className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
