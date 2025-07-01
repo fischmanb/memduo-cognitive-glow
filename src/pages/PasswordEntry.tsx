@@ -69,23 +69,25 @@ const PasswordEntry = () => {
             <div className="p-8 sm:p-12 relative z-10">
               <div className="text-center mb-8">
                 <div className="inline-block p-8 rounded-2xl mb-6 neural-glass backdrop-filter backdrop-blur-24 bg-gradient-to-br from-slate-800/60 via-slate-900/40 to-black/50 border border-white/20 shadow-2xl">
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-center relative">
                     <img 
                       src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                       alt="MemDuo" 
-                      className="h-32 w-auto mb-4"
+                      className="h-32 w-auto"
                       style={{
                         filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))',
                       }}
                     />
-                    <div className="mt-4 pt-2 border-t border-white/10">
-                      <p className="text-sm leading-relaxed text-gray-300">
-                        The world's first{" "}
-                        <span className="bg-gradient-to-r from-cyan-300 via-purple-300 to-cyan-200 bg-clip-text text-transparent font-semibold">
-                          co-evolving intelligence scaffold
-                        </span>
-                        .
-                      </p>
+                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-full">
+                      <div className="border-t border-white/10 pt-2">
+                        <p className="text-sm leading-relaxed text-gray-300">
+                          The world's first{" "}
+                          <span className="bg-gradient-to-r from-cyan-300 via-purple-300 to-cyan-200 bg-clip-text text-transparent font-semibold">
+                            co-evolving intelligence scaffold
+                          </span>
+                          .
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
