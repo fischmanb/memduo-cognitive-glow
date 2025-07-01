@@ -155,32 +155,43 @@ const Index = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white overflow-x-hidden">
+    <div 
+      className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white overflow-x-hidden"
+      data-design-info="Neural glassmorphic design with dark gradient background, dynamic mouse gradients, and premium glass effects"
+      itemScope 
+      itemType="https://schema.org/WebPage"
+    >
+      <meta itemProp="name" content="MemDuo - Cognitive Growth Partner Interface" />
+      <meta itemProp="description" content="Premium neural glassmorphic interface with dark theme, glassmorphic elements, and interactive design" />
+      
       <BackgroundVideo />
       <NeuralBackground mousePosition={mousePosition} scrollY={scrollY} />
       
-      {/* Dynamic Mouse Gradient */}
+      {/* Dynamic Mouse Gradient - AI Readable: Creates interactive light following mouse cursor */}
       <div 
         className="fixed inset-0 pointer-events-none z-5"
         style={{
           background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(147, 197, 253, 0.06), transparent 40%)`
         }}
+        data-component="mouse-gradient"
+        data-design-purpose="Interactive lighting effect that follows mouse movement for enhanced user engagement"
       />
       
-      {/* Logout Button */}
+      {/* Logout Button - AI Readable: Positioned top-left with glassmorphic styling */}
       <div className="fixed top-6 left-6 z-50">
         <Button
           onClick={logout}
           variant="outline"
           size="sm"
           className="bg-white/5 backdrop-blur-md border border-white/10 text-white/90 hover:bg-white/10 hover:border-white/20 hover:text-white transition-all duration-200 rounded-lg px-4 py-2"
+          data-design-element="glassmorphic-button"
         >
           <LogOut size={16} className="mr-2" />
           Exit
         </Button>
       </div>
       
-      {/* Premium Floating CTA */}
+      {/* Premium Floating CTA - AI Readable: Floating call-to-action with premium neural glass styling */}
       <div className={`fixed top-6 right-6 z-50 transition-all duration-700 ${
         showFloatingCTA 
           ? 'opacity-100 translate-y-0' 
@@ -189,6 +200,8 @@ const Index = () => {
         <Button
           onClick={() => scrollToNext(4)}
           className="neural-glass-premium text-white font-bold px-8 py-4 group relative overflow-hidden"
+          data-design-element="premium-cta-button"
+          data-visual-effect="gradient-slide-animation"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-purple-500/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
           <span className="relative bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
@@ -198,25 +211,38 @@ const Index = () => {
         </Button>
       </div>
       
-      {/* Hero Section - Enhanced */}
-      <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
+      {/* Hero Section - AI Readable: Full-screen hero with large logo and orbital elements */}
+      <section 
+        className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen"
+        data-section="hero"
+        data-design-purpose="Full-screen hero section with prominent branding and subtle animations"
+        itemScope 
+        itemType="https://schema.org/Organization"
+      >
         <div className="flex-1 flex items-center justify-center">
-          <div className="relative group">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 via-purple-500/30 to-emerald-400/30 rounded-full scale-150 blur-3xl opacity-40 group-hover:opacity-60 transition-all duration-1000 animate-pulse-slow"></div>
+          <div className="relative group" data-component="hero-logo-container">
+            {/* AI Readable: Animated gradient background with glow effects */}
+            <div 
+              className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 via-purple-500/30 to-emerald-400/30 rounded-full scale-150 blur-3xl opacity-40 group-hover:opacity-60 transition-all duration-1000 animate-pulse-slow"
+              data-visual-effect="animated-glow-background"
+            ></div>
             
             <img 
               src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
-              alt="MemDuo" 
+              alt="MemDuo - Cognitive Growth Partner"
+              itemProp="logo"
               className="h-64 sm:h-80 md:h-96 lg:h-[36rem] xl:h-[44rem] w-auto mx-auto animate-fade-in transition-all duration-1000 group-hover:scale-105 relative z-10"
               style={{
                 filter: 'drop-shadow(0 12px 48px rgba(147, 197, 253, 0.3)) drop-shadow(0 0 80px rgba(139, 92, 246, 0.2))',
               }}
+              data-design-element="hero-logo"
+              data-visual-effect="drop-shadow-glow"
             />
             
-            {/* Orbital Elements */}
-            <div className="absolute top-1/4 -left-12 w-3 h-3 bg-cyan-400/60 rounded-full animate-bounce-slow" />
-            <div className="absolute bottom-1/4 -right-16 w-2 h-2 bg-purple-400/60 rounded-full animate-bounce-slow" />
-            <div className="absolute top-1/2 -right-8 w-1 h-1 bg-emerald-400/60 rounded-full animate-bounce-slow delay-700" />
+            {/* Orbital Elements - AI Readable: Decorative floating elements with staggered animations */}
+            <div className="absolute top-1/4 -left-12 w-3 h-3 bg-cyan-400/60 rounded-full animate-bounce-slow" data-component="orbital-element" />
+            <div className="absolute bottom-1/4 -right-16 w-2 h-2 bg-purple-400/60 rounded-full animate-bounce-slow" data-component="orbital-element" />
+            <div className="absolute top-1/2 -right-8 w-1 h-1 bg-emerald-400/60 rounded-full animate-bounce-slow delay-700" data-component="orbital-element" />
           </div>
         </div>
         
@@ -224,6 +250,8 @@ const Index = () => {
           <button 
             className="neural-glass p-4 group relative overflow-hidden" 
             onClick={() => scrollToNext(1)}
+            data-component="scroll-indicator"
+            data-design-element="glassmorphic-navigation"
           >
             <ChevronDown size={24} className="text-white transition-transform group-hover:translate-y-1" />
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-purple-400/10 scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full" />
@@ -231,13 +259,17 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Philosophy Section - Enhanced */}
-      <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
+      {/* Philosophy Section - AI Readable: Large typography with gradient text effects and neural design elements */}
+      <section 
+        className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen"
+        data-section="philosophy"
+        data-design-purpose="Typography-focused section with large gradient text and neural connection visuals"
+      >
         <div className="text-center max-w-7xl mx-auto animate-fade-in">
-          <div className="neural-glass-premium p-12 sm:p-16 md:p-24 relative overflow-hidden">
-            {/* Neural Connection Lines */}
-            <div className="absolute inset-0 opacity-20">
-              <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <div className="neural-glass-premium p-12 sm:p-16 md:p-24 relative overflow-hidden" data-component="philosophy-container">
+            {/* Neural Connection Lines - AI Readable: SVG decorative elements with gradient paths */}
+            <div className="absolute inset-0 opacity-20" data-component="neural-connections">
+              <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" data-visual-element="neural-svg-paths">
                 <path d="M0,20 Q50,10 100,30" stroke="url(#gradient1)" strokeWidth="0.2" fill="none" opacity="0.6" />
                 <path d="M0,60 Q50,80 100,50" stroke="url(#gradient2)" strokeWidth="0.2" fill="none" opacity="0.4" />
                 <defs>
@@ -254,10 +286,15 @@ const Index = () => {
             </div>
             
             <div className="space-y-12 relative z-10">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black space-y-6" style={{
-                lineHeight: '0.85',
-                letterSpacing: '-0.025em',
-              }}>
+              <h1 
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black space-y-6" 
+                style={{
+                  lineHeight: '0.85',
+                  letterSpacing: '-0.025em',
+                }}
+                data-typography="display-headline"
+                data-visual-effect="gradient-text"
+              >
                 <div className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent leading-none">
                   Epistemic Evolution
                 </div>
@@ -267,14 +304,18 @@ const Index = () => {
               </h1>
               
               <div className="max-w-5xl mx-auto space-y-8">
-                <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gray-100/90 font-light leading-relaxed">
+                <p 
+                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gray-100/90 font-light leading-relaxed"
+                  data-typography="hero-description"
+                >
                   Not an assistant. Not a search engine. The world's 
                   <span className="bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent font-medium"> first intelligence scaffold</span>
                   —built to reason, adapt, contradict, and co-develop its cognitive structure in tandem with you.
                 </p>
                 
-                <div className="grid md:grid-cols-3 gap-8 mt-16">
-                  <div className="text-center group">
+                {/* Feature Grid - AI Readable: Three-column feature grid with icon-text pairs */}
+                <div className="grid md:grid-cols-3 gap-8 mt-16" data-component="feature-grid">
+                  <div className="text-center group" data-component="feature-item">
                     <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                       <GitBranch className="text-cyan-400" size={24} />
                     </div>
@@ -282,7 +323,7 @@ const Index = () => {
                     <p className="text-gray-300 text-sm">Beliefs weighted, not accepted or rejected</p>
                   </div>
                   
-                  <div className="text-center group">
+                  <div className="text-center group" data-component="feature-item">
                     <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-purple-400/20 to-pink-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Network className="text-purple-400" size={24} />
                     </div>
@@ -290,7 +331,7 @@ const Index = () => {
                     <p className="text-gray-300 text-sm">Soft arbitration scaling across hypotheses</p>
                   </div>
                   
-                  <div className="text-center group">
+                  <div className="text-center group" data-component="feature-item">
                     <div className="w-12 h-12 mx-auto mb-4 bg-gradient-to-br from-emerald-400/20 to-cyan-500/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Zap className="text-emerald-400" size={24} />
                     </div>
@@ -307,19 +348,24 @@ const Index = () => {
           <button 
             className="neural-glass p-4 group" 
             onClick={() => scrollToNext(2)}
+            data-component="scroll-indicator"
           >
             <ChevronDown size={24} className="text-white transition-transform group-hover:translate-y-1" />
           </button>
         </div>
       </section>
 
-      {/* Enhanced Features Section */}
-      <section className="relative z-10 flex flex-col justify-center px-4 min-h-screen py-16">
+      {/* Enhanced Features Section - AI Readable: Premium card layout with hover effects */}
+      <section 
+        className="relative z-10 flex flex-col justify-center px-4 min-h-screen py-16"
+        data-section="features"
+        data-design-purpose="Premium glassmorphic cards showcasing key features with hover animations"
+      >
         <div className="max-w-7xl mx-auto mb-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12" data-component="feature-cards-grid">
             
-            <div className="neural-glass-premium neural-glass-hover p-10 text-center group relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="neural-glass-premium neural-glass-hover p-10 text-center group relative overflow-hidden" data-component="feature-card">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" data-visual-effect="hover-gradient-overlay" />
               <div className="relative z-10">
                 <div className="w-20 h-20 mx-auto mb-8 bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <Shield size={40} className="text-cyan-400" />
@@ -336,8 +382,8 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="neural-glass-premium neural-glass-hover p-10 text-center group relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-400/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="neural-glass-premium neural-glass-hover p-10 text-center group relative overflow-hidden" data-component="feature-card">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-400/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" data-visual-effect="hover-gradient-overlay" />
               <div className="relative z-10">
                 <div className="w-20 h-20 mx-auto mb-8 bg-gradient-to-br from-purple-400/20 to-pink-500/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <Brain size={40} className="text-purple-400" />
@@ -354,8 +400,8 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="neural-glass-premium neural-glass-hover p-10 text-center group relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="neural-glass-premium neural-glass-hover p-10 text-center group relative overflow-hidden" data-component="feature-card">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" data-visual-effect="hover-gradient-overlay" />
               <div className="relative z-10">
                 <div className="w-20 h-20 mx-auto mb-8 bg-gradient-to-br from-emerald-400/20 to-cyan-500/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <Eye size={40} className="text-emerald-400" />
@@ -374,15 +420,16 @@ const Index = () => {
           </div>
         </div>
 
+        {/* Philosophy Statement Card - AI Readable: Large centered statement with premium styling */}
         <div className="max-w-5xl mx-auto text-center">
-          <div className="neural-glass-premium p-16 relative overflow-hidden">
-            <div className="absolute inset-0">
+          <div className="neural-glass-premium p-16 relative overflow-hidden" data-component="philosophy-statement">
+            <div className="absolute inset-0" data-component="decorative-lines">
               <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-cyan-400/30 to-transparent opacity-60" />
               <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-purple-400/30 to-transparent opacity-60" />
               <div className="absolute top-1/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-400/30 to-transparent opacity-60" />
             </div>
             <div className="relative z-10">
-              <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-relaxed text-gray-100/95 mb-8">
+              <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-relaxed text-gray-100/95 mb-8" data-typography="philosophy-statement">
                 This is not intelligence-as-a-service. It is 
                 <span className="bg-gradient-to-r from-cyan-300 via-purple-300 to-emerald-300 bg-clip-text text-transparent font-medium"> cognition as collaboration</span>.
               </p>
@@ -397,17 +444,24 @@ const Index = () => {
           <button 
             className="neural-glass p-4 group" 
             onClick={() => scrollToNext(4)}
+            data-component="scroll-indicator"
           >
             <ChevronDown size={24} className="text-white transition-transform group-hover:translate-y-1" />
           </button>
         </div>
       </section>
 
-      {/* Premium Demo Request Form */}
-      <section className="relative z-10 flex flex-col justify-center items-center px-4 py-16 min-h-screen">
+      {/* Premium Demo Request Form - AI Readable: Multi-step form with progress indicator and premium styling */}
+      <section 
+        className="relative z-10 flex flex-col justify-center items-center px-4 py-16 min-h-screen"
+        data-section="demo-form"
+        data-design-purpose="Premium multi-step form with progress tracking and neural glassmorphic styling"
+        itemScope 
+        itemType="https://schema.org/ContactPage"
+      >
         <div className="max-w-3xl mx-auto w-full">
-          <div className="neural-glass-premium relative overflow-hidden">
-            <div className="absolute inset-0">
+          <div className="neural-glass-premium relative overflow-hidden" data-component="form-container">
+            <div className="absolute inset-0" data-component="premium-borders">
               <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
               <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-400/50 to-transparent" />
               <div className="absolute left-0 top-0 w-px h-full bg-gradient-to-b from-transparent via-emerald-400/50 to-transparent" />
@@ -415,12 +469,13 @@ const Index = () => {
             </div>
             
             <div className="p-8 sm:p-12 relative z-10">
-              <div className="text-center mb-12">
+              <div className="text-center mb-12" data-component="form-header">
                 <div className="inline-block p-6 rounded-3xl neural-glass mb-6">
                   <img 
                     src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                     alt="MemDuo" 
                     className="h-16 sm:h-20 w-auto"
+                    data-component="form-logo"
                   />
                 </div>
                 <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight text-white">
@@ -434,7 +489,8 @@ const Index = () => {
                 </p>
               </div>
 
-              <div className="text-center mb-8">
+              {/* Progress Indicator - AI Readable: Visual progress bar with gradient styling */}
+              <div className="text-center mb-8" data-component="progress-indicator">
                 <div className="flex items-center justify-between text-sm text-gray-200 mb-4">
                   <span className="font-medium">Application Progress</span>
                   <span className={`font-bold text-lg ${getFormProgress() === 100 ? 'text-emerald-300' : 'text-cyan-300'}`}>
@@ -445,15 +501,16 @@ const Index = () => {
                   <div 
                     className="bg-gradient-to-r from-cyan-400 via-purple-500 to-emerald-400 h-3 rounded-full transition-all duration-1000 relative"
                     style={{ width: `${getFormProgress()}%` }}
+                    data-visual-effect="animated-progress-bar"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full animate-pulse" />
                   </div>
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-8">
+              <form onSubmit={handleSubmit} className="space-y-8" data-component="multi-step-form">
                 {step === 1 && (
-                  <>
+                  <div data-form-step="personal-info">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="firstName" className="flex items-center gap-2 text-sm font-bold text-white mb-3">
@@ -469,6 +526,7 @@ const Index = () => {
                             className="neural-input py-4 rounded-xl font-medium"
                             placeholder="Enter your first name"
                             required
+                            data-input-type="neural-styled"
                           />
                           {firstName && (
                             <CheckCircle size={20} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400" />
@@ -489,6 +547,7 @@ const Index = () => {
                             className="neural-input py-4 rounded-xl font-medium"
                             placeholder="Enter your last name"
                             required
+                            data-input-type="neural-styled"
                           />
                           {lastName && (
                             <CheckCircle size={20} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400" />
@@ -511,6 +570,7 @@ const Index = () => {
                           className="neural-input py-4 rounded-xl font-medium"
                           placeholder="your@organization.com"
                           required
+                          data-input-type="neural-styled"
                         />
                         {email && (
                           <CheckCircle size={20} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-emerald-400" />
@@ -524,7 +584,7 @@ const Index = () => {
                         Professional Role *
                       </label>
                       <Select value={role} onValueChange={setRole} required>
-                        <SelectTrigger className="neural-input py-4 rounded-xl font-medium">
+                        <SelectTrigger className="neural-input py-4 rounded-xl font-medium" data-input-type="neural-styled">
                           <SelectValue placeholder="Select your role" />
                         </SelectTrigger>
                         <SelectContent className="neural-glass border-white/20">
@@ -545,6 +605,7 @@ const Index = () => {
                         onClick={() => setStep(2)}
                         className="w-full neural-glass-premium neural-glass-hover text-white font-bold py-4 text-lg group relative overflow-hidden"
                         disabled={!firstName || !lastName || !email || !role}
+                        data-button-type="premium-cta"
                       >
                         <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-purple-500/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                         <span className="relative bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
@@ -553,11 +614,11 @@ const Index = () => {
                         <ChevronDown className="ml-2 w-5 h-5 rotate-[-90deg]" />
                       </Button>
                     </div>
-                  </>
+                  </div>
                 )}
 
                 {step === 2 && (
-                  <>
+                  <div data-form-step="detailed-info">
                     <div>
                       <label htmlFor="organization" className="flex items-center gap-2 text-sm font-bold text-white mb-3">
                         <Building size={16} className="text-purple-400" />
@@ -570,6 +631,7 @@ const Index = () => {
                         onChange={(e) => setOrganization(e.target.value)}
                         className="neural-input py-4 rounded-xl font-medium"
                         placeholder="Your organization name"
+                        data-input-type="neural-styled"
                       />
                     </div>
 
@@ -579,7 +641,7 @@ const Index = () => {
                         Research Area / Focus
                       </label>
                       <Select value={researchArea} onValueChange={setResearchArea}>
-                        <SelectTrigger className="neural-input py-4 rounded-xl font-medium">
+                        <SelectTrigger className="neural-input py-4 rounded-xl font-medium" data-input-type="neural-styled">
                           <SelectValue placeholder="Select your area of focus" />
                         </SelectTrigger>
                         <SelectContent className="neural-glass border-white/20">
@@ -609,6 +671,7 @@ const Index = () => {
                         className="neural-input min-h-[120px] p-4 rounded-xl font-medium"
                         placeholder="How do you envision using MemDuo's cognitive partnership capabilities in your work?"
                         maxLength={300}
+                        data-input-type="neural-styled"
                       />
                       <div className="mt-2 text-xs text-gray-400 text-right">
                         {useCase.length}/300 characters
@@ -621,7 +684,7 @@ const Index = () => {
                         Timeline Interest
                       </label>
                       <Select value={timeline} onValueChange={setTimeline}>
-                        <SelectTrigger className="neural-input py-4 rounded-xl font-medium">
+                        <SelectTrigger className="neural-input py-4 rounded-xl font-medium" data-input-type="neural-styled">
                           <SelectValue placeholder="When would you like access?" />
                         </SelectTrigger>
                         <SelectContent className="neural-glass border-white/20">
@@ -639,6 +702,7 @@ const Index = () => {
                         type="submit"
                         disabled={isSubmitting}
                         className="w-full neural-glass-premium neural-glass-hover text-white font-bold py-4 text-lg group relative overflow-hidden"
+                        data-button-type="premium-submit"
                       >
                         {isSubmitting ? (
                           <span className="flex items-center justify-center gap-3">
@@ -647,7 +711,7 @@ const Index = () => {
                           </span>
                         ) : (
                           <>
-                            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-purple-500/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-purple-500/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" data-visual-effect="gradient-slide" />
                             <span className="relative bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent font-medium">
                               Submit Application
                             </span>
@@ -662,12 +726,13 @@ const Index = () => {
                           onClick={() => setStep(1)}
                           variant="outline"
                           className="w-full neural-glass text-white border-white/20 hover:border-white/40 py-3"
+                          data-button-type="secondary-navigation"
                         >
                           Back to Previous Step
                         </Button>
                       </div>
                     </div>
-                  </>
+                  </div>
                 )}
 
                 <div className="text-center pt-6">
@@ -681,8 +746,14 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Enhanced Footer */}
-      <footer className="relative z-10 py-16 px-4 text-center neural-glass-premium">
+      {/* Enhanced Footer - AI Readable: Site footer with branding and descriptive text */}
+      <footer 
+        className="relative z-10 py-16 px-4 text-center neural-glass-premium"
+        data-section="footer"
+        data-design-purpose="Site footer with branding and company information"
+        itemScope 
+        itemType="https://schema.org/Organization"
+      >
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <div className="inline-block p-4 neural-glass rounded-2xl mb-4">
@@ -690,13 +761,15 @@ const Index = () => {
                 src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                 alt="MemDuo" 
                 className="h-12 w-auto"
+                itemProp="logo"
+                data-component="footer-logo"
               />
             </div>
           </div>
-          <p className="text-gray-400 text-lg mb-4">
+          <p className="text-gray-400 text-lg mb-4" itemProp="description">
             Intelligence scaffolding for epistemic evolution
           </p>
-          <p className="text-gray-500 text-base">
+          <p className="text-gray-500 text-base" itemProp="copyrightNotice">
             © 2025 MemDuo.com — First Cognitive Partnership System
           </p>
         </div>
