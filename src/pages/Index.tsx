@@ -130,7 +130,7 @@ const Index = () => {
     <div className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white overflow-x-hidden">
       <BackgroundVideo />
       
-      {/* Unified Floating CTA */}
+      {/* Unified Floating CTA - using glass-unified */}
       <div className={`fixed top-6 right-6 z-50 transition-all duration-700 ${
         showFloatingCTA 
           ? 'opacity-100 translate-y-0' 
@@ -138,7 +138,7 @@ const Index = () => {
       }`}>
         <Button
           onClick={() => scrollToNext(3)}
-          className="glass-cta text-white font-bold px-6 py-3"
+          className="glass-unified glass-unified-hover text-white font-bold px-6 py-3"
         >
           <span className="bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
             Request Access
@@ -163,10 +163,10 @@ const Index = () => {
           </div>
         </div>
         
-        {/* Unified Scroll Indicator */}
+        {/* Unified Scroll Indicator - using glass-unified */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
           <button 
-            className="glass-cta p-4 hover:scale-110" 
+            className="glass-unified glass-unified-hover p-4" 
             onClick={() => scrollToNext(1)}
           >
             <ChevronDown size={24} className="text-white" />
@@ -177,7 +177,7 @@ const Index = () => {
       {/* Ultra-Modern Heading Section */}
       <section className="relative z-10 flex flex-col items-center justify-center px-4 min-h-screen">
         <div className="text-center max-w-6xl mx-auto animate-fade-in">
-          <div className="glass-card-accent p-12 sm:p-16 md:p-20">
+          <div className="glass-unified p-12 sm:p-16 md:p-20">
             <div className="space-y-8 sm:space-y-12">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black space-y-4 sm:space-y-6 md:space-y-8" style={{
                 lineHeight: '0.9',
@@ -200,7 +200,7 @@ const Index = () => {
         
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
           <button 
-            className="glass-cta p-4 hover:scale-110" 
+            className="glass-unified glass-unified-hover p-4" 
             onClick={() => scrollToNext(2)}
           >
             <ChevronDown size={24} className="text-white" />
@@ -208,13 +208,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Unified Features Section */}
+      {/* Unified Features Section - ALL cards use glass-unified */}
       <section className="relative z-10 flex flex-col justify-center px-4 min-h-screen py-16">
         <div className="max-w-7xl mx-auto mb-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             
             {/* Feature Card 1 - Unified Styling */}
-            <div className="glass-card-primary glass-card-hover p-8 text-center">
+            <div className="glass-unified glass-unified-hover p-8 text-center">
               <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-xl flex items-center justify-center">
                 <Shield size={32} className="text-cyan-400" />
               </div>
@@ -226,7 +226,7 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="glass-card-primary glass-card-hover p-8 text-center">
+            <div className="glass-unified glass-unified-hover p-8 text-center">
               <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-purple-400/20 to-pink-500/20 rounded-xl flex items-center justify-center">
                 <Brain size={32} className="text-purple-400" />
               </div>
@@ -238,7 +238,7 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="glass-card-primary glass-card-hover p-8 text-center">
+            <div className="glass-unified glass-unified-hover p-8 text-center">
               <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-emerald-400/20 to-cyan-500/20 rounded-xl flex items-center justify-center">
                 <Eye size={32} className="text-emerald-400" />
               </div>
@@ -252,9 +252,9 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Unified Summary Card */}
+        {/* Unified Summary Card - using glass-unified */}
         <div className="max-w-5xl mx-auto text-center">
-          <div className="glass-card-secondary p-12 sm:p-16">
+          <div className="glass-unified p-12 sm:p-16">
             <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light leading-relaxed text-gray-100">
               MemDuo grows alongside you — adapting its knowledge, staying aligned with your short and long‑term intent, and never hallucinating — by design.
             </p>
@@ -263,7 +263,7 @@ const Index = () => {
 
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
           <button 
-            className="glass-cta p-4 hover:scale-110" 
+            className="glass-unified glass-unified-hover p-4" 
             onClick={() => scrollToNext(3)}
           >
             <ChevronDown size={24} className="text-white" />
@@ -271,14 +271,14 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Unified Form Section */}
+      {/* Unified Form Section - using glass-unified */}
       <section className="relative z-10 flex flex-col justify-center items-center px-4 py-12 min-h-screen">
         <div className="max-w-2xl mx-auto w-full">
-          <div className="glass-card-form">
+          <div className="glass-unified">
             <div className="p-8 sm:p-12">
               {/* Prominent Logo */}
               <div className="text-center mb-8">
-                <div className="inline-block p-4 rounded-2xl glass-card-accent">
+                <div className="inline-block p-4 rounded-2xl glass-unified">
                   <img 
                     src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                     alt="MemDuo" 
@@ -396,12 +396,12 @@ const Index = () => {
                   </div>
                 </div>
                 
-                {/* Unified Submit Button */}
+                {/* Unified Submit Button - using glass-unified */}
                 <div className="pt-6">
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full glass-cta text-white font-bold py-4 text-lg disabled:opacity-50"
+                    className="w-full glass-unified glass-unified-hover text-white font-bold py-4 text-lg disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center gap-3">
@@ -427,8 +427,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Unified Footer */}
-      <footer className="relative z-10 py-12 px-4 text-center glass-card-secondary">
+      {/* Unified Footer - using glass-unified */}
+      <footer className="relative z-10 py-12 px-4 text-center glass-unified">
         <p className="text-gray-400 text-base">
           © 2025 MemDuo.com
         </p>
