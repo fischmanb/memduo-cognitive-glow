@@ -67,12 +67,14 @@ const PasswordEntry = () => {
             
             <div className="p-8 sm:p-12 relative z-10">
               <div className="text-center mb-8">
-                <div className="inline-block p-8 rounded-2xl neural-glass mb-6">
-                  <img 
-                    src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
-                    alt="MemDuo" 
-                    className="h-32 w-auto"
-                  />
+                <div className="inline-block p-6 rounded-2xl neural-glass mb-6">
+                  <div className="bg-white rounded-xl p-4">
+                    <img 
+                      src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+                      alt="MemDuo" 
+                      className="h-20 w-auto"
+                    />
+                  </div>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight">
                   <span className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
