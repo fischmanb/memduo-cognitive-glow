@@ -246,15 +246,15 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
           <button 
-            className="neural-glass p-4 group relative overflow-hidden" 
+            className="neural-glass p-4 group relative overflow-hidden pointer-events-auto cursor-pointer" 
             onClick={() => scrollToNext(1)}
             data-component="scroll-indicator"
             data-design-element="glassmorphic-navigation"
           >
-            <ChevronDown size={24} className="text-white transition-transform group-hover:translate-y-1" />
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-purple-400/10 scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full" />
+            <ChevronDown size={24} className="text-white transition-transform group-hover:translate-y-1 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-purple-400/10 scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full pointer-events-none" />
           </button>
         </div>
       </section>
