@@ -81,9 +81,20 @@ const PasswordEntry = () => {
                     Private Access
                   </span>
                 </h1>
-                <p className="text-gray-300 text-lg leading-relaxed">
+                <p className="text-gray-300 text-lg leading-relaxed mb-6">
                   Enter your access code to continue to the MemDuo demonstration interface.
                 </p>
+                
+                {/* Tagline */}
+                <div className="border-t border-white/10 pt-6 mb-2">
+                  <p className="text-sm leading-relaxed text-gray-300">
+                    The world's first{" "}
+                    <span className="bg-gradient-to-r from-cyan-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent font-semibold">
+                      intelligence scaffold
+                    </span>
+                    .
+                  </p>
+                </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -148,17 +159,6 @@ const PasswordEntry = () => {
                 </p>
               </div>
             </div>
-          </div>
-
-          {/* Tagline */}
-          <div className="text-center mt-8 px-4">
-            <p className="text-sm sm:text-base leading-relaxed text-gray-300">
-              The world's first{" "}
-              <span className="bg-gradient-to-r from-cyan-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent font-semibold">
-                intelligence scaffold
-              </span>
-              .
-            </p>
           </div>
         </div>
       </div>
