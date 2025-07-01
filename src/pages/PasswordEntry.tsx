@@ -66,17 +66,15 @@ const PasswordEntry = () => {
             
             <div className="p-8 sm:p-12 relative z-10">
               <div className="text-center mb-8">
-                <div className="inline-block p-6 rounded-2xl neural-glass mb-6">
-                  <div className="neural-glass rounded-xl p-4 border border-white/20">
-                    <img 
-                      src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
-                      alt="MemDuo" 
-                      className="h-20 w-auto"
-                      style={{
-                        filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))',
-                      }}
-                    />
-                  </div>
+                <div className="inline-block p-6 rounded-2xl mb-6 backdrop-filter backdrop-blur-24 bg-gradient-to-br from-slate-800/60 via-slate-900/40 to-black/50 border border-white/20 shadow-2xl">
+                  <img 
+                    src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+                    alt="MemDuo" 
+                    className="h-20 w-auto"
+                    style={{
+                      filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))',
+                    }}
+                  />
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight">
                   <span className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
