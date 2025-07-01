@@ -173,7 +173,7 @@ const Index = () => {
           onClick={logout}
           variant="outline"
           size="sm"
-          className="neural-glass text-white border-white/20 hover:border-white/40 hover:bg-white/5 backdrop-blur-sm"
+          className="bg-white/5 backdrop-blur-md border border-white/10 text-white/90 hover:bg-white/10 hover:border-white/20 hover:text-white transition-all duration-200 rounded-lg px-4 py-2"
         >
           <LogOut size={16} className="mr-2" />
           Exit
