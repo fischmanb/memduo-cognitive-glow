@@ -3,42 +3,30 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* PREMIUM NEURAL GLASSMORPHIC DESIGN SYSTEM */
 
 @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
-
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-
     --radius: 0.5rem;
-
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -52,28 +40,20 @@ All colors MUST be HSL.
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
@@ -95,6 +75,7 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 
   html {
@@ -119,52 +100,138 @@ All colors MUST be HSL.
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    line-height: 1.2;
-    padding: 0.1em 0;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
   }
 }
 
 @layer components {
-  /* UNIFIED GLASS SYSTEM - Only 2 classes control ALL glassmorphic elements */
   
-  /* Base glass style - used by ALL cards, forms, CTAs, etc */
-  .glass-unified {
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 1rem;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  /* PREMIUM NEURAL GLASSMORPHIC SYSTEM */
+  
+  /* Advanced Neural Glass Base */
+  .neural-glass {
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      rgba(255, 255, 255, 0.12) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 1.5rem;
+    box-shadow: 
+      0 20px 40px -12px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  /* Hover variant - consistent hover effect for interactive elements */
-  .glass-unified-hover:hover {
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.35);
-    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05);
-    transform: translateY(-8px);
+  /* Premium Neural Glass with Enhanced Depth */
+  .neural-glass-premium {
+    backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+    -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(147, 197, 253, 0.05) 25%,
+      rgba(139, 92, 246, 0.03) 50%,
+      rgba(16, 185, 129, 0.04) 75%,
+      rgba(255, 255, 255, 0.08) 100%
+    );
+    border: 1px solid;
+    border-image: linear-gradient(135deg, 
+      rgba(147, 197, 253, 0.3),
+      rgba(139, 92, 246, 0.2),
+      rgba(16, 185, 129, 0.25)
+    ) 1;
+    border-radius: 2rem;
+    box-shadow: 
+      0 30px 60px -12px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      inset 0 0 20px rgba(147, 197, 253, 0.02);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  /* Neural Glass Hover Effects */
+  .neural-glass-hover:hover {
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(147, 197, 253, 0.08) 25%,
+      rgba(139, 92, 246, 0.06) 50%,
+      rgba(16, 185, 129, 0.07) 75%,
+      rgba(255, 255, 255, 0.12) 100%
+    );
+    border-color: rgba(147, 197, 253, 0.4);
+    box-shadow: 
+      0 40px 80px -12px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(255, 255, 255, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      0 0 40px rgba(147, 197, 253, 0.1);
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  /* Neural Input Fields */
+  .neural-input {
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    background: linear-gradient(135deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .neural-input:focus {
+    background: linear-gradient(135deg,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(6, 182, 212, 0.1) 50%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
+    border-color: rgba(6, 182, 212, 0.6);
+    box-shadow: 
+      0 0 0 3px rgba(6, 182, 212, 0.15),
+      0 8px 32px rgba(6, 182, 212, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .neural-input:hover:not(:focus) {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: linear-gradient(135deg,
+      rgba(0, 0, 0, 0.45) 0%,
+      rgba(0, 0, 0, 0.25) 50%,
+      rgba(0, 0, 0, 0.35) 100%
+    );
+  }
+
+  .neural-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
   }
 }
 
 @layer utilities {
-  /* Enhanced animations with better performance and more sophisticated effects */
+  
+  /* Advanced Animations */
   .animate-fade-in {
-    animation: fade-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  .animate-fade-in-up {
-    animation: fade-in-up 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: fade-in 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     opacity: 0;
     transform: translateY(30px);
   }
 
-  .animate-scale-in {
-    animation: scale-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    opacity: 0;
-    transform: scale(0.8);
+  .animate-bounce-slow {
+    animation: bounce-slow 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
   @keyframes fade-in {
@@ -174,103 +241,27 @@ All colors MUST be HSL.
     }
   }
 
-  @keyframes fade-in-up {
-    to {
-      opacity: 1;
+  @keyframes bounce-slow {
+    0%, 100% {
       transform: translateY(0);
     }
+    50% {
+      transform: translateY(-10px);
+    }
   }
 
-  @keyframes scale-in {
-    to {
-      opacity: 1;
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.6;
       transform: scale(1);
     }
-  }
-
-  /* Enhanced pulse with smoother timing */
-  .animate-pulse-smooth {
-    animation: pulse-smooth 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes pulse-smooth {
-    0%, 100% {
-      opacity: 1;
-    }
     50% {
-      opacity: 0.7;
+      opacity: 0.9;
+      transform: scale(1.05);
     }
   }
 
-  /* Enhanced backdrop blur with better browser support */
-  .backdrop-blur-sm {
-    backdrop-filter: blur(4px) saturate(180%);
-    -webkit-backdrop-filter: blur(4px) saturate(180%);
-  }
-
-  .backdrop-blur-md {
-    backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
-  }
-
-  .backdrop-blur-lg {
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-  }
-
-  .backdrop-blur-xl {
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-  }
-
-  /* Enhanced form fields with better visual feedback */
-  .enhanced-form-field {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .enhanced-form-field:focus {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.15), 0 0 0 3px rgba(74, 144, 226, 0.1);
-  }
-
-  .enhanced-form-field:hover:not(:focus) {
-    transform: translateY(-0.5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Enhanced group focus effects */
-  .group:focus-within label {
-    color: rgba(74, 144, 226, 1);
-    transform: translateY(-1px);
-  }
-
-  /* Improved button hover effects */
-  .group:hover .group-hover\:translate-x-full {
-    transform: translateX(100%);
-  }
-
-  /* Enhanced scrollbar with better styling */
-  textarea::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  textarea::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
-  }
-
-  textarea::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(74, 144, 226, 0.6), rgba(46, 91, 186, 0.6));
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  textarea::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, rgba(74, 144, 226, 0.8), rgba(46, 91, 186, 0.8));
-  }
-
-  /* Enhanced gradient text with better browser support */
+  /* Enhanced Gradient Text */
   .bg-clip-text {
     -webkit-background-clip: text;
     background-clip: text;
@@ -279,173 +270,116 @@ All colors MUST be HSL.
     background-image: linear-gradient(135deg, var(--tw-gradient-stops));
   }
 
-  /* Enhanced bounce animation with better timing */
-  @keyframes bounce-smooth {
-    0%, 100% {
-      transform: translateY(-15%);
-      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-    }
-    50% {
-      transform: none;
-      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    }
+  /* Enhanced Backdrop Blur */
+  .backdrop-blur-premium {
+    backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
+    -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(1.1);
   }
 
-  .animate-bounce {
-    animation: bounce-smooth 2s infinite;
-  }
-
-  /* Enhanced transform support with hardware acceleration */
-  .transform {
+  /* Transform Optimizations */
+  .transform-gpu {
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
     will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 
-  .hover\:scale-105:hover {
-    transform: scale(1.05) translateZ(0);
-    -webkit-transform: scale(1.05) translateZ(0);
+  /* Enhanced Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
   }
 
-  .hover\:scale-110:hover {
-    transform: scale(1.1) translateZ(0);
-    -webkit-transform: scale(1.1) translateZ(0);
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
   }
 
-  .hover\:scale-125:hover {
-    transform: scale(1.25) translateZ(0);
-    -webkit-transform: scale(1.25) translateZ(0);
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, 
+      rgba(147, 197, 253, 0.6),
+      rgba(139, 92, 246, 0.6)
+    );
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .hover\:scale-\[1\.02\]:hover {
-    transform: scale(1.02) translateZ(0);
-    -webkit-transform: scale(1.02) translateZ(0);
-  }
-
-  .active\:scale-\[0\.98\]:active {
-    transform: scale(0.98) translateZ(0);
-    -webkit-transform: scale(0.98) translateZ(0);
-  }
-
-  /* Enhanced opacity transitions */
-  .transition-opacity {
-    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    -webkit-transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Enhanced filter support */
-  .drop-shadow-lg {
-    filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
-    -webkit-filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
-  }
-
-  /* Enhanced shadow utilities */
-  .shadow-3xl {
-    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  }
-
-  /* Enhanced flex support */
-  .flex {
-    display: flex;
-    display: -webkit-flex;
-  }
-
-  .flex-col {
-    flex-direction: column;
-    -webkit-flex-direction: column;
-  }
-
-  .items-center {
-    align-items: center;
-    -webkit-align-items: center;
-  }
-
-  .justify-center {
-    justify-content: center;
-    -webkit-justify-content: center;
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, 
+      rgba(147, 197, 253, 0.8),
+      rgba(139, 92, 246, 0.8)
+    );
   }
 }
 
-/* Enhanced Safari-specific optimizations */
-@supports (-webkit-appearance: none) {
-  .enhanced-form-field {
-    -webkit-appearance: none !important;
-    background: rgba(0, 0, 0, 0.3) !important;
-    border: 2px solid rgba(255, 255, 255, 0.3) !important;
-    color: white !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  .enhanced-form-field:focus {
-    background: rgba(0, 0, 0, 0.4) !important;
-    border-color: rgba(74, 144, 226, 1) !important;
-  }
-
-  .enhanced-form-field:hover:not(:focus) {
-    border-color: rgba(255, 255, 255, 0.4) !important;
-  }
-
-  .enhanced-form-field::placeholder {
-    color: rgba(255, 255, 255, 0.6) !important;
-    opacity: 1 !important;
-  }
-  
-  .backdrop-blur-sm,
-  .backdrop-blur-md,
-  .backdrop-blur-lg,
-  .backdrop-blur-xl {
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    backdrop-filter: blur(16px) saturate(180%);
+/* Dark Theme Optimizations */
+@media (prefers-color-scheme: dark) {
+  .neural-glass,
+  .neural-glass-premium {
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(147, 197, 253, 0.03) 25%,
+      rgba(139, 92, 246, 0.02) 50%,
+      rgba(16, 185, 129, 0.025) 75%,
+      rgba(255, 255, 255, 0.04) 100%
+    );
   }
 }
 
-/* Fallback for browsers without backdrop-filter support */
-@supports not (backdrop-filter: blur(1px)) {
-  .backdrop-blur-sm,
-  .backdrop-blur-md,
-  .backdrop-blur-lg,
-  .backdrop-blur-xl {
-    background: rgba(0, 0, 0, 0.8) !important;
-  }
-
-  .enhanced-form-field {
-    background: rgba(0, 0, 0, 0.6) !important;
-  }
-}
-
-/* Additional performance optimizations */
+/* Reduced Motion Preferences */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in,
-  .animate-fade-in-up,
-  .animate-scale-in,
-  .animate-bounce {
+  .animate-bounce-slow,
+  .animate-pulse-slow {
     animation: none;
     opacity: 1;
     transform: none;
   }
   
-  .transition-all,
-  .transition-opacity,
-  .enhanced-form-field {
+  .neural-glass,
+  .neural-glass-premium,
+  .neural-input {
     transition: none;
   }
 }
 
-/* Enhanced mobile responsiveness */
+/* Mobile Optimizations */
 @media (max-width: 640px) {
-  .animate-fade-in,
-  .animate-fade-in-up {
+  .neural-glass-premium {
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+  }
+  
+  .neural-glass-hover:hover {
+    transform: none;
+  }
+  
+  .animate-fade-in {
     animation-duration: 0.6s;
   }
-  
-  .enhanced-form-field:focus {
-    transform: none;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .neural-glass,
+  .neural-glass-premium {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.4);
   }
   
-  .hover\:scale-105:hover,
-  .hover\:scale-110:hover,
-  .hover\:scale-125:hover {
-    transform: none;
+  .neural-input {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .neural-glass,
+  .neural-glass-premium,
+  .neural-input {
+    background: white;
+    border: 1px solid black;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
