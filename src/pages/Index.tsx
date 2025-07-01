@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -427,7 +428,7 @@ const Index = () => {
                   Private Demo Access
                 </h2>
                 <p className="text-xl text-gray-300 mb-4 leading-relaxed">
-                  Exclusive opportunities for select researchers, media, and investors to experience the FGM-aligned intelligence scaffold.
+                  Exclusive opportunities for select researchers, media, and investors to experience the next-generation intelligence scaffold.
                 </p>
                 <p className="text-lg text-gray-400">
                   Applications reviewed within 48 hours
@@ -694,7 +695,7 @@ const Index = () => {
             Intelligence scaffolding for epistemic evolution
           </p>
           <p className="text-gray-500 text-base">
-            © 2025 MemDuo.com — FGM-Aligned Cognitive Partnership
+            © 2025 MemDuo.com — Advanced Cognitive Partnership
           </p>
         </div>
       </footer>
