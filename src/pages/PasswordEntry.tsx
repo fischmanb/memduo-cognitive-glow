@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,7 +67,7 @@ const PasswordEntry = () => {
             
             <div className="p-8 sm:p-12 relative z-10">
               <div className="text-center mb-8">
-                <div className="inline-block p-6 rounded-2xl mb-6 backdrop-filter backdrop-blur-24 bg-gradient-to-br from-slate-800/60 via-slate-900/40 to-black/50 border border-white/20 shadow-2xl">
+                <div className="inline-block p-6 rounded-2xl mb-6 neural-glass backdrop-filter backdrop-blur-24 bg-gradient-to-br from-slate-800/60 via-slate-900/40 to-black/50 border border-white/20 shadow-2xl">
                   <img 
                     src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
                     alt="MemDuo" 
