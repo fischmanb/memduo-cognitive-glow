@@ -1,14 +1,14 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Brain, Shield, Eye, User, Mail, MessageSquare, CheckCircle, ChevronDown, Loader2, Sparkles, Network, GitBranch, Zap, Users, Building, GraduationCap, Newspaper, TrendingUp } from "lucide-react";
+import { Brain, Shield, Eye, User, Mail, MessageSquare, CheckCircle, ChevronDown, Loader2, Sparkles, Network, GitBranch, Zap, Users, Building, GraduationCap, Newspaper, TrendingUp, LogOut } from "lucide-react";
 import BackgroundVideo from "../components/BackgroundVideo";
 import NeuralBackground from "../components/NeuralBackground";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "../contexts/AuthContext";
 
 const Index = () => {
   const [step, setStep] = useState(1);
@@ -25,6 +25,7 @@ const Index = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
   const { toast } = useToast();
+  const { logout } = useAuth();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -165,6 +166,19 @@ const Index = () => {
           background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(147, 197, 253, 0.06), transparent 40%)`
         }}
       />
+      
+      {/* Logout Button */}
+      <div className="fixed top-6 left-6 z-50">
+        <Button
+          onClick={logout}
+          variant="outline"
+          size="sm"
+          className="neural-glass text-white border-white/20 hover:border-white/40 hover:bg-white/5 backdrop-blur-sm"
+        >
+          <LogOut size={16} className="mr-2" />
+          Exit
+        </Button>
+      </div>
       
       {/* Premium Floating CTA */}
       <div className={`fixed top-6 right-6 z-50 transition-all duration-700 ${
