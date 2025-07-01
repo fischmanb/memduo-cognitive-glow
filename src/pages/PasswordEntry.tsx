@@ -150,6 +150,21 @@ const PasswordEntry = () => {
               </div>
             </div>
           </div>
+
+          {/* Tagline */}
+          <div className="text-center mt-8 px-4">
+            <p className="text-sm sm:text-base leading-relaxed text-gray-300">
+              The world's first{" "}
+              <span className="bg-gradient-to-r from-cyan-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent font-semibold">
+                intelligence scaffold
+              </span>
+              —built to{" "}
+              <span className="bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent font-semibold">
+                reason, adapt, contradict
+              </span>
+              , and co-develop its cognitive structure in tandem with you.
+            </p>
+          </div>
         </div>
       </div>
     </div>
