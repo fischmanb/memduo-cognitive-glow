@@ -634,32 +634,32 @@ const Index = () => {
                       </Select>
                     </div>
 
-                    <div className="flex gap-4 pt-4">
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
                       <Button
                         type="button"
                         onClick={() => setStep(1)}
                         variant="outline"
-                        className="flex-1 neural-glass text-white border-white/20 hover:border-white/40 py-4"
+                        className="w-full sm:flex-1 neural-glass text-white border-white/20 hover:border-white/40 py-4 order-2 sm:order-1"
                       >
                         Back
                       </Button>
                       <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 neural-glass-premium neural-glass-hover text-white font-bold py-4 text-lg group relative overflow-hidden"
+                        className="w-full sm:flex-1 neural-glass-premium neural-glass-hover text-white font-bold py-4 text-base sm:text-lg group relative overflow-hidden order-1 sm:order-2"
                       >
                         {isSubmitting ? (
                           <span className="flex items-center justify-center gap-3">
                             <Loader2 className="w-5 h-5 animate-spin" />
-                            Submitting Application...
+                            <span className="text-sm sm:text-base">Submitting...</span>
                           </span>
                         ) : (
                           <>
                             <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-purple-500/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                            <span className="relative bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
+                            <span className="relative bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent text-sm sm:text-base font-medium">
                               Submit Application
                             </span>
-                            <Sparkles className="ml-2 w-5 h-5" />
+                            <Sparkles className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                           </>
                         )}
                       </Button>
