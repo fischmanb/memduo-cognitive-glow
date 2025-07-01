@@ -187,7 +187,7 @@ const Index = () => {
           : 'opacity-0 -translate-y-12 pointer-events-none'
       }`}>
         <Button
-          onClick={() => scrollToNext(3)}
+          onClick={() => scrollToNext(4)}
           className="neural-glass-premium text-white font-bold px-8 py-4 group relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-purple-500/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
@@ -396,7 +396,7 @@ const Index = () => {
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
           <button 
             className="neural-glass p-4 group" 
-            onClick={() => scrollToNext(3)}
+            onClick={() => scrollToNext(4)}
           >
             <ChevronDown size={24} className="text-white transition-transform group-hover:translate-y-1" />
           </button>
