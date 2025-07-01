@@ -79,7 +79,7 @@ const PasswordEntry = () => {
                           filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))',
                         }}
                       />
-                      <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-full">
+                      <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-full">
                         <div className="border-t border-white/10 pt-2">
                           <p className="text-sm leading-relaxed text-gray-300">
                             The world's first{" "}
