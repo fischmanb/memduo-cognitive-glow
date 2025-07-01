@@ -82,7 +82,7 @@ const PasswordEntry = () => {
                 <div className="mb-4">
                   <p className="text-sm leading-relaxed text-gray-300">
                     The world's first{" "}
-                    <span className="bg-gradient-to-r from-cyan-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent font-semibold">
+                    <span className="bg-gradient-to-r from-cyan-300 via-purple-300 to-cyan-200 bg-clip-text text-transparent font-semibold">
                       co-evolving intelligence scaffold
                     </span>
                     .
