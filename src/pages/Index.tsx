@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -216,7 +215,7 @@ const Index = () => {
             
             {/* Orbital Elements */}
             <div className="absolute top-1/4 -left-12 w-3 h-3 bg-cyan-400/60 rounded-full animate-bounce-slow" />
-            <div className="absolute bottom-1/4 -right-16 w-2 h-2 bg-purple-400/60 rounded-full animate-bounce-slow delay-300" />
+            <div className="absolute bottom-1/4 -right-16 w-2 h-2 bg-purple-400/60 rounded-full animate-bounce-slow" />
             <div className="absolute top-1/2 -right-8 w-1 h-1 bg-emerald-400/60 rounded-full animate-bounce-slow delay-700" />
           </div>
         </div>
@@ -269,8 +268,8 @@ const Index = () => {
               
               <div className="max-w-5xl mx-auto space-y-8">
                 <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gray-100/90 font-light leading-relaxed">
-                  Not an assistant. Not a search engine. An 
-                  <span className="bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent font-medium"> evolving intelligence scaffold</span>
+                  Not an assistant. Not a search engine. The world's 
+                  <span className="bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent font-medium"> first intelligence scaffold</span>
                   —built to reason, adapt, contradict, and co-develop its cognitive structure in tandem with you.
                 </p>
                 
@@ -388,7 +387,7 @@ const Index = () => {
                 <span className="bg-gradient-to-r from-cyan-300 via-purple-300 to-emerald-300 bg-clip-text text-transparent font-medium"> cognition as collaboration</span>.
               </p>
               <p className="text-xl text-gray-300/80 font-light">
-                The operating system for mutual enhancement.
+                The first operating system for mutual enhancement.
               </p>
             </div>
           </div>
@@ -428,7 +427,7 @@ const Index = () => {
                   Private Demo Access
                 </h2>
                 <p className="text-xl text-gray-300 mb-4 leading-relaxed">
-                  Exclusive opportunities for select researchers, media, and investors to experience the next-generation intelligence scaffold.
+                  Exclusive opportunities for select researchers, media, and investors to experience the world's first intelligence scaffold.
                 </p>
                 <p className="text-lg text-gray-400">
                   Applications reviewed within 48 hours
@@ -695,7 +694,7 @@ const Index = () => {
             Intelligence scaffolding for epistemic evolution
           </p>
           <p className="text-gray-500 text-base">
-            © 2025 MemDuo.com — Advanced Cognitive Partnership
+            © 2025 MemDuo.com — First Cognitive Partnership System
           </p>
         </div>
       </footer>
