@@ -143,9 +143,18 @@ const PasswordEntry = () => {
                 </Button>
               </form>
 
-              <div className="text-center pt-6">
+              <div className="text-center pt-6 space-y-3">
                 <p className="text-gray-400 text-sm leading-relaxed">
                   Access codes are provided exclusively for demonstration purposes.
+                </p>
+                <p className="text-gray-400 text-sm">
+                  For all inquiries, click here:{" "}
+                  <a 
+                    href="mailto:info@memduo.com" 
+                    className="font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
+                  >
+                    Contact Us
+                  </a>
                 </p>
               </div>
             </div>
