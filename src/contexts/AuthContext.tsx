@@ -146,7 +146,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const { error } = await supabase.auth.signOut();
+      
+      // Clear auth state
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          localStorage.removeItem(key);
+        }
+      });
+      
+      const { error } = await supabase.auth.signOut({ scope: 'global' });
       
       if (error) {
         console.error('Logout error:', error);
@@ -155,6 +163,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(null);
       setIsAuthenticated(false);
       setEmail(null);
+      
+      // Force redirect to root to go back to access gate
+      window.location.href = '/';
     } catch (error) {
       console.error('Logout error:', error);
     } finally {

@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Index from "./pages/Index";
+import HomePage from "./components/HomePage";
 import AccountSetup from "./pages/AccountSetup";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -26,7 +26,8 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Index />} />
+              {/* Public waitlist/demo page for non-authenticated users */}
+              <Route path="/" element={<HomePage />} />
               <Route path="/setup" element={<AccountSetup />} />
               <Route path="/register" element={<Register />} />
               <Route 
