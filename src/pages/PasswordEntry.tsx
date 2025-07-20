@@ -239,9 +239,6 @@ const PasswordEntry = () => {
                     placeholder="Enter your email address"
                     disabled={isSubmitting}
                   />
-                  <p className="text-gray-400 text-xs mt-2">
-                    Use with backend password for full access, or leave empty for demo access
-                  </p>
                 </div>
 
                 <div>
@@ -300,9 +297,6 @@ const PasswordEntry = () => {
               </form>
 
               <div className="text-center pt-6 space-y-3">
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  Use the 256-character master code for demo access, or backend credentials for full features.
-                </p>
                 <p className="text-gray-400 text-sm">
                   For all inquiries, click here:{" "}
                   <a 
