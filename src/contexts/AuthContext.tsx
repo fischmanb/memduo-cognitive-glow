@@ -1,142 +1,20 @@
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { apiClient } from "@/lib/api";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { User } from '@supabase/supabase-js';
 
 interface AuthContextType {
+  user: User | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   email: string | null;
-  login: (password: string, email?: string) => Promise<boolean>;
-  logout: () => void;
-  setUserEmail: (email: string) => void;
-  user: any | null;
+  login: (email: string, password: string) => Promise<boolean>;
+  logout: () => Promise<void>;
+  register: (email: string, password: string, firstName: string, lastName: string) => Promise<boolean>;
+  resetPassword: (email: string) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-const MASTER_PASSWORD = "xN$Z3m*Pu9!q67VMEkDyYhBp2WAfsRt#XLbgUcJzFo81^rCnQa@e4+svK!THdM%iL5wNzE_jX^9&RGUu#ybVm$PqoYCZtlMBhf7nADJrx%S*83EWKgT+p3HRdkA$_zFNjvVBwX95q!4YeTruXKJ*Q^gmLhAZ8os1MF^RW2&uUEPqNDJbGh6LVz";
-
-// This array can be extended with single-use passwords
-const VALID_PASSWORDS = [MASTER_PASSWORD];
-
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [email, setEmail] = useState<string | null>(null);
-  const [user, setUser] = useState<any | null>(null);
-
-  useEffect(() => {
-    // Check for existing MemDuo token
-    const token = localStorage.getItem("memduo_token");
-    const storedEmail = localStorage.getItem("memduo_email");
-    
-    if (token && storedEmail) {
-      // Verify token by fetching user info
-      apiClient.getCurrentUser()
-        .then((userData) => {
-          setUser(userData);
-          setIsAuthenticated(true);
-          setEmail(userData.email || storedEmail);
-        })
-        .catch(() => {
-          // Token is invalid, clear it
-          localStorage.removeItem("memduo_token");
-          localStorage.removeItem("memduo_email");
-          setIsAuthenticated(false);
-          setUser(null);
-          setEmail(null);
-        });
-    }
-
-    // Check for legacy auth (keep for compatibility)
-    const legacyAuthStatus = localStorage.getItem('memduo_auth');
-    if (legacyAuthStatus === 'authenticated' && storedEmail && !token) {
-      setIsAuthenticated(true);
-      setEmail(storedEmail);
-    }
-  }, []);
-
-  const login = async (password: string, userEmail?: string): Promise<boolean> => {
-    try {
-      console.log("Login attempt:", { userEmail, hasPassword: !!password });
-      
-      // Try legacy password first (for compatibility)
-      if (VALID_PASSWORDS.includes(password)) {
-        console.log("Using legacy password authentication");
-        setIsAuthenticated(true);
-        localStorage.setItem('memduo_auth', 'authenticated');
-        if (userEmail) {
-          setEmail(userEmail);
-          localStorage.setItem('memduo_email', userEmail);
-        }
-        return true;
-      }
-
-      // Use MemDuo FastAPI backend for authentication
-      if (userEmail && password) {
-        console.log("Attempting FastAPI backend login");
-        const response = await apiClient.login({
-          email: userEmail,
-          password: password
-        });
-
-        console.log("FastAPI login response:", response);
-
-        // Store the JWT token
-        localStorage.setItem("memduo_token", response.access_token);
-        localStorage.setItem("memduo_email", userEmail);
-        
-        // Fetch user details
-        try {
-          const userData = await apiClient.getCurrentUser();
-          console.log("User data fetched:", userData);
-          setUser(userData);
-        } catch (err) {
-          console.log("Could not fetch user data, using basic info");
-          // If we can't fetch user data, just use basic info
-          setUser({ email: userEmail });
-        }
-        
-        setIsAuthenticated(true);
-        setEmail(userEmail);
-        
-        // Redirect to existing MemDuo frontend with token
-        const existingAppUrl = `http://3.144.130.186:3000?token=${response.access_token}`;
-        window.location.href = existingAppUrl;
-        
-        return true;
-      }
-
-      console.log("No valid login path found");
-      return false;
-    } catch (error) {
-      console.error("Login error:", error);
-      return false;
-    }
-  };
-
-  const setUserEmail = (userEmail: string) => {
-    setEmail(userEmail);
-    localStorage.setItem('memduo_email', userEmail);
-  };
-
-  const logout = async () => {
-    setIsAuthenticated(false);
-    setUser(null);
-    setEmail(null);
-    
-    // Clear MemDuo tokens
-    localStorage.removeItem("memduo_token");
-    localStorage.removeItem("memduo_email");
-    
-    // Clear legacy tokens
-    localStorage.removeItem('memduo_auth');
-  };
-
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, email, login, logout, setUserEmail, user }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -144,4 +22,178 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
+};
+
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [email, setEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check for existing session
+    const getSession = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Error getting session:', error);
+          return;
+        }
+
+        if (session?.user) {
+          setUser(session.user);
+          setIsAuthenticated(true);
+          setEmail(session.user.email || null);
+        }
+      } catch (error) {
+        console.error('Session check error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getSession();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state changed:', event, session);
+      
+      if (session?.user) {
+        setUser(session.user);
+        setIsAuthenticated(true);
+        setEmail(session.user.email || null);
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
+        setEmail(null);
+      }
+      
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const login = async (email: string, password: string): Promise<boolean> => {
+    try {
+      setIsLoading(true);
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        console.error('Login error:', error);
+        return false;
+      }
+
+      if (data.user) {
+        setUser(data.user);
+        setIsAuthenticated(true);
+        setEmail(data.user.email || null);
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error('Login error:', error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const register = async (email: string, password: string, firstName: string, lastName: string): Promise<boolean> => {
+    try {
+      setIsLoading(true);
+      
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+          }
+        }
+      });
+
+      if (error) {
+        console.error('Registration error:', error);
+        return false;
+      }
+
+      if (data.user) {
+        // Note: User may need to confirm email before being fully authenticated
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error('Registration error:', error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const logout = async (): Promise<void> => {
+    try {
+      setIsLoading(true);
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error('Logout error:', error);
+      }
+      
+      setUser(null);
+      setIsAuthenticated(false);
+      setEmail(null);
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const resetPassword = async (email: string): Promise<boolean> => {
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+
+      if (error) {
+        console.error('Password reset error:', error);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Password reset error:', error);
+      return false;
+    }
+  };
+
+  const value: AuthContextType = {
+    user,
+    isAuthenticated,
+    isLoading,
+    email,
+    login,
+    logout,
+    register,
+    resetPassword,
+  };
+
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

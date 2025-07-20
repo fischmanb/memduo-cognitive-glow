@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -152,10 +153,10 @@ const Register = () => {
         console.error('Error updating magic link:', linkError);
       }
 
-      toast.success('Account created successfully! You can now log in.');
+      toast.success('Account created successfully! Complete your profile setup.');
       
-      // Redirect to private access page
-      navigate('/', { replace: true });
+      // Redirect to onboarding flow instead of main app
+      navigate('/onboarding', { replace: true });
 
     } catch (err) {
       console.error('Registration error:', err);
@@ -179,7 +180,7 @@ const Register = () => {
   if (tokenValid === false) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <Card className="w-full max-w-md z-10">
+        <Card className="w-full max-w-md z-10 neural-glass-premium">
           <CardHeader>
             <CardTitle className="text-destructive">Invalid Registration Link</CardTitle>
             <CardDescription>
@@ -189,7 +190,7 @@ const Register = () => {
           <CardContent>
             <Button 
               onClick={() => navigate('/')} 
-              className="w-full"
+              className="w-full neural-glass-hover"
             >
               Return to Home
             </Button>
@@ -201,10 +202,19 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md z-10">
+      <Card className="w-full max-w-md z-10 neural-glass-premium neural-glass-hover">
         <CardHeader>
-          <CardTitle>Create Your Account</CardTitle>
-          <CardDescription>
+          <div className="flex items-center justify-center mb-4">
+            <img 
+              src="/lovable-uploads/101a3a9b-610a-41f7-b143-4f57fcf9ed32.png" 
+              alt="MemDuo" 
+              className="h-12 w-12 object-contain"
+            />
+          </div>
+          <CardTitle className="text-center bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
+            Create Your MemDuo Account
+          </CardTitle>
+          <CardDescription className="text-center">
             Complete your registration to access the platform
           </CardDescription>
         </CardHeader>
@@ -279,7 +289,7 @@ const Register = () => {
 
             <Button 
               type="submit" 
-              className="w-full" 
+              className="w-full neural-glass-hover" 
               disabled={isLoading}
             >
               {isLoading ? 'Creating Account...' : 'Create Account'}
