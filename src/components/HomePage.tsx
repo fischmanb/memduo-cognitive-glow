@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import Index from '../pages/Index';
+import PasswordEntry from '../pages/PasswordEntry';
 
 const HomePage = () => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -21,9 +21,9 @@ const HomePage = () => {
     );
   }
 
-  // If not authenticated, show the waitlist/demo page
+  // If not authenticated, show the access gate (password entry)
   if (!isAuthenticated) {
-    return <Index />;
+    return <PasswordEntry />;
   }
 
   // Show loading while redirecting
