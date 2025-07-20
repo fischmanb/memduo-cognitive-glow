@@ -30,18 +30,23 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const checkAdminStatus = async (userId: string) => {
     try {
+      console.log('Checking admin status for user:', userId);
       const { data, error } = await supabase
         .from('admin_users')
         .select('id')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle(); // Use maybeSingle instead of single to avoid errors when no record exists
+      
+      console.log('Admin check result:', { data, error });
       
       if (error) {
         console.error('Error checking admin status:', error);
         return false;
       }
       
-      return !!data;
+      const isAdmin = !!data;
+      console.log('User is admin:', isAdmin);
+      return isAdmin;
     } catch (error) {
       console.error('Error checking admin status:', error);
       return false;
