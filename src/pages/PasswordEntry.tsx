@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 import NeuralBackground from "../components/NeuralBackground";
 import { useAuth } from "../contexts/AuthContext";
+import AdminDashboard from "./AdminDashboard";
 
 const PasswordEntry = () => {
   const [password, setPassword] = useState('');
@@ -13,6 +14,9 @@ const PasswordEntry = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
+  const [showAdminMode, setShowAdminMode] = useState(false);
+  const [shiftPressed, setShiftPressed] = useState(false);
+  const [typedSequence, setTypedSequence] = useState('');
   const { login } = useAuth();
 
   useEffect(() => {
@@ -23,6 +27,46 @@ const PasswordEntry = () => {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  // Secret admin access: Shift + "NOBLESSEOBLIGE" + Enter
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') {
+        setShiftPressed(true);
+        return;
+      }
+
+      if (shiftPressed) {
+        if (e.key === 'Enter') {
+          if (typedSequence.toLowerCase() === 'noblesseoblige') {
+            setShowAdminMode(true);
+          }
+          setTypedSequence('');
+        } else if (e.key.length === 1) {
+          setTypedSequence(prev => prev + e.key);
+        }
+      }
+
+      if (e.key === 'Escape') {
+        setShowAdminMode(false);
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') {
+        setShiftPressed(false);
+        setTypedSequence('');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [shiftPressed, typedSequence]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +85,24 @@ const PasswordEntry = () => {
     
     setIsSubmitting(false);
   };
+
+  if (showAdminMode) {
+    return (
+      <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm">
+        <div className="absolute top-4 right-4">
+          <Button
+            onClick={() => setShowAdminMode(false)}
+            variant="outline"
+            size="sm"
+            className="text-white border-white/20 hover:bg-white/10"
+          >
+            Close Admin
+          </Button>
+        </div>
+        <AdminDashboard />
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white overflow-hidden">
