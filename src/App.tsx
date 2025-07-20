@@ -9,6 +9,7 @@ import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import AccountSetup from "./pages/AccountSetup";
+import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
                 } 
               />
               <Route path="/setup" element={<AccountSetup />} />
+              <Route path="/register" element={<Register />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

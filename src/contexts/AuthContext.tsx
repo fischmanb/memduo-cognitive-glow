@@ -1,12 +1,14 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from "@/integrations/supabase/client";
 
 interface AuthContextType {
   isAuthenticated: boolean;
   email: string | null;
-  login: (password: string, email?: string) => boolean;
+  login: (password: string, email?: string) => Promise<boolean>;
   logout: () => void;
   setUserEmail: (email: string) => void;
+  user: any | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -19,15 +21,57 @@ const VALID_PASSWORDS = [MASTER_PASSWORD];
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
+  const [user, setUser] = useState<any | null>(null);
 
   useEffect(() => {
+    // Check for legacy auth first
     const authStatus = localStorage.getItem('memduo_auth');
     const storedEmail = localStorage.getItem('memduo_email');
-    setIsAuthenticated(authStatus === 'authenticated');
-    setEmail(storedEmail);
+    
+    if (authStatus === 'authenticated') {
+      setIsAuthenticated(true);
+      setEmail(storedEmail);
+    }
+
+    // Set up Supabase auth listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (session?.user) {
+          setIsAuthenticated(true);
+          setUser(session.user);
+          setEmail(session.user.email || null);
+          localStorage.setItem('memduo_auth', 'authenticated');
+          localStorage.setItem('memduo_email', session.user.email || '');
+        } else if (event === 'SIGNED_OUT') {
+          // Only clear if not using legacy auth
+          const legacyAuth = localStorage.getItem('memduo_auth');
+          if (legacyAuth !== 'authenticated') {
+            setIsAuthenticated(false);
+            setUser(null);
+            setEmail(null);
+            localStorage.removeItem('memduo_auth');
+            localStorage.removeItem('memduo_email');
+          }
+        }
+      }
+    );
+
+    // Check for existing Supabase session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setIsAuthenticated(true);
+        setUser(session.user);
+        setEmail(session.user.email || null);
+        localStorage.setItem('memduo_auth', 'authenticated');
+        localStorage.setItem('memduo_email', session.user.email || '');
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const login = (password: string, userEmail?: string): boolean => {
+  const login = async (password: string, userEmail?: string): Promise<boolean> => {
+    // Try legacy password first
     if (VALID_PASSWORDS.includes(password)) {
       setIsAuthenticated(true);
       localStorage.setItem('memduo_auth', 'authenticated');
@@ -37,6 +81,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return true;
     }
+
+    // Try Supabase authentication if email provided
+    if (userEmail) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: userEmail,
+          password: password,
+        });
+
+        if (error) {
+          return false;
+        }
+
+        if (data.user) {
+          setIsAuthenticated(true);
+          setUser(data.user);
+          setEmail(data.user.email || null);
+          localStorage.setItem('memduo_auth', 'authenticated');
+          localStorage.setItem('memduo_email', data.user.email || '');
+          return true;
+        }
+      } catch (err) {
+        console.error('Supabase login error:', err);
+      }
+    }
+
     return false;
   };
 
@@ -45,15 +115,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('memduo_email', userEmail);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    // Sign out from Supabase if user is logged in there
+    if (user) {
+      await supabase.auth.signOut();
+    }
+    
     setIsAuthenticated(false);
+    setUser(null);
     setEmail(null);
     localStorage.removeItem('memduo_auth');
     localStorage.removeItem('memduo_email');
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, email, login, logout, setUserEmail }}>
+    <AuthContext.Provider value={{ isAuthenticated, email, login, logout, setUserEmail, user }}>
       {children}
     </AuthContext.Provider>
   );

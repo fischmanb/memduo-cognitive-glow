@@ -116,7 +116,7 @@ const PasswordEntry = () => {
     // Simulate validation delay for better UX
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    const success = login(password, email.trim() || undefined);
+    const success = await login(password, email.trim() || undefined);
     
     if (!success) {
       setError('Invalid access code. Please verify and try again.');

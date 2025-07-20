@@ -120,12 +120,12 @@ const handler = async (req: Request): Promise<Response> => {
             <p>To complete your registration and set up your account, please click the button below:</p>
             
             <div style="text-align: center;">
-              <a href="${setupUrl}" class="button">Access Your Registration</a>
+              <a href="${magicLinkUrl}" class="button">Access Your Registration</a>
             </div>
             
             <p>Or copy and paste this link into your browser:</p>
             <p style="word-break: break-all; background: #f5f5f5; padding: 10px; border-radius: 4px;">
-              ${setupUrl}
+              ${magicLinkUrl}
             </p>
             
             <p><strong>Important:</strong> This link will expire in 7 days for security purposes.</p>
