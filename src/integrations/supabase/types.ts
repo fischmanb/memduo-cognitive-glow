@@ -14,30 +14,101 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_users: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      approved_users: {
+        Row: {
+          account_created: boolean | null
+          created_at: string
+          expires_at: string
+          id: string
+          setup_token: string
+          waitlist_submission_id: string
+        }
+        Insert: {
+          account_created?: boolean | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          setup_token: string
+          waitlist_submission_id: string
+        }
+        Update: {
+          account_created?: boolean | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          setup_token?: string
+          waitlist_submission_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "approved_users_waitlist_submission_id_fkey"
+            columns: ["waitlist_submission_id"]
+            isOneToOne: false
+            referencedRelation: "waitlist_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       waitlist_submissions: {
         Row: {
+          admin_notes: string | null
           created_at: string
           email: string
           first_name: string
           id: string
           interest: string | null
           last_name: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
         }
         Insert: {
+          admin_notes?: string | null
           created_at?: string
           email: string
           first_name: string
           id?: string
           interest?: string | null
           last_name: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
         }
         Update: {
+          admin_notes?: string | null
           created_at?: string
           email?: string
           first_name?: string
           id?: string
           interest?: string | null
           last_name?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
         }
         Relationships: []
       }

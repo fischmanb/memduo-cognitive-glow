@@ -123,7 +123,7 @@ const Index = () => {
 
         toast({
           title: "Application received",
-          description: "Thank you for your interest. We'll review your application and be in touch within 48 hours.",
+          description: "Thank you for your interest. We'll review your application and be in touch soon.",
         });
         
         // Reset form
