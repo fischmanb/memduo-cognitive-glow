@@ -96,7 +96,8 @@ const AdminDashboard: React.FC = () => {
   ) => {
     setUpdating(true);
     try {
-      const { error } = await supabase
+      // Update submission status
+      const { error: updateError } = await supabase
         .from('waitlist_submissions')
         .update({
           status,
@@ -106,14 +107,52 @@ const AdminDashboard: React.FC = () => {
         })
         .eq('id', submissionId);
 
-      if (error) {
-        throw error;
+      if (updateError) {
+        throw updateError;
       }
 
-      toast({
-        title: "Success",
-        description: `Application ${status} successfully`,
-      });
+      // If approved, send approval email
+      if (status === 'approved') {
+        const submission = submissions.find(s => s.id === submissionId);
+        if (submission) {
+          try {
+            const { error: emailError } = await supabase.functions.invoke('send-approval-email', {
+              body: {
+                waitlistSubmissionId: submissionId,
+                firstName: submission.first_name,
+                lastName: submission.last_name,
+                email: submission.email,
+              },
+            });
+
+            if (emailError) {
+              console.error('Error sending approval email:', emailError);
+              toast({
+                title: "Warning",
+                description: `Application approved, but failed to send email: ${emailError.message}`,
+                variant: "destructive",
+              });
+            } else {
+              toast({
+                title: "Success",
+                description: `Application approved and setup email sent to ${submission.email}`,
+              });
+            }
+          } catch (emailError) {
+            console.error('Error sending approval email:', emailError);
+            toast({
+              title: "Warning",
+              description: "Application approved, but failed to send email",
+              variant: "destructive",
+            });
+          }
+        }
+      } else {
+        toast({
+          title: "Success",
+          description: `Application ${status} successfully`,
+        });
+      }
 
       // Refresh submissions
       await fetchSubmissions();
