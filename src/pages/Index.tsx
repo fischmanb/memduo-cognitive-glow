@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Brain, Shield, Eye, User, Mail, MessageSquare, CheckCircle, ChevronDown, Loader2, Sparkles, Network, GitBranch, Zap, Users, Building, GraduationCap, Newspaper, TrendingUp, LogOut } from "lucide-react";
+import { Brain, Shield, Eye, User, Mail, MessageSquare, CheckCircle, ChevronDown, Loader2, Sparkles, Network, GitBranch, Zap, Users, Building, GraduationCap, Newspaper, TrendingUp, LogOut, X } from "lucide-react";
 import BackgroundVideo from "../components/BackgroundVideo";
 import NeuralBackground from "../components/NeuralBackground";
+import AdminDashboard from "./AdminDashboard";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "../contexts/AuthContext";
@@ -24,8 +25,16 @@ const Index = () => {
   const [showFloatingCTA, setShowFloatingCTA] = useState(true);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
+  
+  // Secret admin access states
+  const [showAdminMode, setShowAdminMode] = useState(false);
+  const [shiftPressed, setShiftPressed] = useState(false);
+  const [typedSequence, setTypedSequence] = useState('');
+  
   const { toast } = useToast();
   const { logout } = useAuth();
+
+  const SECRET_SEQUENCE = 'NOBLESSEOBLIGE';
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -47,13 +56,44 @@ const Index = () => {
       }
     };
 
+    // Secret admin access key handlers
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') {
+        setShiftPressed(true);
+      } else if (e.key === 'Escape' && showAdminMode) {
+        setShowAdminMode(false);
+      } else if (shiftPressed) {
+        if (e.key === 'Enter') {
+          if (typedSequence.toUpperCase() === SECRET_SEQUENCE) {
+            setShowAdminMode(true);
+            setTypedSequence('');
+          }
+        } else if (e.key.length === 1) {
+          // Only add printable characters
+          setTypedSequence(prev => prev + e.key.toUpperCase());
+        }
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.key === 'Shift') {
+        setShiftPressed(false);
+        setTypedSequence(''); // Clear sequence when shift is released
+      }
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
     };
-  }, []);
+  }, [shiftPressed, typedSequence, showAdminMode]);
 
   const getFormProgress = () => {
     const totalFields = 8;
@@ -153,6 +193,26 @@ const Index = () => {
     const targetY = window.innerHeight * sectionNumber;
     window.scrollTo({ top: targetY, behavior: 'smooth' });
   };
+
+  // If admin mode is active, render the admin dashboard
+  if (showAdminMode) {
+    return (
+      <div className="fixed inset-0 z-[9999] bg-background">
+        <div className="absolute top-4 right-4 z-[10000]">
+          <Button
+            onClick={() => setShowAdminMode(false)}
+            variant="outline"
+            size="sm"
+            className="bg-white/5 backdrop-blur-md border border-white/10 text-white/90 hover:bg-white/10 hover:border-white/20 hover:text-white transition-all duration-200 rounded-lg px-4 py-2"
+          >
+            <X size={16} className="mr-2" />
+            Exit Admin
+          </Button>
+        </div>
+        <AdminDashboard />
+      </div>
+    );
+  }
 
   return (
     <div 

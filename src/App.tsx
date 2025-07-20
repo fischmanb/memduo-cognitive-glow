@@ -7,9 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import Index from "./pages/Index";
-import AdminDashboard from "./pages/AdminDashboard";
 import AccountSetup from "./pages/AccountSetup";
 import NotFound from "./pages/NotFound";
 
@@ -30,14 +28,6 @@ const App = () => (
                   <ProtectedRoute>
                     <Index />
                   </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/admin" 
-                element={
-                  <AdminProtectedRoute>
-                    <AdminDashboard />
-                  </AdminProtectedRoute>
                 } 
               />
               <Route path="/setup" element={<AccountSetup />} />
