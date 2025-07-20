@@ -98,6 +98,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsAuthenticated(true);
         setEmail(userEmail);
         
+        // Redirect to existing MemDuo frontend with token
+        const existingAppUrl = `http://3.144.130.186:3000?token=${response.access_token}`;
+        window.location.href = existingAppUrl;
+        
         return true;
       }
 
