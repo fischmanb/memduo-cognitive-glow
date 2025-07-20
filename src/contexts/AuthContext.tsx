@@ -65,29 +65,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const backendUserData = localStorage.getItem('memduo_user_data');
         
         if (backendAuth === 'true' && backendToken) {
-          try {
-            // Verify token is still valid by calling a protected endpoint
-            await apiClient.getCurrentUser();
-            
-            setIsBackendAuthState(true);
-            setIsAuthenticated(true);
-            setEmail(backendEmail);
-            
-            if (backendUserData) {
-              setBackendUser(JSON.parse(backendUserData));
-            }
-            setIsLoading(false);
-            return;
-          } catch (error) {
-            console.error('Backend token validation failed:', error);
-            // Only clear backend auth if we're not in demo mode
-            if (!demoMode) {
-              localStorage.removeItem('memduo_backend_auth');
-              localStorage.removeItem('memduo_token');
-              localStorage.removeItem('memduo_user_email');
-              localStorage.removeItem('memduo_user_data');
-            }
+          // Trust the stored backend auth without validation
+          setIsBackendAuthState(true);
+          setIsAuthenticated(true);
+          setEmail(backendEmail);
+          
+          if (backendUserData) {
+            setBackendUser(JSON.parse(backendUserData));
           }
+          setIsLoading(false);
+          return;
         }
         
         // Check for real Supabase session
