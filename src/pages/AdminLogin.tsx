@@ -1,10 +1,12 @@
+
 import React, { useState } from 'react';
 import { useAdminAuth } from '../contexts/AdminAuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Shield, Eye, EyeOff } from 'lucide-react';
+import { Shield, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const AdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -13,6 +15,7 @@ const AdminLogin: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const { login } = useAdminAuth();
+  const { logout: mainAppLogout } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +32,10 @@ const AdminLogin: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleBackToMainApp = () => {
+    mainAppLogout();
   };
 
   return (
@@ -112,8 +119,17 @@ const AdminLogin: React.FC = () => {
             </Button>
           </form>
           
-          <div className="mt-6 text-center">
-            <p className="text-sm text-muted-foreground">
+          <div className="mt-6 space-y-4">
+            <Button
+              variant="outline"
+              onClick={handleBackToMainApp}
+              className="w-full flex items-center space-x-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              <span>Back to Main App</span>
+            </Button>
+            
+            <p className="text-sm text-muted-foreground text-center">
               For security purposes, only authorized administrators can access this area.
             </p>
           </div>
