@@ -55,8 +55,30 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log('Created approved user record:', approvedUser);
 
-    // Create account setup URL
-    const setupUrl = `${req.headers.get('origin') || 'https://memduo.com'}/setup?token=${setupToken}`;
+    // Generate SHA-256 hash of the token for secure storage
+    const encoder = new TextEncoder();
+    const data = encoder.encode(setupToken);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const tokenHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+    // Insert into magic_links table
+    const { error: magicLinkError } = await supabase
+      .from('magic_links')
+      .insert({
+        approved_user_id: approvedUser.id,
+        email: email,
+        token_hash: tokenHash,
+        expires_at: expiresAt.toISOString(),
+      });
+
+    if (magicLinkError) {
+      console.error('Error creating magic link record:', magicLinkError);
+      throw new Error('Failed to create magic link');
+    }
+
+    // Create magic link URL pointing to GitHub app
+    const setupUrl = `https://your-github-app-domain.com/magic-login/${setupToken}`;
 
     // Send approval email
     const emailResponse = await resend.emails.send({
@@ -98,7 +120,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p>To complete your registration and set up your account, please click the button below:</p>
             
             <div style="text-align: center;">
-              <a href="${setupUrl}" class="button">Set Up Your Account</a>
+              <a href="${setupUrl}" class="button">Access Your Registration</a>
             </div>
             
             <p>Or copy and paste this link into your browser:</p>

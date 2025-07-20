@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
+import { Lock, Eye, EyeOff, AlertCircle, Mail } from "lucide-react";
 import NeuralBackground from "../components/NeuralBackground";
 import { useAuth } from "../contexts/AuthContext";
 import AdminLogin from "./AdminLogin";
@@ -47,6 +47,7 @@ const AdminContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 };
 
 const PasswordEntry = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -115,7 +116,7 @@ const PasswordEntry = () => {
     // Simulate validation delay for better UX
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    const success = login(password);
+    const success = login(password, email.trim() || undefined);
     
     if (!success) {
       setError('Invalid access code. Please verify and try again.');
@@ -179,6 +180,25 @@ const PasswordEntry = () => {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="email" className="flex items-center gap-2 text-sm font-bold text-white mb-3">
+                    <Mail size={16} className="text-cyan-400" />
+                    Email Address (Optional)
+                  </label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="neural-input py-4 rounded-xl font-medium"
+                    placeholder="Enter your email address"
+                    disabled={isSubmitting}
+                  />
+                  <p className="text-gray-400 text-xs mt-2">
+                    Used for admin access and waitlist pre-population
+                  </p>
+                </div>
+
                 <div>
                   <label htmlFor="password" className="flex items-center gap-2 text-sm font-bold text-white mb-3">
                     <Lock size={16} className="text-cyan-400" />

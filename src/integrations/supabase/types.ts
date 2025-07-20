@@ -73,6 +73,47 @@ export type Database = {
           },
         ]
       }
+      magic_links: {
+        Row: {
+          approved_user_id: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          token_hash: string
+          used: boolean
+          used_at: string | null
+        }
+        Insert: {
+          approved_user_id?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          token_hash: string
+          used?: boolean
+          used_at?: string | null
+        }
+        Update: {
+          approved_user_id?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          token_hash?: string
+          used?: boolean
+          used_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "magic_links_approved_user_id_fkey"
+            columns: ["approved_user_id"]
+            isOneToOne: false
+            referencedRelation: "approved_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       waitlist_submissions: {
         Row: {
           admin_notes: string | null

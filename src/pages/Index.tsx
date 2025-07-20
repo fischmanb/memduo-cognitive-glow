@@ -68,6 +68,14 @@ const Index = () => {
   
   // Secret admin access states
   const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const { isAuthenticated, email: userEmail } = useAuth();
+
+  // Pre-populate email from auth context when component mounts
+  useEffect(() => {
+    if (userEmail && !email) {
+      setEmail(userEmail);
+    }
+  }, [userEmail, email]);
   const [shiftPressed, setShiftPressed] = useState(false);
   const [typedSequence, setTypedSequence] = useState('');
   
