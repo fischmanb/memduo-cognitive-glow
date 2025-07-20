@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 import NeuralBackground from "../components/NeuralBackground";
 import { useAuth } from "../contexts/AuthContext";
-import AdminDashboard from "./AdminDashboard";
+import AdminLogin from "./AdminLogin";
 
 const PasswordEntry = () => {
   const [password, setPassword] = useState('');
@@ -14,7 +14,7 @@ const PasswordEntry = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
-  const [showAdminMode, setShowAdminMode] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [shiftPressed, setShiftPressed] = useState(false);
   const [typedSequence, setTypedSequence] = useState('');
   const { login } = useAuth();
@@ -39,7 +39,7 @@ const PasswordEntry = () => {
       if (shiftPressed) {
         if (e.key === 'Enter') {
           if (typedSequence.toLowerCase() === 'noblesseoblige') {
-            setShowAdminMode(true);
+            setShowAdminLogin(true);
           }
           setTypedSequence('');
         } else if (e.key.length === 1) {
@@ -48,7 +48,7 @@ const PasswordEntry = () => {
       }
 
       if (e.key === 'Escape') {
-        setShowAdminMode(false);
+        setShowAdminLogin(false);
       }
     };
 
@@ -86,20 +86,20 @@ const PasswordEntry = () => {
     setIsSubmitting(false);
   };
 
-  if (showAdminMode) {
+  if (showAdminLogin) {
     return (
       <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm">
         <div className="absolute top-4 right-4">
           <Button
-            onClick={() => setShowAdminMode(false)}
+            onClick={() => setShowAdminLogin(false)}
             variant="outline"
             size="sm"
             className="text-white border-white/20 hover:bg-white/10"
           >
-            Close Admin
+            Close Admin Login
           </Button>
         </div>
-        <AdminDashboard />
+        <AdminLogin />
       </div>
     );
   }
