@@ -7,9 +7,49 @@ import { Brain, Shield, Eye, User, Mail, MessageSquare, CheckCircle, ChevronDown
 import BackgroundVideo from "../components/BackgroundVideo";
 import NeuralBackground from "../components/NeuralBackground";
 import AdminLogin from "./AdminLogin";
+import AdminDashboard from "./AdminDashboard";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "../contexts/AuthContext";
+import { AdminAuthProvider, useAdminAuth } from "../contexts/AdminAuthContext";
+
+// AdminContent component to handle admin authentication flow
+const AdminContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { isAuthenticated, loading } = useAdminAuth();
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 z-[9999] bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="fixed inset-0 z-[9999] bg-background">
+        <div className="absolute top-4 right-4 z-[10000]">
+          <Button
+            onClick={onClose}
+            variant="outline"
+            size="sm"
+            className="bg-white/5 backdrop-blur-md border border-white/10 text-white/90 hover:bg-white/10 hover:border-white/20 hover:text-white transition-all duration-200 rounded-lg px-4 py-2"
+          >
+            <X size={16} className="mr-2" />
+            Close Admin Login
+          </Button>
+        </div>
+        <AdminLogin />
+      </div>
+    );
+  }
+
+  return (
+    <div className="fixed inset-0 z-[9999] bg-background">
+      <AdminDashboard />
+    </div>
+  );
+};
 
 const Index = () => {
   const [step, setStep] = useState(1);
@@ -194,25 +234,15 @@ const Index = () => {
     window.scrollTo({ top: targetY, behavior: 'smooth' });
   };
 
-  // If admin login is active, render the admin login
+  // If admin login is active, render the admin interface
   if (showAdminLogin) {
     return (
-      <div className="fixed inset-0 z-[9999] bg-background">
-        <div className="absolute top-4 right-4 z-[10000]">
-          <Button
-            onClick={() => setShowAdminLogin(false)}
-            variant="outline"
-            size="sm"
-            className="bg-white/5 backdrop-blur-md border border-white/10 text-white/90 hover:bg-white/10 hover:border-white/20 hover:text-white transition-all duration-200 rounded-lg px-4 py-2"
-          >
-            <X size={16} className="mr-2" />
-            Close Admin Login
-          </Button>
-        </div>
-        <AdminLogin />
-      </div>
+      <AdminAuthProvider>
+        <AdminContent onClose={() => setShowAdminLogin(false)} />
+      </AdminAuthProvider>
     );
   }
+
 
   return (
     <div 

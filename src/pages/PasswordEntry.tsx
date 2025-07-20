@@ -6,6 +6,45 @@ import { Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 import NeuralBackground from "../components/NeuralBackground";
 import { useAuth } from "../contexts/AuthContext";
 import AdminLogin from "./AdminLogin";
+import AdminDashboard from "./AdminDashboard";
+import { AdminAuthProvider, useAdminAuth } from "../contexts/AdminAuthContext";
+
+// AdminContent component for PasswordEntry
+const AdminContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { isAuthenticated, loading } = useAdminAuth();
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm">
+        <div className="absolute top-4 right-4">
+          <Button
+            onClick={onClose}
+            variant="outline"
+            size="sm"
+            className="text-white border-white/20 hover:bg-white/10"
+          >
+            Close Admin Login
+          </Button>
+        </div>
+        <AdminLogin />
+      </div>
+    );
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 bg-background">
+      <AdminDashboard />
+    </div>
+  );
+};
 
 const PasswordEntry = () => {
   const [password, setPassword] = useState('');
@@ -88,19 +127,9 @@ const PasswordEntry = () => {
 
   if (showAdminLogin) {
     return (
-      <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm">
-        <div className="absolute top-4 right-4">
-          <Button
-            onClick={() => setShowAdminLogin(false)}
-            variant="outline"
-            size="sm"
-            className="text-white border-white/20 hover:bg-white/10"
-          >
-            Close Admin Login
-          </Button>
-        </div>
-        <AdminLogin />
-      </div>
+      <AdminAuthProvider>
+        <AdminContent onClose={() => setShowAdminLogin(false)} />
+      </AdminAuthProvider>
     );
   }
 
