@@ -60,24 +60,10 @@ class ApiClient {
 
   // Authentication endpoints
   async login(credentials: LoginRequest): Promise<LoginResponse> {
-    // FastAPI expects form data for login
-    const formData = new FormData();
-    formData.append('username', credentials.email);
-    formData.append('password', credentials.password);
-
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    return this.request('/auth/login', {
       method: 'POST',
-      body: formData,
+      body: JSON.stringify(credentials),
     });
-
-    if (!response.ok) {
-      const error: ApiError = await response.json().catch(() => ({ 
-        detail: 'Login failed' 
-      }));
-      throw new Error(error.detail || 'Login failed');
-    }
-
-    return response.json();
   }
 
   async register(userData: RegisterRequest): Promise<any> {
