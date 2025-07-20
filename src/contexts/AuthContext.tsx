@@ -80,11 +80,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             return;
           } catch (error) {
             console.error('Backend token validation failed:', error);
-            // Clear invalid backend auth
-            localStorage.removeItem('memduo_backend_auth');
-            localStorage.removeItem('memduo_token');
-            localStorage.removeItem('memduo_user_email');
-            localStorage.removeItem('memduo_user_data');
+            // Only clear backend auth if we're not in demo mode
+            if (!demoMode) {
+              localStorage.removeItem('memduo_backend_auth');
+              localStorage.removeItem('memduo_token');
+              localStorage.removeItem('memduo_user_email');
+              localStorage.removeItem('memduo_user_data');
+            }
           }
         }
         
