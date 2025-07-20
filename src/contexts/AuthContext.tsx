@@ -38,6 +38,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Check for existing session
     const getSession = async () => {
       try {
+        // First check for demo authentication
+        const demoAuth = localStorage.getItem('demo_authenticated');
+        const demoEmail = localStorage.getItem('demo_user_email');
+        
+        if (demoAuth === 'true') {
+          // Set demo user state
+          const demoUser = {
+            id: 'demo-user',
+            email: demoEmail || 'demo@memduo.com',
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            aud: '',
+            role: '',
+            email_confirmed_at: new Date().toISOString(),
+            app_metadata: {},
+            user_metadata: {},
+            identities: [],
+            factors: []
+          } as any;
+          
+          setUser(demoUser);
+          setIsAuthenticated(true);
+          setEmail(demoEmail || 'demo@memduo.com');
+          setIsLoading(false);
+          return;
+        }
+        
+        // Check for real Supabase session
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
@@ -147,7 +175,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       
-      // Clear auth state
+      // Clear demo auth state
+      localStorage.removeItem('demo_authenticated');
+      localStorage.removeItem('demo_user_email');
+      
+      // Clear Supabase auth state
       Object.keys(localStorage).forEach((key) => {
         if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
           localStorage.removeItem(key);

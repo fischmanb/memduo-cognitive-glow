@@ -126,14 +126,12 @@ const PasswordEntry = () => {
     ];
     
     if (validPasswords.includes(password.toLowerCase().trim())) {
-      // Mock successful login by calling the auth context 
-      const success = await login(email.trim() || "demo@memduo.com", password);
-      if (!success) {
-        // If Supabase login fails, manually set auth state for demo
-        setError('');
-        window.location.href = '/dashboard';
-        return;
-      }
+      // Set authentication state manually for demo mode
+      localStorage.setItem('demo_authenticated', 'true');
+      localStorage.setItem('demo_user_email', email.trim() || 'demo@memduo.com');
+      
+      // Redirect to dashboard
+      window.location.href = '/dashboard';
     } else {
       setError('Invalid access code. Please verify and try again.');
       setPassword('');
