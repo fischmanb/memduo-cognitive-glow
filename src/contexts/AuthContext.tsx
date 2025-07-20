@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from "@/integrations/supabase/client";
+import { apiClient } from "@/lib/api";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -24,90 +24,80 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<any | null>(null);
 
   useEffect(() => {
-    // Check for legacy auth first
-    const authStatus = localStorage.getItem('memduo_auth');
-    const storedEmail = localStorage.getItem('memduo_email');
+    // Check for existing MemDuo token
+    const token = localStorage.getItem("memduo_token");
+    const storedEmail = localStorage.getItem("memduo_email");
     
-    if (authStatus === 'authenticated') {
+    if (token && storedEmail) {
+      // Verify token by fetching user info
+      apiClient.getCurrentUser()
+        .then((userData) => {
+          setUser(userData);
+          setIsAuthenticated(true);
+          setEmail(userData.email || storedEmail);
+        })
+        .catch(() => {
+          // Token is invalid, clear it
+          localStorage.removeItem("memduo_token");
+          localStorage.removeItem("memduo_email");
+          setIsAuthenticated(false);
+          setUser(null);
+          setEmail(null);
+        });
+    }
+
+    // Check for legacy auth (keep for compatibility)
+    const legacyAuthStatus = localStorage.getItem('memduo_auth');
+    if (legacyAuthStatus === 'authenticated' && storedEmail && !token) {
       setIsAuthenticated(true);
       setEmail(storedEmail);
     }
-
-    // Set up Supabase auth listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session?.user) {
-          setIsAuthenticated(true);
-          setUser(session.user);
-          setEmail(session.user.email || null);
-          localStorage.setItem('memduo_auth', 'authenticated');
-          localStorage.setItem('memduo_email', session.user.email || '');
-        } else if (event === 'SIGNED_OUT') {
-          // Only clear if not using legacy auth
-          const legacyAuth = localStorage.getItem('memduo_auth');
-          if (legacyAuth !== 'authenticated') {
-            setIsAuthenticated(false);
-            setUser(null);
-            setEmail(null);
-            localStorage.removeItem('memduo_auth');
-            localStorage.removeItem('memduo_email');
-          }
-        }
-      }
-    );
-
-    // Check for existing Supabase session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setIsAuthenticated(true);
-        setUser(session.user);
-        setEmail(session.user.email || null);
-        localStorage.setItem('memduo_auth', 'authenticated');
-        localStorage.setItem('memduo_email', session.user.email || '');
-      }
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (password: string, userEmail?: string): Promise<boolean> => {
-    // Try legacy password first
-    if (VALID_PASSWORDS.includes(password)) {
-      setIsAuthenticated(true);
-      localStorage.setItem('memduo_auth', 'authenticated');
-      if (userEmail) {
-        setEmail(userEmail);
-        localStorage.setItem('memduo_email', userEmail);
+    try {
+      // Try legacy password first (for compatibility)
+      if (VALID_PASSWORDS.includes(password)) {
+        setIsAuthenticated(true);
+        localStorage.setItem('memduo_auth', 'authenticated');
+        if (userEmail) {
+          setEmail(userEmail);
+          localStorage.setItem('memduo_email', userEmail);
+        }
+        return true;
       }
-      return true;
-    }
 
-    // Try Supabase authentication if email provided
-    if (userEmail) {
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
+      // Use MemDuo FastAPI backend for authentication
+      if (userEmail && password) {
+        const response = await apiClient.login({
           email: userEmail,
-          password: password,
+          password: password
         });
 
-        if (error) {
-          return false;
+        // Store the JWT token
+        localStorage.setItem("memduo_token", response.access_token);
+        localStorage.setItem("memduo_email", userEmail);
+        
+        // Fetch user details
+        try {
+          const userData = await apiClient.getCurrentUser();
+          setUser(userData);
+        } catch (err) {
+          // If we can't fetch user data, just use basic info
+          setUser({ email: userEmail });
         }
-
-        if (data.user) {
-          setIsAuthenticated(true);
-          setUser(data.user);
-          setEmail(data.user.email || null);
-          localStorage.setItem('memduo_auth', 'authenticated');
-          localStorage.setItem('memduo_email', data.user.email || '');
-          return true;
-        }
-      } catch (err) {
-        console.error('Supabase login error:', err);
+        
+        setIsAuthenticated(true);
+        setEmail(userEmail);
+        
+        return true;
       }
-    }
 
-    return false;
+      return false;
+    } catch (error) {
+      console.error("Login error:", error);
+      return false;
+    }
   };
 
   const setUserEmail = (userEmail: string) => {
@@ -116,16 +106,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = async () => {
-    // Sign out from Supabase if user is logged in there
-    if (user) {
-      await supabase.auth.signOut();
-    }
-    
     setIsAuthenticated(false);
     setUser(null);
     setEmail(null);
+    
+    // Clear MemDuo tokens
+    localStorage.removeItem("memduo_token");
+    localStorage.removeItem("memduo_email");
+    
+    // Clear legacy tokens
     localStorage.removeItem('memduo_auth');
-    localStorage.removeItem('memduo_email');
   };
 
   return (
