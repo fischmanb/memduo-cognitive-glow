@@ -228,7 +228,7 @@ const PasswordEntry = () => {
                 <div>
                   <label htmlFor="email" className="flex items-center gap-2 text-sm font-bold text-white mb-3">
                     <Mail size={16} className="text-cyan-400" />
-                    Email Address (Optional for demo, required for backend)
+                    Email Address
                   </label>
                   <Input
                     id="email"
@@ -247,7 +247,7 @@ const PasswordEntry = () => {
                 <div>
                   <label htmlFor="password" className="flex items-center gap-2 text-sm font-bold text-white mb-3">
                     <Lock size={16} className="text-cyan-400" />
-                    Access Code or Password
+                    Access Code
                   </label>
                   <div className="relative">
                     <Input
