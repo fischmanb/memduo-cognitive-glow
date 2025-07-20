@@ -56,8 +56,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (password: string, userEmail?: string): Promise<boolean> => {
     try {
+      console.log("Login attempt:", { userEmail, hasPassword: !!password });
+      
       // Try legacy password first (for compatibility)
       if (VALID_PASSWORDS.includes(password)) {
+        console.log("Using legacy password authentication");
         setIsAuthenticated(true);
         localStorage.setItem('memduo_auth', 'authenticated');
         if (userEmail) {
@@ -69,10 +72,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Use MemDuo FastAPI backend for authentication
       if (userEmail && password) {
+        console.log("Attempting FastAPI backend login");
         const response = await apiClient.login({
           email: userEmail,
           password: password
         });
+
+        console.log("FastAPI login response:", response);
 
         // Store the JWT token
         localStorage.setItem("memduo_token", response.access_token);
@@ -81,8 +87,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Fetch user details
         try {
           const userData = await apiClient.getCurrentUser();
+          console.log("User data fetched:", userData);
           setUser(userData);
         } catch (err) {
+          console.log("Could not fetch user data, using basic info");
           // If we can't fetch user data, just use basic info
           setUser({ email: userEmail });
         }
@@ -93,6 +101,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return true;
       }
 
+      console.log("No valid login path found");
       return false;
     } catch (error) {
       console.error("Login error:", error);
