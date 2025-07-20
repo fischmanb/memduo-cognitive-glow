@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 import AdminLogin from "./AdminLogin";
 import AdminDashboard from "./AdminDashboard";
 import { AdminAuthProvider, useAdminAuth } from "../contexts/AdminAuthContext";
+import { apiClient } from "../lib/api";
 
 // AdminContent component for PasswordEntry
 const AdminContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
@@ -57,7 +57,7 @@ const PasswordEntry = () => {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [shiftPressed, setShiftPressed] = useState(false);
   const [typedSequence, setTypedSequence] = useState('');
-  const { login } = useAuth();
+  const { setBackendAuth } = useAuth();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -116,24 +116,55 @@ const PasswordEntry = () => {
     // Simulate validation delay for better UX
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    // Simple password check - using common passwords from GitHub app
-    const validPasswords = [
-      "memduo2024",
-      "demo123", 
-      "fcs2024",
-      "neurodemo",
-      "memduodemo"
-    ];
-    
-    if (validPasswords.includes(password.toLowerCase().trim())) {
-      // Set authentication state manually for demo mode
-      localStorage.setItem('demo_authenticated', 'true');
-      localStorage.setItem('demo_user_email', email.trim() || 'demo@memduo.com');
+    try {
+      // Check for the 256-character master code
+      const masterCode = "xN$Z3m*Pu9!q67VMEkDyYhBp2WAfsRt#XLbgUcJzFo81^rCnQa@e4+svK!THdM%iL5wNzE_jX^9&RGUu#ybVm$PqoYCZtlMBhf7nADJrx%S*83EWKgT+p3HRdkA$_zFNjvVBwX95q!4YeTruXKJ*Q^gmLhAZ8os1MF^RW2&uUEPqNDJbGh6LVz";
       
-      // Redirect to dashboard
-      window.location.href = '/dashboard';
-    } else {
-      setError('Invalid access code. Please verify and try again.');
+      if (password.trim() === masterCode) {
+        // Demo access with master code
+        localStorage.setItem('memduo_demo_mode', 'true');
+        localStorage.setItem('memduo_demo_email', email.trim() || 'demo@memduo.com');
+        window.location.href = '/dashboard';
+        return;
+      }
+
+      // Try backend authentication if email is provided
+      if (email.trim()) {
+        try {
+          const response = await apiClient.login({
+            email: email.trim(),
+            password: password.trim()
+          });
+          
+          if (response.access_token) {
+            // Store backend token and user info
+            localStorage.setItem('memduo_token', response.access_token);
+            localStorage.setItem('memduo_backend_auth', 'true');
+            localStorage.setItem('memduo_user_email', email.trim());
+            
+            if (response.user) {
+              localStorage.setItem('memduo_user_data', JSON.stringify(response.user));
+            }
+            
+            // Set backend auth state
+            setBackendAuth(true, response.user || null);
+            
+            window.location.href = '/dashboard';
+            return;
+          }
+        } catch (backendError) {
+          console.error('Backend authentication failed:', backendError);
+          // Fall through to error handling
+        }
+      }
+
+      // If neither demo code nor backend auth worked
+      setError('Invalid access code or credentials. Please verify and try again.');
+      setPassword('');
+      
+    } catch (error) {
+      console.error('Authentication error:', error);
+      setError('Authentication failed. Please try again.');
       setPassword('');
     }
     
@@ -189,7 +220,7 @@ const PasswordEntry = () => {
                   </span>
                 </h1>
                 <p className="text-gray-300 text-lg leading-relaxed">
-                  Enter your access code to continue to the MemDuo demonstration interface.
+                  Enter your access code or backend credentials to continue.
                 </p>
               </div>
 
@@ -197,7 +228,7 @@ const PasswordEntry = () => {
                 <div>
                   <label htmlFor="email" className="flex items-center gap-2 text-sm font-bold text-white mb-3">
                     <Mail size={16} className="text-cyan-400" />
-                    Email Address (Optional)
+                    Email Address (Optional for demo, required for backend)
                   </label>
                   <Input
                     id="email"
@@ -209,14 +240,14 @@ const PasswordEntry = () => {
                     disabled={isSubmitting}
                   />
                   <p className="text-gray-400 text-xs mt-2">
-                    Used for admin access and waitlist pre-population
+                    Use with backend password for full access, or leave empty for demo access
                   </p>
                 </div>
 
                 <div>
                   <label htmlFor="password" className="flex items-center gap-2 text-sm font-bold text-white mb-3">
                     <Lock size={16} className="text-cyan-400" />
-                    Access Code
+                    Access Code or Password
                   </label>
                   <div className="relative">
                     <Input
@@ -225,7 +256,7 @@ const PasswordEntry = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="neural-input py-4 pr-12 rounded-xl font-medium"
-                      placeholder="Enter your access code"
+                      placeholder="Enter master code or backend password"
                       required
                       disabled={isSubmitting}
                     />
@@ -254,13 +285,13 @@ const PasswordEntry = () => {
                   {isSubmitting ? (
                     <span className="flex items-center justify-center gap-3">
                       <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                      Verifying Access...
+                      Authenticating...
                     </span>
                   ) : (
                     <>
                       <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-purple-500/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                       <span className="relative bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
-                        Enter Demo
+                        Enter MemDuo
                       </span>
                       <Lock className="ml-2 w-5 h-5" />
                     </>
@@ -270,7 +301,7 @@ const PasswordEntry = () => {
 
               <div className="text-center pt-6 space-y-3">
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  Access codes are provided exclusively for demonstration purposes.
+                  Use the 256-character master code for demo access, or backend credentials for full features.
                 </p>
                 <p className="text-gray-400 text-sm">
                   For all inquiries, click here:{" "}

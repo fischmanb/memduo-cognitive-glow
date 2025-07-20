@@ -10,26 +10,42 @@ import {
   Upload,
   Search,
   BarChart3,
-  Activity
+  Activity,
+  Shield,
+  Zap
 } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 
 const Dashboard = () => {
-  const { user } = useAuth();
-  const firstName = user?.user_metadata?.first_name || 'User';
+  const { user, isDemoMode, isBackendAuth, backendUser, email } = useAuth();
+  
+  // Determine display name based on auth mode
+  let displayName = 'User';
+  let authMode = 'Unknown';
+  
+  if (isDemoMode) {
+    displayName = 'Demo User';
+    authMode = 'Demo Mode';
+  } else if (isBackendAuth && backendUser) {
+    displayName = backendUser.email || email || 'Backend User';
+    authMode = 'Backend Access';
+  } else if (user) {
+    displayName = user.user_metadata?.first_name || user.email || 'User';
+    authMode = 'Supabase Auth';
+  }
 
   const metrics = [
     {
       title: "Total Nodes",
-      value: "1,247",
+      value: isDemoMode ? "1,247" : "Loading...",
       description: "Knowledge entities in your graph",
       icon: Database,
       change: "+12%",
       positive: true
     },
     {
-      title: "Total Relationships",
-      value: "3,891",
+      title: "Total Relationships", 
+      value: isDemoMode ? "3,891" : "Loading...",
       description: "Connections between entities",
       icon: Network,
       change: "+8%",
@@ -37,7 +53,7 @@ const Dashboard = () => {
     },
     {
       title: "Avg. Relations per Node",
-      value: "3.12",
+      value: isDemoMode ? "3.12" : "Loading...",
       description: "Average connectivity",
       icon: TrendingUp,
       change: "+0.3",
@@ -45,7 +61,7 @@ const Dashboard = () => {
     },
     {
       title: "Documents Processed",
-      value: "156",
+      value: isDemoMode ? "156" : "Loading...",
       description: "Total documents in knowledge base",
       icon: FileText,
       change: "+5",
@@ -56,40 +72,77 @@ const Dashboard = () => {
   const quickActions = [
     {
       title: "Upload Documents",
-      description: "Add new documents to your knowledge base",
+      description: isDemoMode ? "Demo: Add documents to knowledge base" : "Add new documents to your knowledge base",
       icon: Upload,
-      action: () => console.log("Upload documents")
+      action: () => console.log("Upload documents"),
+      available: true
     },
     {
       title: "Search Knowledge",
-      description: "Find information across your documents",
+      description: isDemoMode ? "Demo: Search across documents" : "Find information across your documents",
       icon: Search,
-      action: () => console.log("Search knowledge")
+      action: () => console.log("Search knowledge"),
+      available: true
     },
     {
       title: "View Analytics",
-      description: "Explore your knowledge graph insights",
+      description: isDemoMode ? "Demo: Explore graph insights" : "Explore your knowledge graph insights",
       icon: BarChart3,
-      action: () => console.log("View analytics")
+      action: () => console.log("View analytics"),
+      available: true
     },
     {
       title: "Recent Activity",
-      description: "Check latest processing and updates",
+      description: isDemoMode ? "Demo: Check latest updates" : "Check latest processing and updates",
       icon: Activity,
-      action: () => console.log("Recent activity")
+      action: () => console.log("Recent activity"),
+      available: true
     }
   ];
 
   return (
     <div className="space-y-8 animate-fade-in">
-      {/* Header */}
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
-          Welcome back, {firstName}!
-        </h1>
-        <p className="text-muted-foreground">
-          Here's an overview of your knowledge graph and recent activity.
-        </p>
+      {/* Header with Auth Status */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
+              Welcome back, {displayName}!
+            </h1>
+            <p className="text-muted-foreground">
+              Here's an overview of your knowledge graph and recent activity.
+            </p>
+          </div>
+          
+          {/* Auth Mode Indicator */}
+          <div className="flex items-center space-x-2 neural-glass px-4 py-2 rounded-lg">
+            {isDemoMode ? (
+              <Zap className="h-4 w-4 text-yellow-400" />
+            ) : isBackendAuth ? (
+              <Shield className="h-4 w-4 text-green-400" />
+            ) : (
+              <Database className="h-4 w-4 text-blue-400" />
+            )}
+            <span className="text-sm font-medium text-white">{authMode}</span>
+          </div>
+        </div>
+
+        {/* Auth Mode Info */}
+        {isDemoMode && (
+          <div className="neural-glass p-4 rounded-lg border-l-4 border-yellow-400">
+            <p className="text-yellow-200 text-sm">
+              <strong>Demo Mode:</strong> You're viewing simulated data. Backend features are limited.
+            </p>
+          </div>
+        )}
+        
+        {isBackendAuth && (
+          <div className="neural-glass p-4 rounded-lg border-l-4 border-green-400">
+            <p className="text-green-200 text-sm">
+              <strong>Backend Access:</strong> Full access to MemDuo API and features.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Metrics Grid */}
@@ -157,7 +210,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Recent Activity Section (Placeholder) */}
+      {/* Recent Activity Section */}
       <Card className="neural-glass-premium">
         <CardHeader>
           <CardTitle className="text-white flex items-center">
@@ -166,6 +219,7 @@ const Dashboard = () => {
           </CardTitle>
           <CardDescription>
             Latest updates and processing in your knowledge base
+            {isDemoMode && " (Demo Data)"}
           </CardDescription>
         </CardHeader>
         <CardContent>

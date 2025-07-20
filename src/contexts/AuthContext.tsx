@@ -2,16 +2,21 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
+import { apiClient } from '@/lib/api';
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   email: string | null;
+  isDemoMode: boolean;
+  isBackendAuth: boolean;
+  backendUser: any | null;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
   register: (email: string, password: string, firstName: string, lastName: string) => Promise<boolean>;
   resetPassword: (email: string) => Promise<boolean>;
+  setBackendAuth: (authenticated: boolean, user: any | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,36 +38,54 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState<string | null>(null);
+  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [isBackendAuth, setIsBackendAuthState] = useState(false);
+  const [backendUser, setBackendUser] = useState<any | null>(null);
 
   useEffect(() => {
     // Check for existing session
     const getSession = async () => {
       try {
-        // First check for demo authentication
-        const demoAuth = localStorage.getItem('demo_authenticated');
-        const demoEmail = localStorage.getItem('demo_user_email');
+        // Check for demo mode
+        const demoMode = localStorage.getItem('memduo_demo_mode');
+        const demoEmail = localStorage.getItem('memduo_demo_email');
         
-        if (demoAuth === 'true') {
-          // Set demo user state
-          const demoUser = {
-            id: 'demo-user',
-            email: demoEmail || 'demo@memduo.com',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            aud: '',
-            role: '',
-            email_confirmed_at: new Date().toISOString(),
-            app_metadata: {},
-            user_metadata: {},
-            identities: [],
-            factors: []
-          } as any;
-          
-          setUser(demoUser);
+        if (demoMode === 'true') {
+          setIsDemoMode(true);
           setIsAuthenticated(true);
           setEmail(demoEmail || 'demo@memduo.com');
           setIsLoading(false);
           return;
+        }
+
+        // Check for backend authentication
+        const backendAuth = localStorage.getItem('memduo_backend_auth');
+        const backendToken = localStorage.getItem('memduo_token');
+        const backendEmail = localStorage.getItem('memduo_user_email');
+        const backendUserData = localStorage.getItem('memduo_user_data');
+        
+        if (backendAuth === 'true' && backendToken) {
+          try {
+            // Verify token is still valid by calling a protected endpoint
+            await apiClient.getCurrentUser();
+            
+            setIsBackendAuthState(true);
+            setIsAuthenticated(true);
+            setEmail(backendEmail);
+            
+            if (backendUserData) {
+              setBackendUser(JSON.parse(backendUserData));
+            }
+            setIsLoading(false);
+            return;
+          } catch (error) {
+            console.error('Backend token validation failed:', error);
+            // Clear invalid backend auth
+            localStorage.removeItem('memduo_backend_auth');
+            localStorage.removeItem('memduo_token');
+            localStorage.removeItem('memduo_user_email');
+            localStorage.removeItem('memduo_user_data');
+          }
         }
         
         // Check for real Supabase session
@@ -97,15 +120,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setEmail(session.user.email || null);
       } else {
         setUser(null);
-        setIsAuthenticated(false);
-        setEmail(null);
+        if (!isDemoMode && !isBackendAuth) {
+          setIsAuthenticated(false);
+          setEmail(null);
+        }
       }
       
       setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [isDemoMode, isBackendAuth]);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
@@ -158,7 +183,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
 
       if (data.user) {
-        // Note: User may need to confirm email before being fully authenticated
         return true;
       }
 
@@ -175,9 +199,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       
-      // Clear demo auth state
-      localStorage.removeItem('demo_authenticated');
-      localStorage.removeItem('demo_user_email');
+      // Clear demo mode
+      localStorage.removeItem('memduo_demo_mode');
+      localStorage.removeItem('memduo_demo_email');
+      
+      // Clear backend auth
+      localStorage.removeItem('memduo_backend_auth');
+      localStorage.removeItem('memduo_token');
+      localStorage.removeItem('memduo_user_email');
+      localStorage.removeItem('memduo_user_data');
       
       // Clear Supabase auth state
       Object.keys(localStorage).forEach((key) => {
@@ -192,9 +222,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.error('Logout error:', error);
       }
       
+      // Reset all auth states
       setUser(null);
       setIsAuthenticated(false);
       setEmail(null);
+      setIsDemoMode(false);
+      setIsBackendAuthState(false);
+      setBackendUser(null);
       
       // Force redirect to root to go back to access gate
       window.location.href = '/';
@@ -223,15 +257,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const setBackendAuth = (authenticated: boolean, user: any | null) => {
+    setIsBackendAuthState(authenticated);
+    setBackendUser(user);
+    if (authenticated) {
+      setIsAuthenticated(true);
+    }
+  };
+
   const value: AuthContextType = {
     user,
     isAuthenticated,
     isLoading,
     email,
+    isDemoMode,
+    isBackendAuth,
+    backendUser,
     login,
     logout,
     register,
     resetPassword,
+    setBackendAuth,
   };
 
   return (
