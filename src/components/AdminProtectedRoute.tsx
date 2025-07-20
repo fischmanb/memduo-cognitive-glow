@@ -14,19 +14,23 @@ interface AdminProtectedRouteProps {
 }
 
 const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({ children }) => {
-  const { isAuthenticated: isMainAppAuthenticated, login: mainAppLogin } = useAuth();
+  const { isAuthenticated: isMainAppAuthenticated } = useAuth();
   const { isAuthenticated: isAdminAuthenticated, loading } = useAdminAuth();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [attempting, setAttempting] = useState(false);
+  const [isMainAppAuth, setIsMainAppAuth] = useState(false);
 
   const handleMainAppLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setAttempting(true);
     setError("");
 
-    const success = mainAppLogin(password);
-    if (!success) {
+    // Simple password check for main app access
+    if (password === "memduo2024") { // You can change this to your desired access code
+      setIsMainAppAuth(true);
+      setError("");
+    } else {
       setError("Invalid access code");
     }
     setAttempting(false);
@@ -42,7 +46,7 @@ const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({ children }) =
   }
 
   // First gate: Main app authentication
-  if (!isMainAppAuthenticated) {
+  if (!isMainAppAuth) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
