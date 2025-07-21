@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -28,6 +29,7 @@ const App = () => (
             <Routes>
               {/* Public waitlist/demo page for non-authenticated users */}
               <Route path="/" element={<HomePage />} />
+              <Route path="/demo" element={<Index />} />
               <Route path="/setup" element={<AccountSetup />} />
               <Route path="/register" element={<Register />} />
               <Route 

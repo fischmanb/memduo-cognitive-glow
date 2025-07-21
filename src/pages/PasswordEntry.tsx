@@ -146,8 +146,10 @@ const PasswordEntry = () => {
       const masterCode = "xN$Z3m*Pu9!q67VMEkDyYhBp2WAfsRt#XLbgUcJzFo81^rCnQa@e4+svK!THdM%iL5wNzE_jX^9&RGUu#ybVm$PqoYCZtlMBhf7nADJrx%S*83EWKgT+p3HRdkA$_zFNjvVBwX95q!4YeTruXKJ*Q^gmLhAZ8os1MF^RW2&uUEPqNDJbGh6LVz";
       
       if (password.trim() === masterCode) {
-        console.log('✅ Master code detected - redirecting to demo application page');
-        window.location.href = '/';
+        console.log('✅ Master code detected - setting auth and redirecting to demo app');
+        // Set a temporary auth state to access the demo page
+        localStorage.setItem('memduo_demo_access', 'true');
+        window.location.href = '/demo';
         return;
       }
 
