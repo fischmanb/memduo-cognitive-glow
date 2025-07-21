@@ -9,7 +9,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   email: string | null;
-  isDemoMode: boolean;
+  
   isBackendAuth: boolean;
   backendUser: any | null;
   login: (email: string, password: string) => Promise<boolean>;
@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState<string | null>(null);
-  const [isDemoMode, setIsDemoMode] = useState(false);
+  
   const [isBackendAuth, setIsBackendAuthState] = useState(false);
   const [backendUser, setBackendUser] = useState<any | null>(null);
 
@@ -46,33 +46,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Check for existing session
     const getSession = async () => {
       try {
-        // Check for demo mode
-        const demoMode = localStorage.getItem('memduo_demo_mode');
-        const demoEmail = localStorage.getItem('memduo_demo_email');
-        
-        if (demoMode === 'true') {
-          setIsDemoMode(true);
-          setIsAuthenticated(true);
-          setEmail(demoEmail || 'demo@memduo.com');
-          setIsLoading(false);
-          return;
-        }
-
         // Check for backend authentication
-        const backendAuth = localStorage.getItem('memduo_backend_auth');
         const backendToken = localStorage.getItem('memduo_token');
-        const backendEmail = localStorage.getItem('memduo_user_email');
-        const backendUserData = localStorage.getItem('memduo_user_data');
+        const backendAuth = localStorage.getItem('memduo_backend_auth') === 'true';
+        const userEmail = localStorage.getItem('memduo_user_email');
+        const userData = localStorage.getItem('memduo_user_data');
         
-        if (backendAuth === 'true' && backendToken) {
-          // Trust the stored backend auth without validation
+        if (backendAuth && backendToken) {
           setIsBackendAuthState(true);
-          setIsAuthenticated(true);
-          setEmail(backendEmail);
-          
-          if (backendUserData) {
-            setBackendUser(JSON.parse(backendUserData));
+          setEmail(userEmail || '');
+          if (userData) {
+            try {
+              setBackendUser(JSON.parse(userData));
+            } catch (e) {
+              console.error('Failed to parse user data:', e);
+            }
           }
+          setIsAuthenticated(true);
           setIsLoading(false);
           return;
         }
@@ -109,7 +99,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setEmail(session.user.email || null);
       } else {
         setUser(null);
-        if (!isDemoMode && !isBackendAuth) {
+        if (!isBackendAuth) {
           setIsAuthenticated(false);
           setEmail(null);
         }
@@ -119,7 +109,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     });
 
     return () => subscription.unsubscribe();
-  }, [isDemoMode, isBackendAuth]);
+  }, [isBackendAuth]);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
@@ -188,13 +178,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       
-      // Clear demo mode
-      localStorage.removeItem('memduo_demo_mode');
-      localStorage.removeItem('memduo_demo_email');
-      
-      // Clear backend auth
-      localStorage.removeItem('memduo_backend_auth');
+      // Clear all auth state
       localStorage.removeItem('memduo_token');
+      localStorage.removeItem('memduo_backend_auth');
       localStorage.removeItem('memduo_user_email');
       localStorage.removeItem('memduo_user_data');
       
@@ -215,7 +201,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(null);
       setIsAuthenticated(false);
       setEmail(null);
-      setIsDemoMode(false);
       setIsBackendAuthState(false);
       setBackendUser(null);
       
@@ -259,7 +244,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isAuthenticated,
     isLoading,
     email,
-    isDemoMode,
     isBackendAuth,
     backendUser,
     login,

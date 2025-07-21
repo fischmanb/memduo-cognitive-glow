@@ -17,16 +17,13 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 
 const Dashboard = () => {
-  const { user, isDemoMode, isBackendAuth, backendUser, email } = useAuth();
+  const { user, isBackendAuth, backendUser, email } = useAuth();
   
   // Determine display name based on auth mode
   let displayName = 'User';
   let authMode = 'Unknown';
   
-  if (isDemoMode) {
-    displayName = 'Demo User';
-    authMode = 'Demo Mode';
-  } else if (isBackendAuth && backendUser) {
+  if (isBackendAuth && backendUser) {
     displayName = backendUser.email || email || 'Backend User';
     authMode = 'Backend Access';
   } else if (user) {
@@ -37,7 +34,7 @@ const Dashboard = () => {
   const metrics = [
     {
       title: "Total Nodes",
-      value: isDemoMode ? "1,247" : (isBackendAuth ? "2,349" : "Loading..."),
+      value: isBackendAuth ? "2,349" : "Loading...",
       description: "Knowledge entities in your graph",
       icon: Database,
       change: "+12%",
@@ -45,7 +42,7 @@ const Dashboard = () => {
     },
     {
       title: "Total Relationships", 
-      value: isDemoMode ? "3,891" : (isBackendAuth ? "6,127" : "Loading..."),
+      value: isBackendAuth ? "6,127" : "Loading...",
       description: "Connections between entities",
       icon: Network,
       change: "+8%",
@@ -53,7 +50,7 @@ const Dashboard = () => {
     },
     {
       title: "Avg. Relations per Node",
-      value: isDemoMode ? "3.12" : (isBackendAuth ? "2.61" : "Loading..."),
+      value: isBackendAuth ? "2.61" : "Loading...",
       description: "Average connectivity",
       icon: TrendingUp,
       change: "+0.3",
@@ -61,7 +58,7 @@ const Dashboard = () => {
     },
     {
       title: "Documents Processed",
-      value: isDemoMode ? "156" : (isBackendAuth ? "287" : "Loading..."),
+      value: isBackendAuth ? "287" : "Loading...",
       description: "Total documents in knowledge base",
       icon: FileText,
       change: "+5",
@@ -72,28 +69,28 @@ const Dashboard = () => {
   const quickActions = [
     {
       title: "Upload Documents",
-      description: isDemoMode ? "Demo: Add documents to knowledge base" : "Add new documents to your knowledge base",
+      description: "Add new documents to your knowledge base",
       icon: Upload,
       action: () => console.log("Upload documents"),
       available: true
     },
     {
       title: "Search Knowledge",
-      description: isDemoMode ? "Demo: Search across documents" : "Find information across your documents",
+      description: "Find information across your documents",
       icon: Search,
       action: () => console.log("Search knowledge"),
       available: true
     },
     {
       title: "View Analytics",
-      description: isDemoMode ? "Demo: Explore graph insights" : "Explore your knowledge graph insights",
+      description: "Explore your knowledge graph insights",
       icon: BarChart3,
       action: () => console.log("View analytics"),
       available: true
     },
     {
       title: "Recent Activity",
-      description: isDemoMode ? "Demo: Check latest updates" : "Check latest processing and updates",
+      description: "Check latest processing and updates",
       icon: Activity,
       action: () => console.log("Recent activity"),
       available: true
@@ -116,9 +113,7 @@ const Dashboard = () => {
           
           {/* Auth Mode Indicator */}
           <div className="flex items-center space-x-2 neural-glass px-4 py-2 rounded-lg">
-            {isDemoMode ? (
-              <Zap className="h-4 w-4 text-yellow-400" />
-            ) : isBackendAuth ? (
+            {isBackendAuth ? (
               <Shield className="h-4 w-4 text-green-400" />
             ) : (
               <Database className="h-4 w-4 text-blue-400" />
@@ -128,14 +123,6 @@ const Dashboard = () => {
         </div>
 
         {/* Auth Mode Info */}
-        {isDemoMode && (
-          <div className="neural-glass p-4 rounded-lg border-l-4 border-yellow-400">
-            <p className="text-yellow-200 text-sm">
-              <strong>Demo Mode:</strong> You're viewing simulated data. Backend features are limited.
-            </p>
-          </div>
-        )}
-        
         {isBackendAuth && (
           <div className="neural-glass p-4 rounded-lg border-l-4 border-green-400">
             <p className="text-green-200 text-sm">
@@ -219,7 +206,6 @@ const Dashboard = () => {
           </CardTitle>
           <CardDescription>
             Latest updates and processing in your knowledge base
-            {isDemoMode && " (Demo Data)"}
           </CardDescription>
         </CardHeader>
         <CardContent>
