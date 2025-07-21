@@ -103,13 +103,30 @@ class ApiClient {
     console.log('🏥 Testing backend connectivity...');
     
     try {
-      // Try the base API endpoint instead of /health since /health doesn't exist
-      const result = await this.request('/');
-      console.log('✅ Backend health check passed');
-      return result;
+      // Try the base API endpoint first without authentication
+      const response = await fetch(`${API_BASE_URL}/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      console.log(`📡 Health check response: ${response.status} ${response.statusText}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ Backend is online and accessible');
+        return data;
+      } else {
+        console.warn(`⚠️ Backend responded with status ${response.status}`);
+        return null;
+      }
     } catch (error) {
       console.error('❌ Backend health check failed:', error);
-      // Don't fail completely if health check fails - just log it
+      console.error('🔍 This usually means:');
+      console.error('   1. Backend server is not running');
+      console.error('   2. CORS is blocking the request');
+      console.error('   3. Network connectivity issues');
       return null;
     }
   }
