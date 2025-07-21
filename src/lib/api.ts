@@ -170,6 +170,11 @@ class ApiClient {
     return this.request('/auth/me');
   }
 
+  // Get all users (admin only)
+  async getUsers(): Promise<any[]> {
+    return this.request('/users');
+  }
+
   // Role endpoints
   async getRoles(): Promise<any[]> {
     return this.request('/roles/');
