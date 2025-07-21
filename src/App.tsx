@@ -15,6 +15,10 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import OnboardingFlow from "./components/OnboardingFlow";
 import MainLayout from "./components/MainLayout";
+import Chat from "./pages/Chat";
+import KnowledgeBase from "./pages/KnowledgeBase";
+import Settings from "./pages/Settings";
+import Help from "./pages/Help";
 
 const queryClient = new QueryClient();
 
@@ -61,7 +65,7 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <MainLayout>
-                      <div className="text-white">Knowledge Base - Coming Soon</div>
+                      <KnowledgeBase />
                     </MainLayout>
                   </ProtectedRoute>
                 } 
@@ -71,7 +75,7 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <MainLayout>
-                      <div className="text-white">Chat - Coming Soon</div>
+                      <Chat />
                     </MainLayout>
                   </ProtectedRoute>
                 } 
@@ -81,7 +85,7 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <MainLayout>
-                      <div className="text-white">Settings - Coming Soon</div>
+                      <Settings />
                     </MainLayout>
                   </ProtectedRoute>
                 } 
@@ -91,7 +95,7 @@ const App = () => (
                 element={
                   <ProtectedRoute>
                     <MainLayout>
-                      <div className="text-white">Help Desk - Coming Soon</div>
+                      <Help />
                     </MainLayout>
                   </ProtectedRoute>
                 } 
