@@ -119,6 +119,11 @@ class ApiClient {
     // Since the login endpoint itself proves connectivity, skip health check for now
 
     try {
+      console.log('📤 Sending login request with:', { 
+        email: credentials.email, 
+        passwordLength: credentials.password.length 
+      });
+      
       const response = await this.request<LoginResponse>('/auth/login', {
         method: 'POST',
         body: JSON.stringify(credentials),
@@ -127,7 +132,16 @@ class ApiClient {
       console.log('✅ Backend login successful for:', credentials.email);
       return response;
     } catch (error) {
-      console.error('❌ Backend login failed for:', credentials.email, error);
+      console.error('❌ Backend login failed for:', credentials.email);
+      console.error('❌ Error details:', error);
+      
+      // Check if it's a 401 vs other errors
+      if (error instanceof Error && error.message.includes('Incorrect email or password')) {
+        console.error('🔐 Authentication failed: Backend rejected the credentials');
+        console.error('📧 Email sent:', credentials.email);
+        console.error('🔑 Password length sent:', credentials.password.length);
+      }
+      
       throw error;
     }
   }
