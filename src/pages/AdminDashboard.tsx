@@ -101,19 +101,18 @@ const AdminDashboard: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
+      console.log('🔄 Attempting to fetch users from FastAPI backend...');
       const usersData = await apiClient.getUsers();
+      console.log('✅ FastAPI users loaded successfully:', usersData);
       setUsers(usersData || []);
       toast({
         title: "Success",
         description: "FastAPI users loaded successfully",
       });
     } catch (error) {
-      console.error('Error fetching users from FastAPI:', error);
-      toast({
-        title: "Warning",
-        description: "Failed to load users from FastAPI backend",
-        variant: "destructive",
-      });
+      console.error('❌ Error fetching users from FastAPI:', error);
+      console.warn('⚠️ Continuing without FastAPI users - admin dashboard will still work');
+      // Don't show error toast - just continue without backend users
       setUsers([]);
     } finally {
       setUsersLoading(false);
