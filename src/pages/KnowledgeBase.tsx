@@ -52,13 +52,29 @@ const KnowledgeBase = () => {
   const loadDocuments = async () => {
     try {
       setLoading(true);
+      console.log('🔄 Loading documents from backend...');
       const response = await apiClient.getDocuments();
+      console.log('✅ Documents loaded successfully:', response);
       setDocuments(Array.isArray(response) ? response : (response as any)?.documents || []);
     } catch (error) {
-      console.error('Error loading documents:', error);
+      console.error('🚨 Error loading documents:', error);
+      
+      let errorMessage = "Failed to load documents";
+      if (error instanceof Error) {
+        if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+          errorMessage = "Authentication failed. Please log in again.";
+        } else if (error.message.includes('Network error') || error.message.includes('Failed to fetch')) {
+          errorMessage = "Cannot connect to backend server. Please check if the API is running.";
+        } else if (error.message.includes('403')) {
+          errorMessage = "You don't have permission to access documents.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
         title: "Error",
-        description: "Failed to load documents",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
