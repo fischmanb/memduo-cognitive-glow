@@ -30,6 +30,15 @@ export const useDashboardData = () => {
 
         console.log('🔄 Fetching dashboard data...');
 
+        // First, let's try to get the current user info to see what ID format backend expects
+        let currentUser = null;
+        try {
+          currentUser = await apiClient.getCurrentUser();
+          console.log('✅ Current user info:', currentUser);
+        } catch (userError) {
+          console.log('⚠️ Could not get current user info:', userError);
+        }
+
         // Fetch real data from backend - with better error handling
         let documents = [];
         let graphStats = null;
@@ -46,21 +55,37 @@ export const useDashboardData = () => {
         try {
           // Try to get user-specific data first
           const userEmail = localStorage.getItem('memduo_user_email');
+          console.log('🔍 Stored user email:', userEmail);
+          console.log('🔍 Current user from backend:', currentUser);
+          
           let userStats = null;
           
-          if (userEmail) {
+          // Try multiple user identifier formats
+          const userIdentifiers = [
+            userEmail, // Email format
+            currentUser?.id, // Backend user ID if available
+            currentUser?.user_id, // Alternative user ID field
+            currentUser?.sub, // JWT subject
+          ].filter(Boolean); // Remove null/undefined values
+          
+          console.log('🔍 Trying user identifiers:', userIdentifiers);
+          
+          for (const userId of userIdentifiers) {
+            if (!userId) continue;
+            
             try {
-              // Try user-specific graph stats endpoint
-              userStats = await apiClient.getUserMemoryStats(userEmail);
-              console.log('✅ User-specific graph stats fetched:', userStats);
+              console.log(`🔍 Trying user-specific graph stats for: ${userId}`);
+              userStats = await apiClient.getUserMemoryStats(userId);
+              console.log(`✅ User-specific graph stats found for ${userId}:`, userStats);
               
               if (userStats && (userStats.totalNodes > 0 || userStats.totalRelationships > 0)) {
                 userStats.userSpecific = true;
                 userStats.userEmail = userEmail;
                 graphStats = userStats;
+                break; // Found data, stop trying other identifiers
               }
             } catch (userError) {
-              console.log('⚠️ User-specific graph stats not available:', userError);
+              console.log(`⚠️ User-specific graph stats not available for ${userId}:`, userError);
             }
           }
           
