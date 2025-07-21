@@ -12,56 +12,59 @@ import {
   BarChart3,
   Activity,
   Shield,
-  Zap
+  Loader2
 } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
+import { useDashboardData } from '@/hooks/useDashboardData';
 
 const Dashboard = () => {
   const { user, isBackendAuth, backendUser, email } = useAuth();
+  const { metrics: dashboardMetrics, recentActivity, loading, error } = useDashboardData();
   
   // Determine display name based on auth mode
   let displayName = 'User';
   let authMode = 'Unknown';
   
   if (isBackendAuth && backendUser) {
-    displayName = backendUser.email || email || 'Backend User';
+    displayName = backendUser.name || backendUser.email || email || 'Backend User';
     authMode = 'Backend Access';
   } else if (user) {
     displayName = user.user_metadata?.first_name || user.email || 'User';
     authMode = 'Supabase Auth';
   }
 
+  // Create metrics array with real data
   const metrics = [
     {
       title: "Total Nodes",
-      value: isBackendAuth ? "2,349" : "Loading...",
+      value: loading ? "Loading..." : dashboardMetrics?.totalNodes.toLocaleString() || "0",
       description: "Knowledge entities in your graph",
       icon: Database,
-      change: "+12%",
+      change: dashboardMetrics?.totalNodes ? "Active" : "Ready",
       positive: true
     },
     {
       title: "Total Relationships", 
-      value: isBackendAuth ? "6,127" : "Loading...",
+      value: loading ? "Loading..." : dashboardMetrics?.totalRelationships.toLocaleString() || "0",
       description: "Connections between entities",
       icon: Network,
-      change: "+8%",
+      change: dashboardMetrics?.totalRelationships ? "Active" : "Ready",
       positive: true
     },
     {
       title: "Avg. Relations per Node",
-      value: isBackendAuth ? "2.61" : "Loading...",
+      value: loading ? "Loading..." : dashboardMetrics?.avgRelationsPerNode.toString() || "0",
       description: "Average connectivity",
       icon: TrendingUp,
-      change: "+0.3",
+      change: dashboardMetrics?.avgRelationsPerNode ? "Calculated" : "Ready",
       positive: true
     },
     {
       title: "Documents Processed",
-      value: isBackendAuth ? "287" : "Loading...",
+      value: loading ? "Loading..." : dashboardMetrics?.documentsProcessed.toLocaleString() || "0",
       description: "Total documents in knowledge base",
       icon: FileText,
-      change: "+5",
+      change: dashboardMetrics?.documentsProcessed ? "Active" : "Ready",
       positive: true
     }
   ];
@@ -209,22 +212,30 @@ const Dashboard = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {[
-              { action: "Document processed", item: "research-paper-2024.pdf", time: "2 hours ago" },
-              { action: "Graph updated", item: "Added 23 new relationships", time: "4 hours ago" },
-              { action: "Search performed", item: "Query: 'machine learning algorithms'", time: "1 day ago" },
-              { action: "Document uploaded", item: "dataset-analysis.docx", time: "2 days ago" }
-            ].map((activity, index) => (
-              <div key={index} className="flex items-center justify-between p-3 neural-glass rounded-lg">
-                <div>
-                  <p className="text-sm font-medium text-white">{activity.action}</p>
-                  <p className="text-xs text-gray-400">{activity.item}</p>
+          {loading ? (
+            <div className="flex items-center justify-center p-8">
+              <Loader2 className="h-6 w-6 animate-spin text-blue-400 mr-2" />
+              <span className="text-gray-400">Loading recent activity...</span>
+            </div>
+          ) : error ? (
+            <div className="p-4 neural-glass rounded-lg border-l-4 border-red-400">
+              <p className="text-red-200 text-sm">
+                <strong>Error:</strong> {error}
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {recentActivity.map((activity, index) => (
+                <div key={index} className="flex items-center justify-between p-3 neural-glass rounded-lg">
+                  <div>
+                    <p className="text-sm font-medium text-white">{activity.action}</p>
+                    <p className="text-xs text-gray-400">{activity.item}</p>
+                  </div>
+                  <span className="text-xs text-gray-500">{activity.time}</span>
                 </div>
-                <span className="text-xs text-gray-500">{activity.time}</span>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
