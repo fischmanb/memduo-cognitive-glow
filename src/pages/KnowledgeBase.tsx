@@ -88,19 +88,19 @@ const KnowledgeBase = () => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
 
+    console.log(`📁 Starting upload of ${files.length} file(s)...`);
+
     try {
       setUploading(true);
-      const formData = new FormData();
-      Array.from(files).forEach(file => {
-        formData.append('files', file);
-      });
-
+      
       // Upload each file using the API client
-      const uploadPromises = Array.from(files).map(file => 
-        apiClient.uploadDocument(file)
-      );
+      const uploadPromises = Array.from(files).map((file, index) => {
+        console.log(`📄 Uploading file ${index + 1}: ${file.name} (${file.size} bytes)`);
+        return apiClient.uploadDocument(file);
+      });
       
       const results = await Promise.all(uploadPromises);
+      console.log('✅ All uploads completed:', results);
       
       toast({
         title: "Upload Successful",
@@ -110,10 +110,14 @@ const KnowledgeBase = () => {
       // Reload documents
       await loadDocuments();
     } catch (error) {
-      console.error('Error uploading files:', error);
+      console.error('❌ Error uploading files:', error);
+      let errorMessage = "Failed to upload files";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
       toast({
         title: "Upload Failed",
-        description: "Failed to upload files",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
