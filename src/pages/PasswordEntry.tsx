@@ -78,8 +78,9 @@ const PasswordEntry = () => {
         setBackendStatus('online');
         console.log('🟢 Backend is online and accessible');
       } catch (error) {
-        setBackendStatus('offline');
-        console.error('🔴 Backend is not accessible:', error);
+        // Don't mark as offline immediately - the login endpoint might still work
+        console.warn('⚠️ Health check failed, but backend might still be accessible:', error);
+        setBackendStatus('unknown');
       }
     };
 

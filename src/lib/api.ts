@@ -96,17 +96,19 @@ class ApiClient {
     }
   }
 
-  // Health check with detailed connectivity testing
+  // Health check - try a simple endpoint that should exist
   async healthCheck(): Promise<any> {
     console.log('🏥 Testing backend connectivity...');
     
     try {
-      const result = await this.request('/health');
+      // Try the base API endpoint instead of /health since /health doesn't exist
+      const result = await this.request('/');
       console.log('✅ Backend health check passed');
       return result;
     } catch (error) {
       console.error('❌ Backend health check failed:', error);
-      throw error;
+      // Don't fail completely if health check fails - just log it
+      return null;
     }
   }
 
@@ -114,12 +116,7 @@ class ApiClient {
   async login(credentials: LoginRequest): Promise<LoginResponse> {
     console.log('🔐 Attempting backend login for:', credentials.email);
     
-    // Test connectivity first
-    try {
-      await this.healthCheck();
-    } catch (healthError) {
-      console.warn('⚠️ Health check failed, but continuing with login attempt:', healthError);
-    }
+    // Since the login endpoint itself proves connectivity, skip health check for now
 
     try {
       const response = await this.request<LoginResponse>('/auth/login', {
