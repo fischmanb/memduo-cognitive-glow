@@ -50,8 +50,8 @@ export const useDashboardData = () => {
 
         // Calculate real metrics based on actual data
         const documentsCount = documents.length;
-        const nodesCount = graphStats?.nodes || 0;
-        const relationshipsCount = graphStats?.relationships || 0;
+        const nodesCount = graphStats?.totalNodes || 0;
+        const relationshipsCount = graphStats?.totalRelationships || 0;
         
         // For now, use basic calculations - these can be enhanced when backend provides more detailed metrics
         const calculatedMetrics: DashboardMetrics = {
@@ -76,10 +76,10 @@ export const useDashboardData = () => {
         });
 
         // Add graph-based activity if we have stats
-        if (graphStats && (graphStats.nodes > 0 || graphStats.relationships > 0)) {
+        if (graphStats && (graphStats.totalNodes > 0 || graphStats.totalRelationships > 0)) {
           activity.push({
             action: "Knowledge graph updated",
-            item: `${graphStats.nodes} nodes, ${graphStats.relationships} relationships`,
+            item: `${graphStats.totalNodes} nodes, ${graphStats.totalRelationships} relationships`,
             time: "Recently"
           });
         }
