@@ -6,6 +6,8 @@ interface DashboardMetrics {
   totalRelationships: number;
   avgRelationsPerNode: number;
   documentsProcessed: number;
+  userSpecific?: boolean;
+  userEmail?: string;
 }
 
 interface RecentActivity {
@@ -42,8 +44,33 @@ export const useDashboardData = () => {
         }
 
         try {
-          graphStats = await apiClient.getMemoryStats();
-          console.log('✅ Graph stats fetched:', graphStats);
+          // Get user-specific graph stats using email as user ID
+          const userEmail = localStorage.getItem('memduo_user_email');
+          if (userEmail) {
+            // Try to get user-specific top connections 
+            const topConnections = await apiClient.getTopConnections(userEmail, 5);
+            console.log('✅ User-specific connections fetched:', topConnections);
+            
+            // Create mock stats from user connections for now
+            if (topConnections?.connections) {
+              const connectionCount = topConnections.connections.length;
+              graphStats = {
+                totalNodes: connectionCount,
+                totalRelationships: Math.floor(connectionCount * 1.5), // Estimate
+                userSpecific: true,
+                userEmail: userEmail
+              };
+            }
+          }
+          
+          // Fallback to global stats if no user-specific data available
+          if (!graphStats) {
+            graphStats = await apiClient.getMemoryStats();
+            console.log('✅ Global graph stats fetched:', graphStats);
+            if (graphStats) {
+              graphStats.userSpecific = false;
+            }
+          }
         } catch (statsError) {
           console.log('⚠️ Graph stats endpoint not available:', statsError);
           graphStats = null;
@@ -59,7 +86,9 @@ export const useDashboardData = () => {
           totalNodes: nodesCount,
           totalRelationships: relationshipsCount,
           avgRelationsPerNode: nodesCount > 0 ? Number((relationshipsCount / nodesCount).toFixed(2)) : 0,
-          documentsProcessed: documentsCount
+          documentsProcessed: documentsCount,
+          userSpecific: graphStats?.userSpecific,
+          userEmail: graphStats?.userEmail
         };
 
         setMetrics(calculatedMetrics);

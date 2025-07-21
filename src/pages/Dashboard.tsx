@@ -24,13 +24,16 @@ const Dashboard = () => {
   // Determine display name based on auth mode
   let displayName = 'User';
   let authMode = 'Unknown';
+  let userEmail = email;
   
   if (isBackendAuth && backendUser) {
     displayName = backendUser.name || backendUser.email || email || 'Backend User';
     authMode = 'Backend Access';
+    userEmail = email || backendUser.email;
   } else if (user) {
     displayName = user.user_metadata?.first_name || user.email || 'User';
     authMode = 'Supabase Auth';
+    userEmail = user.email;
   }
 
   // Create metrics array with real data
@@ -131,6 +134,24 @@ const Dashboard = () => {
             <p className="text-green-200 text-sm">
               <strong>Backend Access:</strong> Full access to MemDuo API and features.
             </p>
+          </div>
+        )}
+
+        {/* Data Scope Indicator */}
+        {!loading && userEmail && (
+          <div className="neural-glass p-4 rounded-lg border-l-4 border-blue-400">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-blue-200 text-sm">
+                  <strong>Data Scope:</strong> {dashboardMetrics?.userSpecific ? 'Personal' : 'Global'} • User: {userEmail}
+                </p>
+                {dashboardMetrics?.userSpecific === false && (
+                  <p className="text-amber-200 text-xs mt-1">
+                    Currently showing global system data. User-specific data not available.
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>
