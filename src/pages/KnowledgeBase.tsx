@@ -20,18 +20,19 @@ import {
   RotateCcw
 } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
-import { apiClient } from '@/lib/api';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Document {
-  id: number;
+  id: string;
   filename: string;
-  content_type: string;
+  file_type: string;
   file_size: number;
   status: string;
   created_at: string;
-  processed_at?: string;
-  error_message?: string;
+  updated_at: string;
   is_indexed: boolean;
+  storage_path: string;
+  user_id: string;
 }
 
 const KnowledgeBase = () => {
@@ -54,29 +55,19 @@ const KnowledgeBase = () => {
   const loadDocuments = async () => {
     try {
       setLoading(true);
-      console.log('🔄 Loading documents from backend...');
-      const response = await apiClient.getDocuments();
-      console.log('✅ Documents loaded successfully:', response);
-      setDocuments(Array.isArray(response) ? response : (response as any)?.documents || []);
+      const { data, error } = await supabase
+        .from('documents')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      
+      setDocuments(data || []);
     } catch (error) {
-      console.error('🚨 Error loading documents:', error);
-      
-      let errorMessage = "Failed to load documents";
-      if (error instanceof Error) {
-        if (error.message.includes('401') || error.message.includes('Unauthorized')) {
-          errorMessage = "Authentication failed. Please log in again.";
-        } else if (error.message.includes('Network error') || error.message.includes('Failed to fetch')) {
-          errorMessage = "Cannot connect to backend server. Please check if the API is running.";
-        } else if (error.message.includes('403')) {
-          errorMessage = "You don't have permission to access documents.";
-        } else {
-          errorMessage = error.message;
-        }
-      }
-      
+      console.error('Error loading documents:', error);
       toast({
         title: "Error",
-        description: errorMessage,
+        description: "Failed to load documents",
         variant: "destructive"
       });
     } finally {
@@ -88,55 +79,51 @@ const KnowledgeBase = () => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
 
-    console.log(`📁 Starting upload of ${files.length} file(s)...`);
-
     try {
       setUploading(true);
       
-      // Upload each file using the API client
-      const uploadPromises = Array.from(files).map((file, index) => {
-        console.log(`📄 Uploading file ${index + 1}: ${file.name} (${file.size} bytes)`);
-        return apiClient.uploadDocument(file);
-      });
-      
-      const results = await Promise.all(uploadPromises);
-      console.log('✅ All uploads completed:', results);
+      for (const file of Array.from(files)) {
+        // Upload to Supabase storage
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${Date.now()}-${fileName}`;
+
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('documents')
+          .upload(filePath, file);
+
+        if (uploadError) {
+          throw new Error(`Upload failed: ${uploadError.message}`);
+        }
+
+        // Create document record in database
+        const { error: dbError } = await supabase
+          .from('documents')
+          .insert({
+            filename: file.name,
+            file_type: file.type,
+            file_size: file.size,
+            storage_path: uploadData.path,
+            status: 'pending',
+            user_id: (await supabase.auth.getUser()).data.user?.id
+          });
+
+        if (dbError) {
+          throw new Error(`Database error: ${dbError.message}`);
+        }
+      }
       
       toast({
         title: "Upload Successful",
         description: `${files.length} file(s) uploaded successfully`,
       });
 
-      // Reload documents
       await loadDocuments();
     } catch (error) {
-      console.error('❌ Error uploading files:', error);
-      console.error('❌ Error type:', typeof error);
-      console.error('❌ Error stringified:', JSON.stringify(error, null, 2));
-      
-      let errorMessage = "Failed to upload files";
-      
-      if (error instanceof Error) {
-        errorMessage = error.message;
-        console.error('❌ Error.message:', error.message);
-      } else if (typeof error === 'string') {
-        errorMessage = error;
-      } else if (error && typeof error === 'object') {
-        // Handle object errors
-        if ('detail' in error) {
-          errorMessage = (error as any).detail;
-        } else if ('message' in error) {
-          errorMessage = (error as any).message;
-        } else {
-          errorMessage = `Upload failed: ${JSON.stringify(error)}`;
-        }
-      }
-      
-      console.error('❌ Final error message to show:', errorMessage);
-      
+      console.error('Upload error:', error);
       toast({
         title: "Upload Failed",
-        description: errorMessage,
+        description: error instanceof Error ? error.message : "Upload failed",
         variant: "destructive"
       });
     } finally {
@@ -147,17 +134,20 @@ const KnowledgeBase = () => {
     }
   };
 
-  const deleteDocument = async (documentId: number) => {
+  const deleteDocument = async (documentId: string) => {
     try {
-      console.log(`🗑️ Deleting document ${documentId}`);
-      await apiClient.deleteDocument(documentId);
-      
+      const { error } = await supabase
+        .from('documents')
+        .delete()
+        .eq('id', documentId);
+
+      if (error) throw error;
+
       toast({
         title: "Document Deleted",
         description: "Document removed successfully",
       });
 
-      // Reload documents
       await loadDocuments();
     } catch (error) {
       console.error('Error deleting document:', error);
@@ -169,16 +159,20 @@ const KnowledgeBase = () => {
     }
   };
 
-  const retryProcessing = async (documentId: number) => {
+  const retryProcessing = async (documentId: string) => {
     try {
-      console.log(`🔄 Retrying processing for document ${documentId}`);
-      // This would need a backend endpoint to retry processing
+      const { error } = await supabase
+        .from('documents')
+        .update({ status: 'pending' })
+        .eq('id', documentId);
+
+      if (error) throw error;
+
       toast({
         title: "Retry Initiated",
-        description: "Document processing will be retried",
+        description: "Document will be reprocessed",
       });
       
-      // Reload documents to update status
       await loadDocuments();
     } catch (error) {
       console.error('Error retrying document processing:', error);
@@ -190,7 +184,7 @@ const KnowledgeBase = () => {
     }
   };
 
-  const indexDocument = async (documentId: number) => {
+  const indexDocument = async (documentId: string) => {
     try {
       console.log(`🔄 Starting indexing for document ${documentId}`);
       const token = localStorage.getItem('memduo_token');
@@ -510,11 +504,6 @@ const KnowledgeBase = () => {
                           <span className="text-xs text-gray-400">
                             {formatDate(doc.created_at)}
                           </span>
-                          {doc.error_message && (
-                            <span className="text-xs text-red-400" title={doc.error_message}>
-                              Error occurred
-                            </span>
-                          )}
                         </div>
                       </div>
                       
