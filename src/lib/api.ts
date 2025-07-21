@@ -222,6 +222,11 @@ class ApiClient {
     const url = `${API_BASE_URL}/documents/upload`;
     
     console.log(`🔄 Document upload: POST ${url}`);
+    console.log('📁 Uploading file:', {
+      name: file.name,
+      size: file.size,
+      type: file.type
+    });
     
     try {
       const response = await fetch(url, {
@@ -244,7 +249,18 @@ class ApiClient {
         try {
           const errorData = await response.json();
           console.error('❌ Error response body:', errorData);
-          errorDetail = errorData.detail || errorData.message || errorData.error || errorDetail;
+          // For 422 errors, look for validation details
+          if (response.status === 422 && errorData.detail) {
+            if (Array.isArray(errorData.detail)) {
+              errorDetail = errorData.detail.map((err: any) => 
+                `${err.loc?.join('.') || 'field'}: ${err.msg}`
+              ).join(', ');
+            } else {
+              errorDetail = errorData.detail;
+            }
+          } else {
+            errorDetail = errorData.detail || errorData.message || errorData.error || errorDetail;
+          }
         } catch (parseError) {
           console.error('❌ Failed to parse error response:', parseError);
           try {
