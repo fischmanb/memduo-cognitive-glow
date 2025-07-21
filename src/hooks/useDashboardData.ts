@@ -26,11 +26,27 @@ export const useDashboardData = () => {
         setLoading(true);
         setError(null);
 
-        // Fetch real data from backend
-        const [documents, memories] = await Promise.all([
-          apiClient.getDocuments().catch(() => []),
-          apiClient.getMemories().catch(() => [])
-        ]);
+        console.log('🔄 Fetching dashboard data...');
+
+        // Fetch real data from backend - with better error handling
+        let documents = [];
+        let memories = [];
+
+        try {
+          documents = await apiClient.getDocuments();
+          console.log('✅ Documents fetched:', documents.length);
+        } catch (docError) {
+          console.log('⚠️ Documents endpoint not available or empty:', docError);
+          documents = [];
+        }
+
+        try {
+          memories = await apiClient.getMemories();
+          console.log('✅ Memories fetched:', memories.length);
+        } catch (memError) {
+          console.log('⚠️ Memories endpoint not available or empty:', memError);
+          memories = [];
+        }
 
         // Calculate real metrics based on actual data
         const documentsCount = documents.length;
@@ -77,9 +93,14 @@ export const useDashboardData = () => {
         }
 
         setRecentActivity(activity);
+        console.log('✅ Dashboard data loaded successfully');
       } catch (err) {
-        console.error('Failed to fetch dashboard data:', err);
-        setError('Failed to load dashboard data');
+        console.error('❌ Failed to fetch dashboard data:', err);
+        
+        // Don't set error for empty data - only for actual failures
+        if (err instanceof Error && !err.message.includes('404')) {
+          setError(`Unable to connect to backend: ${err.message}`);
+        }
         
         // Set default values when API fails
         setMetrics({
@@ -91,7 +112,7 @@ export const useDashboardData = () => {
         setRecentActivity([
           {
             action: "System ready",
-            item: "Connect to start building your knowledge graph",
+            item: "Ready to process your first documents",
             time: "Now"
           }
         ]);
