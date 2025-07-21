@@ -234,6 +234,11 @@ class ApiClient {
     return this.request('/rag/graph/stats');
   }
 
+  async getUserMemoryStats(userId: string): Promise<any> {
+    // Get user-specific graph stats
+    return this.request(`/rag/graph/stats/${userId}`);
+  }
+
   async searchMemory(userId: string, query: string): Promise<any> {
     return this.request(`/memory/search/${userId}`, {
       method: 'POST',

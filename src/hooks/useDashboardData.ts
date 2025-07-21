@@ -44,43 +44,38 @@ export const useDashboardData = () => {
         }
 
         try {
-          // First, always try to get global stats to see if there's system data
-          const globalStats = await apiClient.getMemoryStats();
-          console.log('✅ Global graph stats fetched:', globalStats);
-          
-          // Try to get user-specific data using email as user ID
+          // Try to get user-specific data first
           const userEmail = localStorage.getItem('memduo_user_email');
           let userStats = null;
           
           if (userEmail) {
             try {
-              const topConnections = await apiClient.getTopConnections(userEmail, 5);
-              console.log('✅ User-specific connections fetched:', topConnections);
+              // Try user-specific graph stats endpoint
+              userStats = await apiClient.getUserMemoryStats(userEmail);
+              console.log('✅ User-specific graph stats fetched:', userStats);
               
-              if (topConnections?.connections?.length > 0) {
-                // User has specific data
-                const connectionCount = topConnections.connections.length;
-                userStats = {
-                  totalNodes: connectionCount,
-                  totalRelationships: Math.floor(connectionCount * 1.5),
-                  userSpecific: true,
-                  userEmail: userEmail
-                };
+              if (userStats && (userStats.totalNodes > 0 || userStats.totalRelationships > 0)) {
+                userStats.userSpecific = true;
+                userStats.userEmail = userEmail;
+                graphStats = userStats;
               }
             } catch (userError) {
-              console.log('⚠️ User-specific data not available:', userError);
+              console.log('⚠️ User-specific graph stats not available:', userError);
             }
           }
           
-          // Use user-specific data if available, otherwise global data
-          if (userStats) {
-            graphStats = userStats;
-          } else if (globalStats) {
-            graphStats = {
-              ...globalStats,
-              userSpecific: false,
-              userEmail: userEmail
-            };
+          // Fallback to global stats if no user-specific data
+          if (!graphStats) {
+            const globalStats = await apiClient.getMemoryStats();
+            console.log('✅ Global graph stats fetched:', globalStats);
+            
+            if (globalStats) {
+              graphStats = {
+                ...globalStats,
+                userSpecific: false,
+                userEmail: userEmail
+              };
+            }
           }
         } catch (statsError) {
           console.log('⚠️ Graph stats endpoint not available:', statsError);
