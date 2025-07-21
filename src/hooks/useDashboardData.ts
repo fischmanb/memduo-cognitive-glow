@@ -33,7 +33,8 @@ export const useDashboardData = () => {
         let graphStats = null;
 
         try {
-          documents = await apiClient.getDocuments();
+          const documentsResponse = await apiClient.getDocuments() as any;
+          documents = documentsResponse.documents || [];
           console.log('✅ Documents fetched:', documents.length);
         } catch (docError) {
           console.log('⚠️ Documents endpoint not available or empty:', docError);
