@@ -272,31 +272,6 @@ const PasswordEntry = () => {
                     Private Access
                   </span>
                 </h1>
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  Enter your access code or backend credentials to continue.
-                </p>
-                
-                {/* Backend Status Indicator */}
-                <div className="mt-4 flex items-center justify-center gap-2 text-sm">
-                  {backendStatus === 'online' && (
-                    <>
-                      <Wifi className="h-4 w-4 text-green-400" />
-                      <span className="text-green-400">Backend Online</span>
-                    </>
-                  )}
-                  {backendStatus === 'offline' && (
-                    <>
-                      <WifiOff className="h-4 w-4 text-red-400" />
-                      <span className="text-red-400">Backend Offline</span>
-                    </>
-                  )}
-                  {backendStatus === 'unknown' && (
-                    <>
-                      <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                      <span className="text-gray-400">Checking Backend...</span>
-                    </>
-                  )}
-                </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -381,12 +356,6 @@ const PasswordEntry = () => {
                     Contact Us
                   </a>
                 </p>
-                
-                {/* Debug Info for Development */}
-                <div className="text-xs text-gray-500 space-y-1">
-                  <p>Backend Status: {backendStatus}</p>
-                  <p>API Base URL: {email.trim() ? 'https://api.memduo.com/api/v1' : 'Not applicable'}</p>
-                </div>
               </div>
             </div>
           </div>
