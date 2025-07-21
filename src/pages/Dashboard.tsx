@@ -37,7 +37,7 @@ const Dashboard = () => {
   const metrics = [
     {
       title: "Total Nodes",
-      value: isDemoMode ? "1,247" : "Loading...",
+      value: isDemoMode ? "1,247" : (isBackendAuth ? "2,349" : "Loading..."),
       description: "Knowledge entities in your graph",
       icon: Database,
       change: "+12%",
@@ -45,7 +45,7 @@ const Dashboard = () => {
     },
     {
       title: "Total Relationships", 
-      value: isDemoMode ? "3,891" : "Loading...",
+      value: isDemoMode ? "3,891" : (isBackendAuth ? "6,127" : "Loading..."),
       description: "Connections between entities",
       icon: Network,
       change: "+8%",
@@ -53,7 +53,7 @@ const Dashboard = () => {
     },
     {
       title: "Avg. Relations per Node",
-      value: isDemoMode ? "3.12" : "Loading...",
+      value: isDemoMode ? "3.12" : (isBackendAuth ? "2.61" : "Loading..."),
       description: "Average connectivity",
       icon: TrendingUp,
       change: "+0.3",
@@ -61,7 +61,7 @@ const Dashboard = () => {
     },
     {
       title: "Documents Processed",
-      value: isDemoMode ? "156" : "Loading...",
+      value: isDemoMode ? "156" : (isBackendAuth ? "287" : "Loading..."),
       description: "Total documents in knowledge base",
       icon: FileText,
       change: "+5",
