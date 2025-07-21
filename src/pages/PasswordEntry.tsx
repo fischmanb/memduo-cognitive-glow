@@ -142,14 +142,14 @@ const PasswordEntry = () => {
     await new Promise(resolve => setTimeout(resolve, 500));
 
     try {
-      // Check for the 256-character master code first
+      // Check for the 256-character master code
       const masterCode = "xN$Z3m*Pu9!q67VMEkDyYhBp2WAfsRt#XLbgUcJzFo81^rCnQa@e4+svK!THdM%iL5wNzE_jX^9&RGUu#ybVm$PqoYCZtlMBhf7nADJrx%S*83EWKgT+p3HRdkA$_zFNjvVBwX95q!4YeTruXKJ*Q^gmLhAZ8os1MF^RW2&uUEPqNDJbGh6LVz";
       
       if (password.trim() === masterCode) {
-        console.log('✅ Master code detected - entering demo mode');
-        localStorage.setItem('memduo_demo_mode', 'true');
-        localStorage.setItem('memduo_demo_email', email.trim() || 'demo@memduo.com');
-        window.location.href = '/dashboard';
+        console.log('✅ Master code detected - redirecting to demo application');
+        // TODO: Show demo application page instead of redirecting to dashboard
+        setError('Master code recognized. Demo application page needs to be implemented.');
+        setIsSubmitting(false);
         return;
       }
 
