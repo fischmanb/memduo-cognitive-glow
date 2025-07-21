@@ -229,8 +229,20 @@ class ApiClient {
   }
 
   // Memory endpoints
-  async getMemories(): Promise<any[]> {
-    return this.request('/memory/');
+  async getMemoryStats(): Promise<any> {
+    // Use the graph stats endpoint to get node/relationship counts
+    return this.request('/rag/graph/stats');
+  }
+
+  async searchMemory(userId: string, query: string): Promise<any> {
+    return this.request(`/memory/search/${userId}`, {
+      method: 'POST',
+      body: JSON.stringify({ query }),
+    });
+  }
+
+  async getTopConnections(userId: string, limit: number = 10): Promise<any> {
+    return this.request(`/memory/top-connections/${userId}?limit=${limit}`);
   }
 
   // RAG endpoints

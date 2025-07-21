@@ -30,7 +30,7 @@ export const useDashboardData = () => {
 
         // Fetch real data from backend - with better error handling
         let documents = [];
-        let memories = [];
+        let graphStats = null;
 
         try {
           documents = await apiClient.getDocuments();
@@ -41,22 +41,23 @@ export const useDashboardData = () => {
         }
 
         try {
-          memories = await apiClient.getMemories();
-          console.log('✅ Memories fetched:', memories.length);
-        } catch (memError) {
-          console.log('⚠️ Memories endpoint not available or empty:', memError);
-          memories = [];
+          graphStats = await apiClient.getMemoryStats();
+          console.log('✅ Graph stats fetched:', graphStats);
+        } catch (statsError) {
+          console.log('⚠️ Graph stats endpoint not available:', statsError);
+          graphStats = null;
         }
 
         // Calculate real metrics based on actual data
         const documentsCount = documents.length;
-        const memoriesCount = memories.length;
+        const nodesCount = graphStats?.nodes || 0;
+        const relationshipsCount = graphStats?.relationships || 0;
         
         // For now, use basic calculations - these can be enhanced when backend provides more detailed metrics
         const calculatedMetrics: DashboardMetrics = {
-          totalNodes: memoriesCount,
-          totalRelationships: Math.floor(memoriesCount * 1.5), // Estimate based on memories
-          avgRelationsPerNode: memoriesCount > 0 ? Number((memoriesCount * 1.5 / memoriesCount).toFixed(2)) : 0,
+          totalNodes: nodesCount,
+          totalRelationships: relationshipsCount,
+          avgRelationsPerNode: nodesCount > 0 ? Number((relationshipsCount / nodesCount).toFixed(2)) : 0,
           documentsProcessed: documentsCount
         };
 
@@ -66,22 +67,22 @@ export const useDashboardData = () => {
         const activity: RecentActivity[] = [];
         
         // Add document-based activities
-        documents.slice(0, 2).forEach((doc: any, index: number) => {
+        documents.slice(0, 3).forEach((doc: any) => {
           activity.push({
             action: "Document processed",
             item: doc.filename || doc.title || `Document ${doc.id}`,
-            time: formatTimeAgo(doc.created_at || doc.upload_date)
+            time: formatTimeAgo(doc.created_at || doc.processed_at)
           });
         });
 
-        // Add memory-based activities
-        memories.slice(0, 2).forEach((memory: any, index: number) => {
+        // Add graph-based activity if we have stats
+        if (graphStats && (graphStats.nodes > 0 || graphStats.relationships > 0)) {
           activity.push({
-            action: "Memory created",
-            item: memory.content ? `"${memory.content.substring(0, 50)}..."` : `Memory ${memory.id}`,
-            time: formatTimeAgo(memory.created_at || memory.timestamp)
+            action: "Knowledge graph updated",
+            item: `${graphStats.nodes} nodes, ${graphStats.relationships} relationships`,
+            time: "Recently"
           });
-        });
+        }
 
         // If no real activity, show that system is ready
         if (activity.length === 0) {
