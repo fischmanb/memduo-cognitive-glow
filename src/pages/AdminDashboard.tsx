@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAdminAuth } from '../contexts/AdminAuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { apiClient } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Table, 
   TableBody, 
@@ -29,7 +31,8 @@ import {
   XCircle, 
   Clock, 
   Eye,
-  MessageSquare 
+  MessageSquare,
+  Database 
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -46,11 +49,22 @@ interface WaitlistSubmission {
   reviewed_by: string;
 }
 
+interface FastAPIUser {
+  id: string;
+  email: string;
+  first_name?: string;
+  last_name?: string;
+  created_at: string;
+  roles?: string[];
+}
+
 const AdminDashboard: React.FC = () => {
   const { logout, user } = useAdminAuth();
   const { toast } = useToast();
   const [submissions, setSubmissions] = useState<WaitlistSubmission[]>([]);
+  const [users, setUsers] = useState<FastAPIUser[]>([]);
   const [loading, setLoading] = useState(true);
+  const [usersLoading, setUsersLoading] = useState(true);
   const [selectedSubmission, setSelectedSubmission] = useState<WaitlistSubmission | null>(null);
   const [adminNotes, setAdminNotes] = useState('');
   const [updating, setUpdating] = useState(false);
@@ -85,8 +99,30 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const fetchUsers = async () => {
+    try {
+      const usersData = await apiClient.getUsers();
+      setUsers(usersData || []);
+      toast({
+        title: "Success",
+        description: "FastAPI users loaded successfully",
+      });
+    } catch (error) {
+      console.error('Error fetching users from FastAPI:', error);
+      toast({
+        title: "Warning",
+        description: "Failed to load users from FastAPI backend",
+        variant: "destructive",
+      });
+      setUsers([]);
+    } finally {
+      setUsersLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchSubmissions();
+    fetchUsers();
   }, []);
 
   const updateSubmissionStatus = async (
@@ -220,7 +256,7 @@ const AdminDashboard: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Applications</CardTitle>
@@ -260,156 +296,267 @@ const AdminDashboard: React.FC = () => {
               <div className="text-2xl font-bold text-red-600">{stats.rejected}</div>
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Backend Users</CardTitle>
+              <Database className="h-4 w-4 text-blue-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-600">{users.length}</div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Waitlist Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Waitlist Applications</CardTitle>
-            <CardDescription>
-              Review and manage all waitlist submissions
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Interest</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Submitted</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {submissions.map((submission) => (
-                    <TableRow key={submission.id}>
-                      <TableCell className="font-medium">
-                        {submission.first_name} {submission.last_name}
-                      </TableCell>
-                      <TableCell>{submission.email}</TableCell>
-                      <TableCell className="max-w-xs truncate">
-                        {submission.interest || 'No interest specified'}
-                      </TableCell>
-                      <TableCell>{getStatusBadge(submission.status)}</TableCell>
-                      <TableCell>
-                        {new Date(submission.created_at).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell>
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                setSelectedSubmission(submission);
-                                setAdminNotes(submission.admin_notes || '');
-                              }}
-                            >
-                              <Eye className="h-4 w-4 mr-1" />
-                              Review
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-2xl">
-                            <DialogHeader>
-                              <DialogTitle>Review Application</DialogTitle>
-                              <DialogDescription>
-                                Review and update the status of this waitlist application
-                              </DialogDescription>
-                            </DialogHeader>
-                            
-                            {selectedSubmission && (
-                              <div className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                  <div>
-                                    <label className="text-sm font-medium">Name</label>
-                                    <p className="text-sm text-muted-foreground">
-                                      {selectedSubmission.first_name} {selectedSubmission.last_name}
-                                    </p>
+        {/* Main Content Tabs */}
+        <Tabs defaultValue="waitlist" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="waitlist" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Waitlist Applications
+            </TabsTrigger>
+            <TabsTrigger value="users" className="flex items-center gap-2">
+              <Database className="h-4 w-4" />
+              FastAPI Users
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Waitlist Tab */}
+          <TabsContent value="waitlist">
+            <Card>
+              <CardHeader>
+                <CardTitle>Waitlist Applications</CardTitle>
+                <CardDescription>
+                  Review and manage all waitlist submissions
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Interest</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Submitted</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {submissions.map((submission) => (
+                        <TableRow key={submission.id}>
+                          <TableCell className="font-medium">
+                            {submission.first_name} {submission.last_name}
+                          </TableCell>
+                          <TableCell>{submission.email}</TableCell>
+                          <TableCell className="max-w-xs truncate">
+                            {submission.interest || 'No interest specified'}
+                          </TableCell>
+                          <TableCell>{getStatusBadge(submission.status)}</TableCell>
+                          <TableCell>
+                            {new Date(submission.created_at).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    setSelectedSubmission(submission);
+                                    setAdminNotes(submission.admin_notes || '');
+                                  }}
+                                >
+                                  <Eye className="h-4 w-4 mr-1" />
+                                  Review
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-2xl">
+                                <DialogHeader>
+                                  <DialogTitle>Review Application</DialogTitle>
+                                  <DialogDescription>
+                                    Review and update the status of this waitlist application
+                                  </DialogDescription>
+                                </DialogHeader>
+                                
+                                {selectedSubmission && (
+                                  <div className="space-y-4">
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="text-sm font-medium">Name</label>
+                                        <p className="text-sm text-muted-foreground">
+                                          {selectedSubmission.first_name} {selectedSubmission.last_name}
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <label className="text-sm font-medium">Email</label>
+                                        <p className="text-sm text-muted-foreground">
+                                          {selectedSubmission.email}
+                                        </p>
+                                      </div>
+                                    </div>
+
+                                    <div>
+                                      <label className="text-sm font-medium">Interest/Message</label>
+                                      <p className="text-sm text-muted-foreground mt-1 p-3 bg-muted rounded-md">
+                                        {selectedSubmission.interest || 'No message provided'}
+                                      </p>
+                                    </div>
+
+                                    <div>
+                                      <label className="text-sm font-medium">Current Status</label>
+                                      <div className="mt-1">
+                                        {getStatusBadge(selectedSubmission.status)}
+                                      </div>
+                                    </div>
+
+                                    <div>
+                                      <label className="text-sm font-medium">Admin Notes</label>
+                                      <Textarea
+                                        placeholder="Add notes about this application..."
+                                        value={adminNotes}
+                                        onChange={(e) => setAdminNotes(e.target.value)}
+                                        className="mt-1"
+                                        rows={3}
+                                      />
+                                    </div>
+
+                                    <div className="flex space-x-2 pt-4">
+                                      <Button
+                                        onClick={() => updateSubmissionStatus(
+                                          selectedSubmission.id,
+                                          'approved',
+                                          adminNotes
+                                        )}
+                                        disabled={updating}
+                                        className="bg-green-600 hover:bg-green-700"
+                                      >
+                                        <CheckCircle className="h-4 w-4 mr-1" />
+                                        Approve
+                                      </Button>
+                                      <Button
+                                        onClick={() => updateSubmissionStatus(
+                                          selectedSubmission.id,
+                                          'rejected',
+                                          adminNotes
+                                        )}
+                                        disabled={updating}
+                                        variant="destructive"
+                                      >
+                                        <XCircle className="h-4 w-4 mr-1" />
+                                        Reject
+                                      </Button>
+                                    </div>
                                   </div>
-                                  <div>
-                                    <label className="text-sm font-medium">Email</label>
-                                    <p className="text-sm text-muted-foreground">
-                                      {selectedSubmission.email}
-                                    </p>
+                                )}
+                              </DialogContent>
+                            </Dialog>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+
+                {submissions.length === 0 && (
+                  <div className="text-center py-12">
+                    <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-foreground mb-2">No submissions yet</h3>
+                    <p className="text-muted-foreground">
+                      Waitlist applications will appear here when users submit them.
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* FastAPI Users Tab */}
+          <TabsContent value="users">
+            <Card>
+              <CardHeader>
+                <CardTitle>FastAPI Backend Users</CardTitle>
+                <CardDescription>
+                  View all registered users from your FastAPI backend
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {usersLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                    <span className="ml-2">Loading users...</span>
+                  </div>
+                ) : (
+                  <>
+                    <div className="rounded-md border">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>ID</TableHead>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Email</TableHead>
+                            <TableHead>Roles</TableHead>
+                            <TableHead>Created</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {users.map((user) => (
+                            <TableRow key={user.id}>
+                              <TableCell className="font-mono text-xs">
+                                {user.id.slice(0, 8)}...
+                              </TableCell>
+                              <TableCell className="font-medium">
+                                {user.first_name && user.last_name 
+                                  ? `${user.first_name} ${user.last_name}`
+                                  : 'N/A'
+                                }
+                              </TableCell>
+                              <TableCell>{user.email}</TableCell>
+                              <TableCell>
+                                {user.roles && user.roles.length > 0 ? (
+                                  <div className="flex gap-1">
+                                    {user.roles.map((role, index) => (
+                                      <Badge key={index} variant="secondary" className="text-xs">
+                                        {role}
+                                      </Badge>
+                                    ))}
                                   </div>
-                                </div>
+                                ) : (
+                                  <span className="text-muted-foreground">No roles</span>
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                {new Date(user.created_at).toLocaleDateString()}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
 
-                                <div>
-                                  <label className="text-sm font-medium">Interest/Message</label>
-                                  <p className="text-sm text-muted-foreground mt-1 p-3 bg-muted rounded-md">
-                                    {selectedSubmission.interest || 'No message provided'}
-                                  </p>
-                                </div>
-
-                                <div>
-                                  <label className="text-sm font-medium">Current Status</label>
-                                  <div className="mt-1">
-                                    {getStatusBadge(selectedSubmission.status)}
-                                  </div>
-                                </div>
-
-                                <div>
-                                  <label className="text-sm font-medium">Admin Notes</label>
-                                  <Textarea
-                                    placeholder="Add notes about this application..."
-                                    value={adminNotes}
-                                    onChange={(e) => setAdminNotes(e.target.value)}
-                                    className="mt-1"
-                                    rows={3}
-                                  />
-                                </div>
-
-                                <div className="flex space-x-2 pt-4">
-                                  <Button
-                                    onClick={() => updateSubmissionStatus(
-                                      selectedSubmission.id,
-                                      'approved',
-                                      adminNotes
-                                    )}
-                                    disabled={updating}
-                                    className="bg-green-600 hover:bg-green-700"
-                                  >
-                                    <CheckCircle className="h-4 w-4 mr-1" />
-                                    Approve
-                                  </Button>
-                                  <Button
-                                    onClick={() => updateSubmissionStatus(
-                                      selectedSubmission.id,
-                                      'rejected',
-                                      adminNotes
-                                    )}
-                                    disabled={updating}
-                                    variant="destructive"
-                                  >
-                                    <XCircle className="h-4 w-4 mr-1" />
-                                    Reject
-                                  </Button>
-                                </div>
-                              </div>
-                            )}
-                          </DialogContent>
-                        </Dialog>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-
-            {submissions.length === 0 && (
-              <div className="text-center py-12">
-                <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">No submissions yet</h3>
-                <p className="text-muted-foreground">
-                  Waitlist applications will appear here when users submit them.
-                </p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                    {users.length === 0 && (
+                      <div className="text-center py-12">
+                        <Database className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-foreground mb-2">No users found</h3>
+                        <p className="text-muted-foreground">
+                          No users were loaded from the FastAPI backend.
+                        </p>
+                        <Button
+                          onClick={fetchUsers}
+                          variant="outline"
+                          className="mt-4"
+                        >
+                          Retry Loading Users
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
