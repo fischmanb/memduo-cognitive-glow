@@ -6,9 +6,12 @@ const HomePage = () => {
   const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
-    // If authenticated, redirect to dashboard
+    // If authenticated, redirect to dashboard (but not if they're trying to access admin)
     if (isAuthenticated && !isLoading) {
-      window.location.href = '/dashboard';
+      const currentPath = window.location.pathname;
+      if (!currentPath.startsWith('/admin')) {
+        window.location.href = '/dashboard';
+      }
     }
   }, [isAuthenticated, isLoading]);
 

@@ -100,25 +100,17 @@ const App = () => (
                       <Help />
                     </MainLayout>
                   </ProtectedRoute>
-                } 
+               } 
                />
                
-               {/* Admin Routes */}
+               {/* Admin Routes - These bypass regular ProtectedRoute */}
                <Route 
                  path="/admin" 
-                 element={
-                   <AdminProtectedRoute>
-                     <AdminDashboard />
-                   </AdminProtectedRoute>
-                 } 
+                 element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} 
                />
                <Route 
                  path="/admin-dashboard" 
-                 element={
-                   <AdminProtectedRoute>
-                     <AdminDashboard />
-                   </AdminProtectedRoute>
-                 } 
+                 element={<AdminProtectedRoute><AdminDashboard /></AdminProtectedRoute>} 
                />
                
                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
