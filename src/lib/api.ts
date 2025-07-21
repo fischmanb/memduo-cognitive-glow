@@ -235,10 +235,27 @@ class ApiClient {
       console.log(`📡 Upload response: ${response.status} ${response.statusText}`);
 
       if (!response.ok) {
-        const error: ApiError = await response.json().catch(() => ({ 
-          detail: 'Upload failed' 
-        }));
-        throw new Error(error.detail || 'Upload failed');
+        console.error(`❌ Upload failed with status: ${response.status}`);
+        console.error(`❌ Response headers:`, Object.fromEntries(response.headers.entries()));
+        
+        let errorDetail = `HTTP ${response.status}: ${response.statusText}`;
+        
+        try {
+          const errorData = await response.json();
+          console.error('❌ Error response body:', errorData);
+          errorDetail = errorData.detail || errorData.message || errorData.error || errorDetail;
+        } catch (parseError) {
+          console.error('❌ Failed to parse error response:', parseError);
+          try {
+            const responseText = await response.text();
+            console.error('❌ Raw error response text:', responseText);
+            errorDetail = responseText || errorDetail;
+          } catch (textError) {
+            console.error('❌ Could not read response as text:', textError);
+          }
+        }
+        
+        throw new Error(errorDetail);
       }
 
       const result = await response.json();
