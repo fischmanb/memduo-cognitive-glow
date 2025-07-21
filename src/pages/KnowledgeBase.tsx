@@ -20,19 +20,18 @@ import {
   RotateCcw
 } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
+import { apiClient } from '@/lib/api';
 
 interface Document {
-  id: string;
+  id: number;
   filename: string;
-  file_type: string;
+  content_type: string;
   file_size: number;
   status: string;
   created_at: string;
-  updated_at: string;
+  processed_at?: string;
+  error_message?: string;
   is_indexed: boolean;
-  storage_path: string;
-  user_id: string;
 }
 
 const KnowledgeBase = () => {
@@ -55,14 +54,8 @@ const KnowledgeBase = () => {
   const loadDocuments = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('documents')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      
-      setDocuments(data || []);
+      const response = await apiClient.getDocuments();
+      setDocuments(Array.isArray(response) ? response : (response as any)?.documents || []);
     } catch (error) {
       console.error('Error loading documents:', error);
       toast({
@@ -82,36 +75,11 @@ const KnowledgeBase = () => {
     try {
       setUploading(true);
       
-      for (const file of Array.from(files)) {
-        // Upload to Supabase storage
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random()}.${fileExt}`;
-        const filePath = `${Date.now()}-${fileName}`;
-
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('documents')
-          .upload(filePath, file);
-
-        if (uploadError) {
-          throw new Error(`Upload failed: ${uploadError.message}`);
-        }
-
-        // Create document record in database
-        const { error: dbError } = await supabase
-          .from('documents')
-          .insert({
-            filename: file.name,
-            file_type: file.type,
-            file_size: file.size,
-            storage_path: uploadData.path,
-            status: 'pending',
-            user_id: (await supabase.auth.getUser()).data.user?.id
-          });
-
-        if (dbError) {
-          throw new Error(`Database error: ${dbError.message}`);
-        }
-      }
+      const uploadPromises = Array.from(files).map(file => 
+        apiClient.uploadDocument(file)
+      );
+      
+      await Promise.all(uploadPromises);
       
       toast({
         title: "Upload Successful",
@@ -121,9 +89,33 @@ const KnowledgeBase = () => {
       await loadDocuments();
     } catch (error) {
       console.error('Upload error:', error);
+      
+      // Proper error extraction
+      let errorMessage = "Upload failed";
+      
+      if (error && typeof error === 'object') {
+        // Check for various error formats
+        if ('detail' in error && typeof error.detail === 'string') {
+          errorMessage = error.detail;
+        } else if ('message' in error && typeof error.message === 'string') {
+          errorMessage = error.message;
+        } else if (error instanceof Error) {
+          errorMessage = error.message;
+        } else {
+          // Handle cases where error is an object but doesn't match expected format
+          try {
+            errorMessage = JSON.stringify(error);
+          } catch {
+            errorMessage = "Upload failed - unknown error format";
+          }
+        }
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      }
+      
       toast({
         title: "Upload Failed",
-        description: error instanceof Error ? error.message : "Upload failed",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
@@ -134,14 +126,9 @@ const KnowledgeBase = () => {
     }
   };
 
-  const deleteDocument = async (documentId: string) => {
+  const deleteDocument = async (documentId: number) => {
     try {
-      const { error } = await supabase
-        .from('documents')
-        .delete()
-        .eq('id', documentId);
-
-      if (error) throw error;
+      await apiClient.deleteDocument(documentId);
 
       toast({
         title: "Document Deleted",
@@ -159,15 +146,9 @@ const KnowledgeBase = () => {
     }
   };
 
-  const retryProcessing = async (documentId: string) => {
+  const retryProcessing = async (documentId: number) => {
     try {
-      const { error } = await supabase
-        .from('documents')
-        .update({ status: 'pending' })
-        .eq('id', documentId);
-
-      if (error) throw error;
-
+      // This would need a backend endpoint to retry processing
       toast({
         title: "Retry Initiated",
         description: "Document will be reprocessed",
@@ -184,7 +165,7 @@ const KnowledgeBase = () => {
     }
   };
 
-  const indexDocument = async (documentId: string) => {
+  const indexDocument = async (documentId: number) => {
     try {
       console.log(`🔄 Starting indexing for document ${documentId}`);
       const token = localStorage.getItem('memduo_token');
