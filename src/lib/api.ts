@@ -1,3 +1,4 @@
+
 // API client for MemDuo FastAPI backend
 const API_BASE_URL = 'https://api.memduo.com/api/v1';
 
@@ -39,7 +40,8 @@ class ApiClient {
   ): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
     
-    const response = await fetch(url, {
+    console.log(`🔄 API Request: ${options.method || 'GET'} ${url}`);
+    console.log('📦 Request options:', {
       ...options,
       headers: {
         'Content-Type': 'application/json',
@@ -48,25 +50,94 @@ class ApiClient {
       },
     });
 
-    if (!response.ok) {
-      const error: ApiError = await response.json().catch(() => ({ 
-        detail: `HTTP ${response.status}: ${response.statusText}` 
-      }));
-      throw new Error(error.detail || 'An error occurred');
-    }
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          ...this.getAuthHeaders(),
+          ...options.headers,
+        },
+      });
 
-    return response.json();
+      console.log(`📡 API Response: ${response.status} ${response.statusText}`);
+      console.log('📊 Response headers:', Object.fromEntries(response.headers.entries()));
+
+      if (!response.ok) {
+        let errorDetail = `HTTP ${response.status}: ${response.statusText}`;
+        
+        try {
+          const errorData = await response.json();
+          console.error('❌ API Error response:', errorData);
+          errorDetail = errorData.detail || errorData.message || errorDetail;
+        } catch (parseError) {
+          console.error('❌ Failed to parse error response:', parseError);
+          console.error('❌ Raw response text:', await response.text().catch(() => 'Could not read response'));
+        }
+        
+        throw new Error(errorDetail);
+      }
+
+      const data = await response.json();
+      console.log('✅ API Success response:', data);
+      return data;
+    } catch (error) {
+      console.error('🚨 API Request failed:', error);
+      
+      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+        throw new Error('Network error: Unable to connect to the backend server. Please check your internet connection and try again.');
+      }
+      
+      if (error instanceof Error) {
+        throw error;
+      }
+      
+      throw new Error('An unexpected error occurred during the API request');
+    }
+  }
+
+  // Health check with detailed connectivity testing
+  async healthCheck(): Promise<any> {
+    console.log('🏥 Testing backend connectivity...');
+    
+    try {
+      const result = await this.request('/health');
+      console.log('✅ Backend health check passed');
+      return result;
+    } catch (error) {
+      console.error('❌ Backend health check failed:', error);
+      throw error;
+    }
   }
 
   // Authentication endpoints
   async login(credentials: LoginRequest): Promise<LoginResponse> {
-    return this.request('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
-    });
+    console.log('🔐 Attempting backend login for:', credentials.email);
+    
+    // Test connectivity first
+    try {
+      await this.healthCheck();
+    } catch (healthError) {
+      console.warn('⚠️ Health check failed, but continuing with login attempt:', healthError);
+    }
+
+    try {
+      const response = await this.request<LoginResponse>('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify(credentials),
+      });
+      
+      console.log('✅ Backend login successful for:', credentials.email);
+      return response;
+    } catch (error) {
+      console.error('❌ Backend login failed for:', credentials.email, error);
+      throw error;
+    }
   }
 
   async register(userData: RegisterRequest): Promise<any> {
+    console.log('📝 Attempting backend registration for:', userData.email);
+    
     return this.request('/auth/register', {
       method: 'POST',
       body: JSON.stringify(userData),
@@ -105,22 +176,35 @@ class ApiClient {
     formData.append('file', file);
 
     const token = localStorage.getItem('memduo_token');
-    const response = await fetch(`${API_BASE_URL}/documents/upload`, {
-      method: 'POST',
-      headers: {
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-      body: formData,
-    });
+    const url = `${API_BASE_URL}/documents/upload`;
+    
+    console.log(`🔄 Document upload: POST ${url}`);
+    
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: formData,
+      });
 
-    if (!response.ok) {
-      const error: ApiError = await response.json().catch(() => ({ 
-        detail: 'Upload failed' 
-      }));
-      throw new Error(error.detail || 'Upload failed');
+      console.log(`📡 Upload response: ${response.status} ${response.statusText}`);
+
+      if (!response.ok) {
+        const error: ApiError = await response.json().catch(() => ({ 
+          detail: 'Upload failed' 
+        }));
+        throw new Error(error.detail || 'Upload failed');
+      }
+
+      const result = await response.json();
+      console.log('✅ Document upload successful:', result);
+      return result;
+    } catch (error) {
+      console.error('❌ Document upload failed:', error);
+      throw error;
     }
-
-    return response.json();
   }
 
   // Memory endpoints
@@ -134,11 +218,6 @@ class ApiClient {
       method: 'POST',
       body: JSON.stringify({ query }),
     });
-  }
-
-  // Health check
-  async healthCheck(): Promise<any> {
-    return this.request('/health');
   }
 }
 

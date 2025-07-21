@@ -1,7 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Lock, Eye, EyeOff, AlertCircle, Mail } from "lucide-react";
+import { Lock, Eye, EyeOff, AlertCircle, Mail, Wifi, WifiOff } from "lucide-react";
 import NeuralBackground from "../components/NeuralBackground";
 import { useAuth } from "../contexts/AuthContext";
 import AdminLogin from "./AdminLogin";
@@ -57,6 +58,7 @@ const PasswordEntry = () => {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [shiftPressed, setShiftPressed] = useState(false);
   const [typedSequence, setTypedSequence] = useState('');
+  const [backendStatus, setBackendStatus] = useState<'unknown' | 'online' | 'offline'>('unknown');
   const { setBackendAuth } = useAuth();
 
   useEffect(() => {
@@ -66,6 +68,22 @@ const PasswordEntry = () => {
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Test backend connectivity on component mount
+  useEffect(() => {
+    const testBackendConnectivity = async () => {
+      try {
+        await apiClient.healthCheck();
+        setBackendStatus('online');
+        console.log('🟢 Backend is online and accessible');
+      } catch (error) {
+        setBackendStatus('offline');
+        console.error('🔴 Backend is not accessible:', error);
+      }
+    };
+
+    testBackendConnectivity();
   }, []);
 
   // Secret admin access: Shift + "NOBLESSEOBLIGE" + Enter
@@ -113,15 +131,19 @@ const PasswordEntry = () => {
     setError('');
     setIsSubmitting(true);
 
+    console.log('🚀 Starting authentication process...');
+    console.log('📧 Email provided:', email.trim());
+    console.log('🔑 Password provided:', password.trim() ? '[REDACTED]' : 'No password');
+
     // Simulate validation delay for better UX
     await new Promise(resolve => setTimeout(resolve, 500));
 
     try {
-      // Check for the 256-character master code
+      // Check for the 256-character master code first
       const masterCode = "xN$Z3m*Pu9!q67VMEkDyYhBp2WAfsRt#XLbgUcJzFo81^rCnQa@e4+svK!THdM%iL5wNzE_jX^9&RGUu#ybVm$PqoYCZtlMBhf7nADJrx%S*83EWKgT+p3HRdkA$_zFNjvVBwX95q!4YeTruXKJ*Q^gmLhAZ8os1MF^RW2&uUEPqNDJbGh6LVz";
       
       if (password.trim() === masterCode) {
-        // Demo access with master code
+        console.log('✅ Master code detected - entering demo mode');
         localStorage.setItem('memduo_demo_mode', 'true');
         localStorage.setItem('memduo_demo_email', email.trim() || 'demo@memduo.com');
         window.location.href = '/dashboard';
@@ -130,6 +152,8 @@ const PasswordEntry = () => {
 
       // Try backend authentication if email is provided
       if (email.trim()) {
+        console.log('🔄 Attempting backend authentication...');
+        
         try {
           const response = await apiClient.login({
             email: email.trim(),
@@ -137,6 +161,8 @@ const PasswordEntry = () => {
           });
           
           if (response.access_token) {
+            console.log('✅ Backend authentication successful');
+            
             // Store backend token and user info
             localStorage.setItem('memduo_token', response.access_token);
             localStorage.setItem('memduo_backend_auth', 'true');
@@ -149,22 +175,49 @@ const PasswordEntry = () => {
             // Set backend auth state
             setBackendAuth(true, response.user || null);
             
+            console.log('🎉 Authentication complete, redirecting to dashboard');
             window.location.href = '/dashboard';
             return;
           }
         } catch (backendError) {
-          console.error('Backend authentication failed:', backendError);
-          // Fall through to error handling
+          console.error('❌ Backend authentication failed:', backendError);
+          
+          // Provide more specific error messages
+          if (backendError instanceof Error) {
+            if (backendError.message.includes('Network error')) {
+              setError('Unable to connect to the authentication server. Please check your internet connection and try again.');
+            } else if (backendError.message.includes('401') || backendError.message.includes('Unauthorized')) {
+              setError('Invalid email or password. Please check your credentials and try again.');
+            } else if (backendError.message.includes('403') || backendError.message.includes('Forbidden')) {
+              setError('Access denied. Your account may be disabled or you may not have permission to access this application.');
+            } else if (backendError.message.includes('404')) {
+              setError('Authentication service not found. Please contact support.');
+            } else if (backendError.message.includes('500')) {
+              setError('Server error. Please try again later or contact support.');
+            } else {
+              setError(`Authentication failed: ${backendError.message}`);
+            }
+          } else {
+            setError('Authentication failed due to an unexpected error. Please try again.');
+          }
+          
+          setPassword('');
+          setIsSubmitting(false);
+          return;
         }
       }
 
       // If neither demo code nor backend auth worked
-      setError('Invalid access code or credentials. Please verify and try again.');
+      if (email.trim()) {
+        setError('Invalid email or password. Please verify your credentials and try again.');
+      } else {
+        setError('Please enter your email address to authenticate with the backend, or use the master access code.');
+      }
       setPassword('');
       
     } catch (error) {
-      console.error('Authentication error:', error);
-      setError('Authentication failed. Please try again.');
+      console.error('🚨 Unexpected authentication error:', error);
+      setError('Authentication failed due to an unexpected error. Please try again.');
       setPassword('');
     }
     
@@ -222,6 +275,28 @@ const PasswordEntry = () => {
                 <p className="text-gray-300 text-lg leading-relaxed">
                   Enter your access code or backend credentials to continue.
                 </p>
+                
+                {/* Backend Status Indicator */}
+                <div className="mt-4 flex items-center justify-center gap-2 text-sm">
+                  {backendStatus === 'online' && (
+                    <>
+                      <Wifi className="h-4 w-4 text-green-400" />
+                      <span className="text-green-400">Backend Online</span>
+                    </>
+                  )}
+                  {backendStatus === 'offline' && (
+                    <>
+                      <WifiOff className="h-4 w-4 text-red-400" />
+                      <span className="text-red-400">Backend Offline</span>
+                    </>
+                  )}
+                  {backendStatus === 'unknown' && (
+                    <>
+                      <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                      <span className="text-gray-400">Checking Backend...</span>
+                    </>
+                  )}
+                </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -306,6 +381,12 @@ const PasswordEntry = () => {
                     Contact Us
                   </a>
                 </p>
+                
+                {/* Debug Info for Development */}
+                <div className="text-xs text-gray-500 space-y-1">
+                  <p>Backend Status: {backendStatus}</p>
+                  <p>API Base URL: {email.trim() ? 'https://api.memduo.com/api/v1' : 'Not applicable'}</p>
+                </div>
               </div>
             </div>
           </div>
