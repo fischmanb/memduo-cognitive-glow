@@ -119,17 +119,42 @@ const KnowledgeBase = () => {
 
   const indexDocument = async (documentId: number) => {
     try {
-      const response = await fetch(`https://api.memduo.com/api/v1/rag/index-document/${documentId}`, {
+      console.log(`🔄 Starting indexing for document ${documentId}`);
+      const token = localStorage.getItem('memduo_token');
+      console.log(`🔑 Token available: ${token ? 'Yes' : 'No'}`);
+      
+      const url = `https://api.memduo.com/api/v1/rag/index-document/${documentId}`;
+      console.log(`📡 POST ${url}`);
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('memduo_token')}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
 
+      console.log(`📊 Response status: ${response.status} ${response.statusText}`);
+
       if (!response.ok) {
-        throw new Error('Indexing failed');
+        let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+        
+        try {
+          const errorData = await response.json();
+          console.error('❌ Error response:', errorData);
+          errorMessage = errorData.detail || errorData.message || errorMessage;
+        } catch (parseError) {
+          console.error('❌ Failed to parse error response:', parseError);
+          const responseText = await response.text().catch(() => 'Could not read response');
+          console.error('❌ Raw response:', responseText);
+          errorMessage = responseText || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
       }
+
+      const result = await response.json();
+      console.log('✅ Indexing response:', result);
 
       toast({
         title: "Indexing Started",
@@ -139,10 +164,29 @@ const KnowledgeBase = () => {
       // Reload documents to update status
       await loadDocuments();
     } catch (error) {
-      console.error('Error indexing document:', error);
+      console.error('🚨 Error indexing document:', error);
+      
+      let errorMessage = "Failed to index document";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        
+        // Provide more helpful error messages
+        if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+          errorMessage = "Authentication failed. Please log in again.";
+        } else if (error.message.includes('403') || error.message.includes('Forbidden')) {
+          errorMessage = "You don't have permission to index this document.";
+        } else if (error.message.includes('404') || error.message.includes('Not Found')) {
+          errorMessage = "Document not found or indexing endpoint unavailable.";
+        } else if (error.message.includes('500')) {
+          errorMessage = "Server error occurred while indexing. Please try again later.";
+        } else if (error.message.includes('Network error') || error.message.includes('Failed to fetch')) {
+          errorMessage = "Network error. Please check your connection and try again.";
+        }
+      }
+      
       toast({
         title: "Indexing Failed",
-        description: "Failed to index document",
+        description: errorMessage,
         variant: "destructive"
       });
     }
