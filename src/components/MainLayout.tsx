@@ -125,7 +125,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       {/* Main Content */}
       <div className={cn(
         "transition-all duration-300 ease-in-out",
-        sidebarOpen ? "lg:ml-64" : "ml-0"
+        sidebarOpen ? "ml-64" : "ml-0"
       )}>
         {/* Top Bar */}
         <header className="neural-glass border-b border-white/10 p-4">
