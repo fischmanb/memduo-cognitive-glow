@@ -156,6 +156,11 @@ const PasswordEntry = () => {
       // Try backend authentication if email is provided
       if (email.trim()) {
         console.log('🔄 Attempting backend authentication...');
+        console.log('📧 Email (raw):', JSON.stringify(email));
+        console.log('📧 Email (trimmed):', JSON.stringify(email.trim()));
+        console.log('🔑 Password (raw):', JSON.stringify(password));
+        console.log('🔑 Password (trimmed):', JSON.stringify(password.trim()));
+        console.log('📊 Email char codes:', [...email.trim()].map(c => c.charCodeAt(0)));
         
         try {
           const response = await apiClient.login({
