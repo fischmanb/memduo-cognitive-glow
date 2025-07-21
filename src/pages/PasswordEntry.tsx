@@ -134,7 +134,9 @@ const PasswordEntry = () => {
 
     console.log('🚀 Starting authentication process...');
     console.log('📧 Email provided:', email.trim());
-    console.log('🔑 Password provided:', password.trim() ? '[REDACTED]' : 'No password');
+    console.log('🔑 Password length:', password.trim().length);
+    console.log('🔑 Password first 3 chars:', password.trim().substring(0, 3) + '...');
+    console.log('🔑 Password last 3 chars:', '...' + password.trim().substring(password.trim().length - 3));
 
     // Simulate validation delay for better UX
     await new Promise(resolve => setTimeout(resolve, 500));
