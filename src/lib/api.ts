@@ -255,8 +255,10 @@ class ApiClient {
               errorDetail = errorData.detail.map((err: any) => 
                 `${err.loc?.join('.') || 'field'}: ${err.msg}`
               ).join(', ');
-            } else {
+            } else if (typeof errorData.detail === 'string') {
               errorDetail = errorData.detail;
+            } else {
+              errorDetail = JSON.stringify(errorData.detail);
             }
           } else {
             errorDetail = errorData.detail || errorData.message || errorData.error || errorDetail;
