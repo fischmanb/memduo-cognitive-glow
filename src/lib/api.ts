@@ -55,6 +55,8 @@ class ApiClient {
         ...options,
         headers: {
           'Content-Type': 'application/json',
+          'Origin': window.location.origin,
+          'Referer': window.location.href,
           ...this.getAuthHeaders(),
           ...options.headers,
         },
@@ -120,10 +122,12 @@ class ApiClient {
 
     try {
       const requestBody = JSON.stringify(credentials);
-      console.log('📤 Exact request body being sent:', requestBody);
-      console.log('📤 Request body length:', requestBody.length);
-      console.log('📤 Email byte length:', new TextEncoder().encode(credentials.email).length);
-      console.log('📤 Password byte length:', new TextEncoder().encode(credentials.password).length);
+      console.log('📤 Login request details:');
+      console.log('🌐 Origin:', window.location.origin);
+      console.log('📧 Email:', credentials.email);
+      console.log('🔑 Password length:', credentials.password.length);
+      console.log('📦 Request body:', requestBody);
+      console.log('🔗 Full URL:', `${API_BASE_URL}/auth/login`);
       
       const response = await this.request<LoginResponse>('/auth/login', {
         method: 'POST',
@@ -134,17 +138,18 @@ class ApiClient {
       return response;
     } catch (error) {
       console.error('❌ Backend login failed for:', credentials.email);
-      console.error('❌ Full error object:', JSON.stringify(error, null, 2));
+      console.error('❌ Error type:', typeof error);
+      console.error('❌ Error message:', error instanceof Error ? error.message : 'Unknown error');
+      console.error('❌ Full error object:', error);
       
-      // Check if it's a 401 vs other errors
-      if (error instanceof Error && error.message.includes('Incorrect email or password')) {
-        console.error('🔐 Backend definitively rejected these exact credentials');
-        console.error('📧 Rejected email:', JSON.stringify(credentials.email));
-        console.error('🔑 Rejected password length:', credentials.password.length);
-        console.error('💡 This suggests either:');
-        console.error('   - Backend API contract changed');
-        console.error('   - Backend validation logic changed'); 
-        console.error('   - Backend database query changed');
+      // Check specific error types
+      if (error instanceof Error) {
+        if (error.message.includes('CORS')) {
+          console.error('🚫 CORS ERROR: Backend is blocking requests from this domain');
+        }
+        if (error.message.includes('Incorrect email or password')) {
+          console.error('🔐 CREDENTIALS REJECTED: Backend database might not have this user or password changed');
+        }
       }
       
       throw error;
