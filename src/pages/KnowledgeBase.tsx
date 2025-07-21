@@ -90,25 +90,10 @@ const KnowledgeBase = () => {
     } catch (error) {
       console.error('Upload error:', error);
       
-      // Proper error extraction
       let errorMessage = "Upload failed";
       
-      if (error && typeof error === 'object') {
-        // Check for various error formats
-        if ('detail' in error && typeof error.detail === 'string') {
-          errorMessage = error.detail;
-        } else if ('message' in error && typeof error.message === 'string') {
-          errorMessage = error.message;
-        } else if (error instanceof Error) {
-          errorMessage = error.message;
-        } else {
-          // Handle cases where error is an object but doesn't match expected format
-          try {
-            errorMessage = JSON.stringify(error);
-          } catch {
-            errorMessage = "Upload failed - unknown error format";
-          }
-        }
+      if (error instanceof Error) {
+        errorMessage = error.message;
       } else if (typeof error === 'string') {
         errorMessage = error;
       }
