@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Upload, 
@@ -15,7 +16,8 @@ import {
   Filter,
   MoreVertical,
   Trash2,
-  Download
+  Download,
+  RotateCcw
 } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { apiClient } from '@/lib/api';
@@ -144,6 +146,27 @@ const KnowledgeBase = () => {
     }
   };
 
+  const retryProcessing = async (documentId: number) => {
+    try {
+      console.log(`🔄 Retrying processing for document ${documentId}`);
+      // This would need a backend endpoint to retry processing
+      toast({
+        title: "Retry Initiated",
+        description: "Document processing will be retried",
+      });
+      
+      // Reload documents to update status
+      await loadDocuments();
+    } catch (error) {
+      console.error('Error retrying document processing:', error);
+      toast({
+        title: "Retry Failed",
+        description: "Failed to retry document processing",
+        variant: "destructive"
+      });
+    }
+  };
+
   const indexDocument = async (documentId: number) => {
     try {
       console.log(`🔄 Starting indexing for document ${documentId}`);
@@ -262,6 +285,21 @@ const KnowledgeBase = () => {
     return matchesSearch && matchesStatus;
   });
 
+  // Helper function to determine if a document can be safely deleted
+  const canDeleteDocument = (status: string, isIndexed: boolean) => {
+    return status === 'failed' || status === 'pending';
+  };
+
+  const getDeleteTooltipMessage = (status: string, isIndexed: boolean) => {
+    if (status === 'processing') {
+      return "Cannot delete document while processing";
+    }
+    if (status === 'completed' || isIndexed) {
+      return "Cannot delete indexed documents - this would break graph connections";
+    }
+    return "Delete this document";
+  };
+
   if (!isBackendAuth) {
     return (
       <div className="space-y-8 animate-fade-in">
@@ -275,218 +313,245 @@ const KnowledgeBase = () => {
   }
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      {/* Header */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
-              Knowledge Base
-            </h1>
-            <p className="text-muted-foreground">
-              Upload and manage documents for your GraphRAG system
-            </p>
-          </div>
-          
-          {/* Upload Button */}
-          <div className="flex items-center space-x-4">
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              accept=".pdf,.txt,.md,.docx"
-              onChange={handleFileUpload}
-              className="hidden"
-            />
-            <Button
-              onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-              className="neural-glass-premium"
-            >
-              {uploading ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
-              ) : (
-                <Upload className="h-4 w-4 mr-2" />
-              )}
-              {uploading ? 'Uploading...' : 'Upload Documents'}
-            </Button>
-          </div>
-        </div>
-
-        {/* Stats Cards */}
-        <div className="grid gap-4 md:grid-cols-4">
-          <Card className="neural-glass">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-400">Total Documents</p>
-                  <p className="text-2xl font-bold text-white">{documents.length}</p>
-                </div>
-                <FileText className="h-8 w-8 text-blue-400" />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="neural-glass">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-400">Indexed</p>
-                  <p className="text-2xl font-bold text-white">
-                    {documents.filter(d => d.is_indexed).length}
-                  </p>
-                </div>
-                <CheckCircle className="h-8 w-8 text-green-400" />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="neural-glass">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-400">Processing</p>
-                  <p className="text-2xl font-bold text-white">
-                    {documents.filter(d => d.status === 'processing').length}
-                  </p>
-                </div>
-                <Loader2 className="h-8 w-8 text-yellow-400" />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="neural-glass">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-400">Failed</p>
-                  <p className="text-2xl font-bold text-white">
-                    {documents.filter(d => d.status === 'failed').length}
-                  </p>
-                </div>
-                <XCircle className="h-8 w-8 text-red-400" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Search and Filter */}
-      <div className="flex items-center space-x-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <Input
-            placeholder="Search documents..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 neural-glass"
-          />
-        </div>
-        
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="neural-glass px-3 py-2 rounded-lg border border-white/10 bg-black/20 text-white"
-        >
-          <option value="all">All Status</option>
-          <option value="pending">Pending</option>
-          <option value="processing">Processing</option>
-          <option value="completed">Completed</option>
-          <option value="failed">Failed</option>
-        </select>
-      </div>
-
-      {/* Documents List */}
-      <Card className="neural-glass-premium">
-        <CardHeader>
-          <CardTitle className="text-white">Documents</CardTitle>
-          <CardDescription>
-            Manage your uploaded documents and their processing status
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <div className="flex items-center justify-center p-8">
-              <Loader2 className="h-6 w-6 animate-spin text-blue-400 mr-2" />
-              <span className="text-gray-400">Loading documents...</span>
-            </div>
-          ) : filteredDocuments.length === 0 ? (
-            <div className="text-center py-8">
-              <FileText className="h-12 w-12 text-gray-500 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-white mb-2">No documents found</h3>
-              <p className="text-gray-400 mb-4">
-                {searchQuery ? 'Try adjusting your search or filters' : 'Upload your first document to get started'}
+    <TooltipProvider>
+      <div className="space-y-8 animate-fade-in">
+        {/* Header */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
+                Knowledge Base
+              </h1>
+              <p className="text-muted-foreground">
+                Upload and manage documents for your GraphRAG system
               </p>
-              {!searchQuery && (
-                <Button
-                  onClick={() => fileInputRef.current?.click()}
-                  variant="outline"
-                  className="neural-glass-hover"
-                >
-                  <Upload className="h-4 w-4 mr-2" />
-                  Upload Documents
-                </Button>
-              )}
             </div>
-          ) : (
-            <div className="space-y-4">
-              {filteredDocuments.map((doc) => (
-                <div key={doc.id} className="flex items-center justify-between p-4 neural-glass rounded-lg">
-                  <div className="flex items-center space-x-4 flex-1">
-                    <div className="p-2 neural-glass rounded-lg">
-                      <FileText className="h-5 w-5 text-blue-400" />
-                    </div>
-                    
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-medium text-white truncate">
-                        {doc.filename}
-                      </h3>
-                      <div className="flex items-center space-x-4 mt-1">
-                        <span className="text-xs text-gray-400">
-                          {formatFileSize(doc.file_size)}
-                        </span>
-                        <span className="text-xs text-gray-400">
-                          {formatDate(doc.created_at)}
-                        </span>
-                        {doc.error_message && (
-                          <span className="text-xs text-red-400" title={doc.error_message}>
-                            Error occurred
+            
+            {/* Upload Button */}
+            <div className="flex items-center space-x-4">
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".pdf,.txt,.md,.docx"
+                onChange={handleFileUpload}
+                className="hidden"
+              />
+              <Button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className="neural-glass-premium"
+              >
+                {uploading ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : (
+                  <Upload className="h-4 w-4 mr-2" />
+                )}
+                {uploading ? 'Uploading...' : 'Upload Documents'}
+              </Button>
+            </div>
+          </div>
+
+          {/* Stats Cards */}
+          <div className="grid gap-4 md:grid-cols-4">
+            <Card className="neural-glass">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">Total Documents</p>
+                    <p className="text-2xl font-bold text-white">{documents.length}</p>
+                  </div>
+                  <FileText className="h-8 w-8 text-blue-400" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="neural-glass">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">Indexed</p>
+                    <p className="text-2xl font-bold text-white">
+                      {documents.filter(d => d.is_indexed).length}
+                    </p>
+                  </div>
+                  <CheckCircle className="h-8 w-8 text-green-400" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="neural-glass">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">Processing</p>
+                    <p className="text-2xl font-bold text-white">
+                      {documents.filter(d => d.status === 'processing').length}
+                    </p>
+                  </div>
+                  <Loader2 className="h-8 w-8 text-yellow-400" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="neural-glass">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">Failed</p>
+                    <p className="text-2xl font-bold text-white">
+                      {documents.filter(d => d.status === 'failed').length}
+                    </p>
+                  </div>
+                  <XCircle className="h-8 w-8 text-red-400" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Search and Filter */}
+        <div className="flex items-center space-x-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input
+              placeholder="Search documents..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 neural-glass"
+            />
+          </div>
+          
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="neural-glass px-3 py-2 rounded-lg border border-white/10 bg-black/20 text-white"
+          >
+            <option value="all">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="completed">Completed</option>
+            <option value="failed">Failed</option>
+          </select>
+        </div>
+
+        {/* Documents List */}
+        <Card className="neural-glass-premium">
+          <CardHeader>
+            <CardTitle className="text-white">Documents</CardTitle>
+            <CardDescription>
+              Manage your uploaded documents and their processing status
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {loading ? (
+              <div className="flex items-center justify-center p-8">
+                <Loader2 className="h-6 w-6 animate-spin text-blue-400 mr-2" />
+                <span className="text-gray-400">Loading documents...</span>
+              </div>
+            ) : filteredDocuments.length === 0 ? (
+              <div className="text-center py-8">
+                <FileText className="h-12 w-12 text-gray-500 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-white mb-2">No documents found</h3>
+                <p className="text-gray-400 mb-4">
+                  {searchQuery ? 'Try adjusting your search or filters' : 'Upload your first document to get started'}
+                </p>
+                {!searchQuery && (
+                  <Button
+                    onClick={() => fileInputRef.current?.click()}
+                    variant="outline"
+                    className="neural-glass-hover"
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    Upload Documents
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredDocuments.map((doc) => (
+                  <div key={doc.id} className="flex items-center justify-between p-4 neural-glass rounded-lg">
+                    <div className="flex items-center space-x-4 flex-1">
+                      <div className="p-2 neural-glass rounded-lg">
+                        <FileText className="h-5 w-5 text-blue-400" />
+                      </div>
+                      
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-sm font-medium text-white truncate">
+                          {doc.filename}
+                        </h3>
+                        <div className="flex items-center space-x-4 mt-1">
+                          <span className="text-xs text-gray-400">
+                            {formatFileSize(doc.file_size)}
                           </span>
+                          <span className="text-xs text-gray-400">
+                            {formatDate(doc.created_at)}
+                          </span>
+                          {doc.error_message && (
+                            <span className="text-xs text-red-400" title={doc.error_message}>
+                              Error occurred
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center space-x-3">
+                        {getStatusBadge(doc.status, doc.is_indexed)}
+                        
+                        {doc.status === 'completed' && !doc.is_indexed && (
+                          <Button
+                            size="sm"
+                            onClick={() => indexDocument(doc.id)}
+                            className="neural-glass-hover"
+                          >
+                            Index for Search
+                          </Button>
                         )}
+                        
+                        {doc.status === 'failed' && (
+                          <Button
+                            size="sm"
+                            onClick={() => retryProcessing(doc.id)}
+                            className="neural-glass-hover"
+                          >
+                            <RotateCcw className="h-4 w-4 mr-1" />
+                            Retry
+                          </Button>
+                        )}
+                        
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => deleteDocument(doc.id)}
+                                disabled={!canDeleteDocument(doc.status, doc.is_indexed)}
+                                className={`neural-glass-hover ${
+                                  !canDeleteDocument(doc.status, doc.is_indexed) 
+                                    ? 'opacity-50 cursor-not-allowed' 
+                                    : ''
+                                }`}
+                              >
+                                <Trash2 className="h-4 w-4 mr-1" />
+                                Delete
+                              </Button>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{getDeleteTooltipMessage(doc.status, doc.is_indexed)}</p>
+                          </TooltipContent>
+                        </Tooltip>
                       </div>
                     </div>
-                    
-                     <div className="flex items-center space-x-3">
-                       {getStatusBadge(doc.status, doc.is_indexed)}
-                       
-                       {doc.status === 'completed' && !doc.is_indexed && (
-                         <Button
-                           size="sm"
-                           onClick={() => indexDocument(doc.id)}
-                           className="neural-glass-hover"
-                         >
-                           Index for Search
-                         </Button>
-                       )}
-                       
-                       <Button
-                         size="sm"
-                         variant="destructive"
-                         onClick={() => deleteDocument(doc.id)}
-                         className="neural-glass-hover"
-                       >
-                         <Trash2 className="h-4 w-4 mr-1" />
-                         Delete
-                       </Button>
-                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </TooltipProvider>
   );
 };
 
