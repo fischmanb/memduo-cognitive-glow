@@ -101,18 +101,15 @@ const AdminDashboard: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      console.log('🔄 Attempting to fetch users from FastAPI backend...');
-      const usersData = await apiClient.getUsers();
-      console.log('✅ FastAPI users loaded successfully:', usersData);
-      setUsers(usersData || []);
-      toast({
-        title: "Success",
-        description: "FastAPI users loaded successfully",
-      });
+      console.log('🔄 Users endpoint not yet implemented - skipping for now');
+      // TODO: Uncomment when backend users endpoint is ready
+      // const usersData = await apiClient.getUsers();
+      // console.log('✅ FastAPI users loaded successfully:', usersData);
+      // setUsers(usersData || []);
+      setUsers([]); // Empty array until endpoint is implemented
     } catch (error) {
       console.error('❌ Error fetching users from FastAPI:', error);
       console.warn('⚠️ Continuing without FastAPI users - admin dashboard will still work');
-      // Don't show error toast - just continue without backend users
       setUsers([]);
     } finally {
       setUsersLoading(false);
