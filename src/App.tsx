@@ -19,6 +19,8 @@ import Chat from "./pages/Chat";
 import KnowledgeBase from "./pages/KnowledgeBase";
 import Settings from "./pages/Settings";
 import Help from "./pages/Help";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -99,9 +101,28 @@ const App = () => (
                     </MainLayout>
                   </ProtectedRoute>
                 } 
-              />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
+               />
+               
+               {/* Admin Routes */}
+               <Route 
+                 path="/admin" 
+                 element={
+                   <AdminProtectedRoute>
+                     <AdminDashboard />
+                   </AdminProtectedRoute>
+                 } 
+               />
+               <Route 
+                 path="/admin-dashboard" 
+                 element={
+                   <AdminProtectedRoute>
+                     <AdminDashboard />
+                   </AdminProtectedRoute>
+                 } 
+               />
+               
+               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
         </AdminAuthProvider>

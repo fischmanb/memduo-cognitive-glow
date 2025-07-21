@@ -112,6 +112,9 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           setLoading(false);
           return { error: { message: 'Access denied. Admin privileges required.' } };
         }
+        
+        // Redirect to admin dashboard after successful login
+        window.location.href = '/admin';
       }
 
       return { error: null };
