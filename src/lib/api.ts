@@ -250,6 +250,12 @@ class ApiClient {
     }
   }
 
+  async deleteDocument(documentId: number): Promise<any> {
+    return this.request(`/documents/${documentId}`, {
+      method: 'DELETE',
+    });
+  }
+
   // Memory endpoints
   async getMemoryStats(): Promise<any> {
     // Use the graph stats endpoint to get node/relationship counts

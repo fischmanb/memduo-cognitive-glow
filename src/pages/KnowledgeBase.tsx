@@ -122,6 +122,28 @@ const KnowledgeBase = () => {
     }
   };
 
+  const deleteDocument = async (documentId: number) => {
+    try {
+      console.log(`🗑️ Deleting document ${documentId}`);
+      await apiClient.deleteDocument(documentId);
+      
+      toast({
+        title: "Document Deleted",
+        description: "Document removed successfully",
+      });
+
+      // Reload documents
+      await loadDocuments();
+    } catch (error) {
+      console.error('Error deleting document:', error);
+      toast({
+        title: "Delete Failed",
+        description: "Failed to delete document",
+        variant: "destructive"
+      });
+    }
+  };
+
   const indexDocument = async (documentId: number) => {
     try {
       console.log(`🔄 Starting indexing for document ${documentId}`);
@@ -444,6 +466,18 @@ const KnowledgeBase = () => {
                           className="neural-glass-hover"
                         >
                           Index for Search
+                        </Button>
+                      )}
+                      
+                      {doc.status === 'failed' && (
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => deleteDocument(doc.id)}
+                          className="neural-glass-hover"
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Delete
                         </Button>
                       )}
                     </div>
