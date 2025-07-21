@@ -111,10 +111,29 @@ const KnowledgeBase = () => {
       await loadDocuments();
     } catch (error) {
       console.error('❌ Error uploading files:', error);
+      console.error('❌ Error type:', typeof error);
+      console.error('❌ Error stringified:', JSON.stringify(error, null, 2));
+      
       let errorMessage = "Failed to upload files";
+      
       if (error instanceof Error) {
         errorMessage = error.message;
+        console.error('❌ Error.message:', error.message);
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      } else if (error && typeof error === 'object') {
+        // Handle object errors
+        if ('detail' in error) {
+          errorMessage = (error as any).detail;
+        } else if ('message' in error) {
+          errorMessage = (error as any).message;
+        } else {
+          errorMessage = `Upload failed: ${JSON.stringify(error)}`;
+        }
       }
+      
+      console.error('❌ Final error message to show:', errorMessage);
+      
       toast({
         title: "Upload Failed",
         description: errorMessage,
