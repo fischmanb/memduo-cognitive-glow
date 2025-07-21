@@ -119,27 +119,32 @@ class ApiClient {
     // Since the login endpoint itself proves connectivity, skip health check for now
 
     try {
-      console.log('📤 Sending login request with:', { 
-        email: credentials.email, 
-        passwordLength: credentials.password.length 
-      });
+      const requestBody = JSON.stringify(credentials);
+      console.log('📤 Exact request body being sent:', requestBody);
+      console.log('📤 Request body length:', requestBody.length);
+      console.log('📤 Email byte length:', new TextEncoder().encode(credentials.email).length);
+      console.log('📤 Password byte length:', new TextEncoder().encode(credentials.password).length);
       
       const response = await this.request<LoginResponse>('/auth/login', {
         method: 'POST',
-        body: JSON.stringify(credentials),
+        body: requestBody,
       });
       
       console.log('✅ Backend login successful for:', credentials.email);
       return response;
     } catch (error) {
       console.error('❌ Backend login failed for:', credentials.email);
-      console.error('❌ Error details:', error);
+      console.error('❌ Full error object:', JSON.stringify(error, null, 2));
       
       // Check if it's a 401 vs other errors
       if (error instanceof Error && error.message.includes('Incorrect email or password')) {
-        console.error('🔐 Authentication failed: Backend rejected the credentials');
-        console.error('📧 Email sent:', credentials.email);
-        console.error('🔑 Password length sent:', credentials.password.length);
+        console.error('🔐 Backend definitively rejected these exact credentials');
+        console.error('📧 Rejected email:', JSON.stringify(credentials.email));
+        console.error('🔑 Rejected password length:', credentials.password.length);
+        console.error('💡 This suggests either:');
+        console.error('   - Backend API contract changed');
+        console.error('   - Backend validation logic changed'); 
+        console.error('   - Backend database query changed');
       }
       
       throw error;
