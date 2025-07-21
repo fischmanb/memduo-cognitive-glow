@@ -228,6 +228,7 @@ class ApiClient {
         method: 'POST',
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          // Don't set Content-Type - let browser set it with boundary for FormData
         },
         body: formData,
       });
