@@ -216,10 +216,10 @@ class ApiClient {
 
   async uploadDocument(file: File): Promise<any> {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('files', file);  // Changed from 'file' to 'files' to match backend
 
     const token = localStorage.getItem('memduo_token');
-    const url = `${API_BASE_URL}/documents/upload`;
+    const url = `${API_BASE_URL}/files/upload-files`;
     
     console.log(`🔄 Document upload: POST ${url}`);
     console.log('📁 Uploading file:', {
