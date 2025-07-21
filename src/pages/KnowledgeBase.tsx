@@ -456,31 +456,29 @@ const KnowledgeBase = () => {
                       </div>
                     </div>
                     
-                    <div className="flex items-center space-x-3">
-                      {getStatusBadge(doc.status, doc.is_indexed)}
-                      
-                      {doc.status === 'completed' && !doc.is_indexed && (
-                        <Button
-                          size="sm"
-                          onClick={() => indexDocument(doc.id)}
-                          className="neural-glass-hover"
-                        >
-                          Index for Search
-                        </Button>
-                      )}
-                      
-                      {doc.status === 'failed' && (
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={() => deleteDocument(doc.id)}
-                          className="neural-glass-hover"
-                        >
-                          <Trash2 className="h-4 w-4 mr-1" />
-                          Delete
-                        </Button>
-                      )}
-                    </div>
+                     <div className="flex items-center space-x-3">
+                       {getStatusBadge(doc.status, doc.is_indexed)}
+                       
+                       {doc.status === 'completed' && !doc.is_indexed && (
+                         <Button
+                           size="sm"
+                           onClick={() => indexDocument(doc.id)}
+                           className="neural-glass-hover"
+                         >
+                           Index for Search
+                         </Button>
+                       )}
+                       
+                       <Button
+                         size="sm"
+                         variant="destructive"
+                         onClick={() => deleteDocument(doc.id)}
+                         className="neural-glass-hover"
+                       >
+                         <Trash2 className="h-4 w-4 mr-1" />
+                         Delete
+                       </Button>
+                     </div>
                   </div>
                 </div>
               ))}
