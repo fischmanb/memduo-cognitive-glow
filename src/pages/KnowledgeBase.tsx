@@ -93,23 +93,12 @@ const KnowledgeBase = () => {
         formData.append('files', file);
       });
 
-      // Use apiClient to upload documents
-      const uploadUrl = `https://api.memduo.com/api/v1/documents/upload`;
-      const token = localStorage.getItem('memduo_token');
+      // Upload each file using the API client
+      const uploadPromises = Array.from(files).map(file => 
+        apiClient.uploadDocument(file)
+      );
       
-      const response = await fetch(uploadUrl, {
-        method: 'POST',
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Upload failed');
-      }
-
-      const result = await response.json();
+      const results = await Promise.all(uploadPromises);
       
       toast({
         title: "Upload Successful",
