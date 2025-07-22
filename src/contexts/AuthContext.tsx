@@ -321,10 +321,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const setBackendAuth = (authenticated: boolean, user: any | null) => {
+    console.log('🔧 setBackendAuth called:', { authenticated, user: user?.email || 'no user' });
     setIsBackendAuthState(authenticated);
     setBackendUser(user);
     if (authenticated) {
       setIsAuthenticated(true);
+      setEmail(user?.email || localStorage.getItem('memduo_user_email') || null);
+    } else {
+      // Only clear auth if we're not authenticated via Supabase either
+      if (!user) {
+        setIsAuthenticated(false);
+        setEmail(null);
+      }
     }
   };
 

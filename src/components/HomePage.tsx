@@ -9,8 +9,13 @@ const HomePage = () => {
     // If authenticated, redirect to dashboard (but not if they're trying to access admin)
     if (isAuthenticated && !isLoading) {
       const currentPath = window.location.pathname;
+      console.log('🏠 HomePage: User authenticated, current path:', currentPath);
       if (!currentPath.startsWith('/admin')) {
-        window.location.href = '/dashboard';
+        console.log('🔄 Redirecting to dashboard...');
+        // Use a small delay to ensure state is settled
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 100);
       }
     }
   }, [isAuthenticated, isLoading]);
