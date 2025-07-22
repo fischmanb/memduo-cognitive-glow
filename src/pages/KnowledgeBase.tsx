@@ -530,15 +530,22 @@ const KnowledgeBase = () => {
               <div className="space-y-4">
                 {filteredDocuments.map((doc) => (
                   <div key={doc.id} className="flex items-center justify-between p-4 neural-glass rounded-lg">
-                    <div className="flex items-center space-x-4 flex-1">
-                      <div className="p-2 neural-glass rounded-lg">
+                    <div className="flex items-center space-x-4 flex-1 min-w-0">
+                      <div className="p-2 neural-glass rounded-lg flex-shrink-0">
                         <FileText className="h-5 w-5 text-blue-400" />
                       </div>
                       
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium text-white truncate">
-                          {doc.filename}
-                        </h3>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <h3 className="text-sm font-medium text-white truncate cursor-help">
+                              {doc.filename}
+                            </h3>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" className="max-w-md">
+                            <p className="text-sm break-words">{doc.filename}</p>
+                          </TooltipContent>
+                        </Tooltip>
                         <div className="flex items-center space-x-4 mt-1">
                           <span className="text-xs text-gray-400">
                             {formatFileSize(doc.file_size)}
@@ -549,7 +556,7 @@ const KnowledgeBase = () => {
                         </div>
                       </div>
                       
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-3 flex-shrink-0">
                         {getStatusBadge(doc.status, doc.is_indexed)}
                         
                         {doc.status === 'completed' && !doc.is_indexed && (
