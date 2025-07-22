@@ -97,31 +97,34 @@ const KnowledgeBase = () => {
         console.log(`📄 Uploading: "${file.name}" (${file.size} bytes)`);
         const result = await apiClient.uploadDocument(file);
         console.log(`✅ Upload result for "${file.name}":`, result);
-        return result;
+        return { file, result };
       });
       
       const results = await Promise.all(uploadPromises);
       console.log('📤 All uploads completed:', results);
-      console.log('📄 Uploaded filenames:', Array.from(files).map(f => f.name));
+      
+      // Add uploaded documents directly to UI state
+      const newDocuments = results.map(({ file, result }) => ({
+        id: result.id || Date.now() + Math.random(), // Fallback ID
+        filename: file.name,
+        file_size: file.size,
+        content_type: file.type,
+        status: 'pending',
+        is_indexed: false,
+        created_at: new Date().toISOString(),
+        ...result // Override with actual backend response
+      }));
+      
+      // Update UI immediately with new documents
+      setDocuments(prev => [...newDocuments, ...prev]);
       
       toast({
         title: "Upload Successful",
         description: `${files.length} file(s) uploaded successfully`,
       });
 
-      // Force multiple reloads to catch backend processing delays
-      console.log('🔄 Reloading documents immediately...');
-      await loadDocuments();
-      
-      setTimeout(async () => {
-        console.log('🔄 Reload attempt 2...');
-        await loadDocuments();
-      }, 3000);
-      
-      setTimeout(async () => {
-        console.log('🔄 Reload attempt 3...');
-        await loadDocuments();
-      }, 6000);
+      // Single background reload to sync with backend
+      setTimeout(() => loadDocuments(), 2000);
       
     } catch (error) {
       console.error('Upload error:', error);
