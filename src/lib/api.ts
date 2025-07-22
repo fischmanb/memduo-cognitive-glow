@@ -292,6 +292,14 @@ class ApiClient {
     });
   }
 
+  async retryIndexing(documentId: number): Promise<any> {
+    console.log('🔄 Retrying document indexing for ID:', documentId);
+    
+    return this.request(`/documents/${documentId}/index`, {
+      method: 'POST',
+    });
+  }
+
   // Memory endpoints
   async getMemoryStats(): Promise<any> {
     // Use the graph stats endpoint to get node/relationship counts

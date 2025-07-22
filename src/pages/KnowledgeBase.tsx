@@ -133,10 +133,11 @@ const KnowledgeBase = () => {
 
   const retryProcessing = async (documentId: number) => {
     try {
-      // This would need a backend endpoint to retry processing
+      await apiClient.retryIndexing(documentId);
+      
       toast({
         title: "Retry Initiated",
-        description: "Document will be reprocessed",
+        description: "Document indexing has been restarted",
       });
       
       await loadDocuments();
@@ -144,7 +145,7 @@ const KnowledgeBase = () => {
       console.error('Error retrying document processing:', error);
       toast({
         title: "Retry Failed",
-        description: "Failed to retry document processing",
+        description: error instanceof Error ? error.message : "Failed to retry document processing",
         variant: "destructive"
       });
     }
