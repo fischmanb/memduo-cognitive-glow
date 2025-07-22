@@ -1,6 +1,6 @@
 
 // API client for MemDuo FastAPI backend
-const API_BASE_URL = 'http://localhost:8000/api/v1';  // Change this to your actual backend URL
+const API_BASE_URL = 'https://api.memduo.com/api/v1';
 
 export interface LoginRequest {
   email: string;
