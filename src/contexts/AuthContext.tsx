@@ -43,16 +43,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [backendUser, setBackendUser] = useState<any | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+    
     // Check for existing session
     const getSession = async () => {
       try {
-        // Check for backend authentication
+        // Check for backend authentication first
         const backendToken = localStorage.getItem('memduo_token');
         const backendAuth = localStorage.getItem('memduo_backend_auth') === 'true';
         const userEmail = localStorage.getItem('memduo_user_email');
         const userData = localStorage.getItem('memduo_user_data');
         
-        if (backendAuth && backendToken) {
+        if (backendAuth && backendToken && isMounted) {
+          console.log('🔐 Found existing backend auth');
           setIsBackendAuthState(true);
           setEmail(userEmail || '');
           if (userData) {
@@ -67,15 +70,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           return;
         }
         
-        // Check for real Supabase session
+        // Check for Supabase session
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
           console.error('Error getting session:', error);
+          if (isMounted) {
+            setIsLoading(false);
+          }
           return;
         }
 
-        if (session?.user) {
+        if (session?.user && isMounted) {
+          console.log('🔐 Found existing Supabase session');
           setUser(session.user);
           setIsAuthenticated(true);
           setEmail(session.user.email || null);
@@ -83,20 +90,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } catch (error) {
         console.error('Session check error:', error);
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
     getSession();
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth state changed:', event, session);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state changed:', event, session?.user?.email);
+      
+      if (!isMounted) return;
       
       if (session?.user) {
         setUser(session.user);
-        setIsAuthenticated(true);
         setEmail(session.user.email || null);
+        if (!isBackendAuth) {
+          setIsAuthenticated(true);
+        }
       } else {
         setUser(null);
         if (!isBackendAuth) {
@@ -108,8 +121,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsLoading(false);
     });
 
-    return () => subscription.unsubscribe();
-  }, [isBackendAuth]);
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {

@@ -72,21 +72,40 @@ const KnowledgeBase = () => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
 
+    const token = localStorage.getItem('memduo_token');
+    if (!token) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in again to upload documents",
+        variant: "destructive"
+      });
+      return;
+    }
+
     try {
       setUploading(true);
+      console.log(`📤 Uploading ${files.length} file(s)...`);
       
-      const uploadPromises = Array.from(files).map(file => 
-        apiClient.uploadDocument(file)
-      );
+      const uploadPromises = Array.from(files).map(async (file) => {
+        console.log(`📄 Uploading: ${file.name} (${file.size} bytes)`);
+        const result = await apiClient.uploadDocument(file);
+        console.log(`✅ Upload result for ${file.name}:`, result);
+        return result;
+      });
       
-      await Promise.all(uploadPromises);
+      const results = await Promise.all(uploadPromises);
+      console.log('📤 All uploads completed:', results);
       
       toast({
         title: "Upload Successful",
         description: `${files.length} file(s) uploaded successfully`,
       });
 
-      await loadDocuments();
+      // Wait a moment then reload documents
+      setTimeout(() => {
+        loadDocuments();
+      }, 1000);
+      
     } catch (error) {
       console.error('Upload error:', error);
       
@@ -94,6 +113,11 @@ const KnowledgeBase = () => {
       
       if (error instanceof Error) {
         errorMessage = error.message;
+        if (error.message.includes('401') || error.message.includes('Unauthorized')) {
+          errorMessage = "Authentication failed. Please log in again.";
+        } else if (error.message.includes('413') || error.message.includes('too large')) {
+          errorMessage = "File too large. Please select smaller files.";
+        }
       } else if (typeof error === 'string') {
         errorMessage = error;
       }
