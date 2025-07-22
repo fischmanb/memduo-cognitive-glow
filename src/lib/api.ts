@@ -223,7 +223,7 @@ class ApiClient {
     formData.append('files', file);  // Changed from 'file' to 'files' to match backend
 
     const token = localStorage.getItem('memduo_token');
-    const url = `${API_BASE_URL}/files/upload-files`;
+    const url = `${API_BASE_URL}/documents/upload`;
     
     console.log(`🔄 Document upload: POST ${url}`);
     console.log('📁 Uploading file:', {
