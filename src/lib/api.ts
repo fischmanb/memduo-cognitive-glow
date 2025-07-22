@@ -98,37 +98,9 @@ class ApiClient {
     }
   }
 
-  // Health check - try a simple endpoint that should exist
+  // Health check
   async healthCheck(): Promise<any> {
-    console.log('🏥 Testing backend connectivity...');
-    
-    try {
-      // Try the roles endpoint as it should exist and be accessible
-      const response = await fetch(`${API_BASE_URL}/roles/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      
-      console.log(`📡 Health check response: ${response.status} ${response.statusText}`);
-      
-      if (response.ok || response.status === 401) {
-        // 401 means endpoint exists but needs auth, which is expected
-        console.log('✅ Backend is online and accessible');
-        return { status: 'online' };
-      } else {
-        console.warn(`⚠️ Backend responded with status ${response.status}`);
-        return null;
-      }
-    } catch (error) {
-      console.error('❌ Backend health check failed:', error);
-      console.error('🔍 This usually means:');
-      console.error('   1. Backend server is not running');
-      console.error('   2. CORS is blocking the request');
-      console.error('   3. Network connectivity issues');
-      return null;
-    }
+    return this.request('/healthcheck');
   }
 
   // Authentication endpoints
@@ -189,12 +161,14 @@ class ApiClient {
 
   // Get all users (admin only)
   async getUsers(): Promise<any[]> {
-    return this.request('/users');
+    return this.request('/users/');
   }
 
   // Role endpoints
+  // Note: No dedicated roles endpoint in API docs - roles would be part of user data
   async getRoles(): Promise<any[]> {
-    return this.request('/roles/');
+    // Fallback: return empty array since there's no roles endpoint
+    return [];
   }
 
   // Chat endpoints
@@ -203,9 +177,9 @@ class ApiClient {
   }
 
   async sendChatMessage(sessionId: string, message: string): Promise<any> {
-    return this.request(`/chat/${sessionId}/messages`, {
+    return this.request(`/chat/session/${sessionId}/message`, {
       method: 'POST',
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({ content: message }),
     });
   }
 
@@ -299,7 +273,7 @@ class ApiClient {
   async retryIndexing(documentId: number): Promise<any> {
     console.log('🔄 Retrying document indexing for ID:', documentId);
     
-    return this.request(`/documents/${documentId}/index`, {
+    return this.request(`/documents/${documentId}/process`, {
       method: 'POST',
     });
   }
@@ -311,8 +285,8 @@ class ApiClient {
   }
 
   async getUserMemoryStats(userId: string): Promise<any> {
-    // Get user-specific graph stats
-    return this.request(`/rag/graph/stats/${userId}`);
+    // No user-specific stats endpoint in API docs, using general stats
+    return this.request('/rag/graph/stats');
   }
 
   async searchMemory(userId: string, query: string): Promise<any> {
@@ -330,7 +304,18 @@ class ApiClient {
   async queryRAG(query: string): Promise<any> {
     return this.request('/rag/query', {
       method: 'POST',
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({ 
+        query,
+        use_graph_rag: true,
+        include_reasoning: true
+      }),
+    });
+  }
+
+  // Document indexing endpoint
+  async indexDocument(documentId: number): Promise<any> {
+    return this.request(`/rag/index-document/${documentId}`, {
+      method: 'POST'
     });
   }
 }

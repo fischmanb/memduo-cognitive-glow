@@ -124,25 +124,10 @@ const Chat = () => {
     setIsLoading(true);
 
     try {
-      // Use GraphRAG query endpoint
-      const response = await fetch('https://api.memduo.com/api/v1/rag/query', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('memduo_token')}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: userMessage.content,
-          use_graph_rag: true,
-          include_reasoning: true
-        }),
-      });
+      // Use GraphRAG query endpoint through apiClient
+      const data = await apiClient.queryRAG(userMessage.content);
 
-      if (!response.ok) {
-        throw new Error('Chat request failed');
-      }
-
-      const data = await response.json();
+      // Data is already parsed by apiClient
 
       // Add mock data for demonstration if backend doesn't provide it
       const mockSources: DocumentSource[] = data.sources?.length ? data.sources : [

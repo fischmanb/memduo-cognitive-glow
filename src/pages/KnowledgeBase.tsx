@@ -228,49 +228,15 @@ const KnowledgeBase = () => {
 
   const indexDocument = async (documentId: number) => {
     try {
-      console.log(`🔄 Starting indexing for document ${documentId}`);
-      const token = localStorage.getItem('memduo_token');
-      console.log(`🔑 Token available: ${token ? 'Yes' : 'No'}`);
-      
-      const url = `https://api.memduo.com/api/v1/rag/index-document/${documentId}`;
-      console.log(`📡 POST ${url}`);
-      
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      console.log(`📊 Response status: ${response.status} ${response.statusText}`);
-
-      if (!response.ok) {
-        let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
-        
-        try {
-          const errorData = await response.json();
-          console.error('❌ Error response:', errorData);
-          errorMessage = errorData.detail || errorData.message || errorMessage;
-        } catch (parseError) {
-          console.error('❌ Failed to parse error response:', parseError);
-          const responseText = await response.text().catch(() => 'Could not read response');
-          console.error('❌ Raw response:', responseText);
-          errorMessage = responseText || errorMessage;
-        }
-        
-        throw new Error(errorMessage);
-      }
-
-      const result = await response.json();
-      console.log('✅ Indexing response:', result);
+      const result = await apiClient.indexDocument(documentId);
+      console.log('Document indexed:', result);
 
       toast({
         title: "Indexing Started",
-        description: "Document is being processed for search",
+        description: "Document indexing has been initiated",
       });
 
-      // Reload documents to update status
+      // Refresh the documents list to update status
       await loadDocuments();
     } catch (error) {
       console.error('🚨 Error indexing document:', error);
