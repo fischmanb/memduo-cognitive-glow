@@ -8,10 +8,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { apiClient } from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Register = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { setBackendAuth } = useAuth();
   const token = searchParams.get('token');
   
   const [isLoading, setIsLoading] = useState(false);
@@ -107,7 +110,22 @@ const Register = () => {
     setError('');
 
     try {
-      // Create Supabase user account
+      // Step 1: Register with backend first
+      console.log('🔄 Registering with backend...');
+      try {
+        await apiClient.register({
+          email: formData.email,
+          password: formData.password,
+          first_name: formData.firstName,
+          last_name: formData.lastName
+        });
+        console.log('✅ Backend registration successful');
+      } catch (backendError) {
+        console.log('⚠️ Backend registration failed, continuing with Supabase...');
+        // Continue anyway - user might already exist in backend
+      }
+
+      // Step 2: Create Supabase user account
       const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -130,7 +148,33 @@ const Register = () => {
         return;
       }
 
-      // Mark the approved user as having created an account
+      // Step 3: Authenticate with backend to get token
+      console.log('🔄 Getting backend token...');
+      try {
+        const loginResponse = await apiClient.login({
+          email: formData.email,
+          password: formData.password
+        });
+
+        if (loginResponse.access_token) {
+          // Store backend token and user data
+          localStorage.setItem('memduo_token', loginResponse.access_token);
+          localStorage.setItem('memduo_backend_auth', 'true');
+          localStorage.setItem('memduo_user_email', formData.email);
+          if (loginResponse.user) {
+            localStorage.setItem('memduo_user_data', JSON.stringify(loginResponse.user));
+          }
+
+          // Set backend auth state
+          setBackendAuth(true, loginResponse.user || null);
+          console.log('✅ Backend authentication successful');
+        }
+      } catch (backendAuthError) {
+        console.error('❌ Backend authentication failed:', backendAuthError);
+        // Continue anyway - user has Supabase account
+      }
+
+      // Step 4: Mark the approved user as having created an account
       const { error: updateError } = await supabase
         .from('approved_users')
         .update({ account_created: true })
@@ -140,7 +184,7 @@ const Register = () => {
         console.error('Error updating approved user:', updateError);
       }
 
-      // Mark magic link as used if it exists
+      // Step 5: Mark magic link as used if it exists
       const { error: linkError } = await supabase
         .from('magic_links')
         .update({ 

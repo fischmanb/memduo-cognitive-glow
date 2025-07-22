@@ -115,13 +115,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       
+      // Step 1: Sign in with Supabase
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
-        console.error('Login error:', error);
+        console.error('Supabase login error:', error);
         return false;
       }
 
@@ -129,6 +130,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(data.user);
         setIsAuthenticated(true);
         setEmail(data.user.email || null);
+        
+        // Step 2: Authenticate with backend to get token
+        console.log('🔄 Getting backend token after Supabase login...');
+        try {
+          const loginResponse = await apiClient.login({
+            email,
+            password
+          });
+
+          if (loginResponse.access_token) {
+            // Store backend token and user data
+            localStorage.setItem('memduo_token', loginResponse.access_token);
+            localStorage.setItem('memduo_backend_auth', 'true');
+            localStorage.setItem('memduo_user_email', email);
+            if (loginResponse.user) {
+              localStorage.setItem('memduo_user_data', JSON.stringify(loginResponse.user));
+            }
+
+            // Set backend auth state
+            setIsBackendAuthState(true);
+            setBackendUser(loginResponse.user || null);
+            console.log('✅ Backend authentication successful after Supabase login');
+          }
+        } catch (backendAuthError) {
+          console.error('❌ Backend authentication failed after Supabase login:', backendAuthError);
+          // Continue anyway - user has Supabase account
+        }
+        
         return true;
       }
 
@@ -145,10 +174,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setIsLoading(true);
       
+      // Step 1: Register with backend first
+      console.log('🔄 Registering with backend...');
+      try {
+        await apiClient.register({
+          email,
+          password,
+          first_name: firstName,
+          last_name: lastName
+        });
+        console.log('✅ Backend registration successful');
+      } catch (backendError) {
+        console.log('⚠️ Backend registration failed, continuing with Supabase...');
+        // Continue anyway - user might already exist in backend
+      }
+      
+      // Step 2: Sign up with Supabase
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
+          emailRedirectTo: `${window.location.origin}/`,
           data: {
             first_name: firstName,
             last_name: lastName,
@@ -157,11 +203,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
 
       if (error) {
-        console.error('Registration error:', error);
+        console.error('Supabase registration error:', error);
         return false;
       }
 
       if (data.user) {
+        // Step 3: Authenticate with backend to get token
+        console.log('🔄 Getting backend token after registration...');
+        try {
+          const loginResponse = await apiClient.login({
+            email,
+            password
+          });
+
+          if (loginResponse.access_token) {
+            // Store backend token and user data
+            localStorage.setItem('memduo_token', loginResponse.access_token);
+            localStorage.setItem('memduo_backend_auth', 'true');
+            localStorage.setItem('memduo_user_email', email);
+            if (loginResponse.user) {
+              localStorage.setItem('memduo_user_data', JSON.stringify(loginResponse.user));
+            }
+
+            // Set backend auth state
+            setIsBackendAuthState(true);
+            setBackendUser(loginResponse.user || null);
+            console.log('✅ Backend authentication successful after registration');
+          }
+        } catch (backendAuthError) {
+          console.error('❌ Backend authentication failed after registration:', backendAuthError);
+          // Continue anyway - user has Supabase account
+        }
+        
         return true;
       }
 
