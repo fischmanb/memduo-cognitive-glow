@@ -109,15 +109,19 @@ const KnowledgeBase = () => {
         description: `${files.length} file(s) uploaded successfully`,
       });
 
-      // Immediate reload and also delayed reload to catch async processing
+      // Force multiple reloads to catch backend processing delays
       console.log('🔄 Reloading documents immediately...');
       await loadDocuments();
       
-      console.log('🔄 Scheduling delayed reload...');
       setTimeout(async () => {
-        console.log('🔄 Delayed reload executing...');
+        console.log('🔄 Reload attempt 2...');
         await loadDocuments();
-      }, 2000);
+      }, 3000);
+      
+      setTimeout(async () => {
+        console.log('🔄 Reload attempt 3...');
+        await loadDocuments();
+      }, 6000);
       
     } catch (error) {
       console.error('Upload error:', error);
