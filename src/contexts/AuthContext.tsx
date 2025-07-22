@@ -100,9 +100,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state changed:', event, session?.user?.email);
+      console.log('Auth state changed:', event, session?.user?.email || 'no user');
       
       if (!isMounted) return;
+      
+      // Don't override backend auth with Supabase auth events
+      const hasBackendAuth = localStorage.getItem('memduo_backend_auth') === 'true';
+      if (hasBackendAuth && (event === 'INITIAL_SESSION' || event === 'TOKEN_REFRESHED')) {
+        console.log('🔒 Preserving backend auth, ignoring Supabase event:', event);
+        setIsLoading(false);
+        return;
+      }
       
       if (session?.user) {
         setUser(session.user);
@@ -112,7 +120,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       } else {
         setUser(null);
-        if (!isBackendAuth) {
+        // Only clear auth if we don't have backend auth
+        if (!hasBackendAuth) {
           setIsAuthenticated(false);
           setEmail(null);
         }
