@@ -103,8 +103,8 @@ class ApiClient {
     console.log('🏥 Testing backend connectivity...');
     
     try {
-      // Try the base API endpoint first without authentication
-      const response = await fetch(`${API_BASE_URL}/`, {
+      // Try the roles endpoint as it should exist and be accessible
+      const response = await fetch(`${API_BASE_URL}/roles/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -113,10 +113,10 @@ class ApiClient {
       
       console.log(`📡 Health check response: ${response.status} ${response.statusText}`);
       
-      if (response.ok) {
-        const data = await response.json();
+      if (response.ok || response.status === 401) {
+        // 401 means endpoint exists but needs auth, which is expected
         console.log('✅ Backend is online and accessible');
-        return data;
+        return { status: 'online' };
       } else {
         console.warn(`⚠️ Backend responded with status ${response.status}`);
         return null;
