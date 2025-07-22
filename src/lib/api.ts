@@ -211,7 +211,11 @@ class ApiClient {
 
   // Document endpoints
   async getDocuments(): Promise<any[]> {
-    return this.request('/documents/');
+    console.log('📋 API: Getting documents...');
+    const result = await this.request<any>('/documents/');
+    console.log('📋 API: Documents response:', result);
+    // Ensure we always return an array
+    return Array.isArray(result) ? result : (result?.documents || []);
   }
 
   async uploadDocument(file: File): Promise<any> {

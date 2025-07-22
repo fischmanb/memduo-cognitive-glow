@@ -54,10 +54,17 @@ const KnowledgeBase = () => {
   const loadDocuments = async () => {
     try {
       setLoading(true);
+      console.log('📋 Loading documents...');
       const response = await apiClient.getDocuments();
-      setDocuments(Array.isArray(response) ? response : (response as any)?.documents || []);
+      console.log('📋 Raw response:', response);
+      
+      const docs = Array.isArray(response) ? response : (response as any)?.documents || [];
+      console.log(`📋 Processed documents: ${docs.length} items`);
+      console.log('📋 Document list:', docs.map(d => ({ id: d.id, filename: d.filename, status: d.status })));
+      
+      setDocuments(docs);
     } catch (error) {
-      console.error('Error loading documents:', error);
+      console.error('❌ Error loading documents:', error);
       toast({
         title: "Error",
         description: "Failed to load documents",
@@ -101,10 +108,15 @@ const KnowledgeBase = () => {
         description: `${files.length} file(s) uploaded successfully`,
       });
 
-      // Wait a moment then reload documents
-      setTimeout(() => {
-        loadDocuments();
-      }, 1000);
+      // Immediate reload and also delayed reload to catch async processing
+      console.log('🔄 Reloading documents immediately...');
+      await loadDocuments();
+      
+      console.log('🔄 Scheduling delayed reload...');
+      setTimeout(async () => {
+        console.log('🔄 Delayed reload executing...');
+        await loadDocuments();
+      }, 2000);
       
     } catch (error) {
       console.error('Upload error:', error);
