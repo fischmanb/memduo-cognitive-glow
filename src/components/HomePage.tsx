@@ -12,10 +12,7 @@ const HomePage = () => {
       console.log('🏠 HomePage: User authenticated, current path:', currentPath);
       if (!currentPath.startsWith('/admin')) {
         console.log('🔄 Redirecting to dashboard...');
-        // Use a small delay to ensure state is settled
-        setTimeout(() => {
-          window.location.href = '/dashboard';
-        }, 100);
+        window.location.href = '/dashboard';
       }
     }
   }, [isAuthenticated, isLoading]);

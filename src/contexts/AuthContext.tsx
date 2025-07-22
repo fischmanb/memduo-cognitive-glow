@@ -46,16 +46,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let isMounted = true;
     
     // Check for existing session
-    const getSession = async () => {
+    const initializeAuth = async () => {
       try {
-        // Check for backend authentication first
+        // PRIORITY 1: Check for backend authentication first
         const backendToken = localStorage.getItem('memduo_token');
         const backendAuth = localStorage.getItem('memduo_backend_auth') === 'true';
         const userEmail = localStorage.getItem('memduo_user_email');
         const userData = localStorage.getItem('memduo_user_data');
         
         if (backendAuth && backendToken && isMounted) {
-          console.log('🔐 Found existing backend auth');
+          console.log('🔐 Found existing backend auth - using it');
           setIsBackendAuthState(true);
           setEmail(userEmail || '');
           if (userData) {
@@ -67,10 +67,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           }
           setIsAuthenticated(true);
           setIsLoading(false);
+          // Skip Supabase entirely when we have backend auth
           return;
         }
         
-        // Check for Supabase session
+        // PRIORITY 2: Only check Supabase if no backend auth
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
@@ -96,39 +97,43 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     };
 
-    getSession();
+    initializeAuth();
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Auth state changed:', event, session?.user?.email || 'no user');
-      
-      if (!isMounted) return;
-      
-      // Don't override backend auth with Supabase auth events
+    // Only listen to Supabase auth if no backend auth exists
+    const setupSupabaseListener = () => {
       const hasBackendAuth = localStorage.getItem('memduo_backend_auth') === 'true';
-      if (hasBackendAuth && (event === 'INITIAL_SESSION' || event === 'TOKEN_REFRESHED')) {
-        console.log('🔒 Preserving backend auth, ignoring Supabase event:', event);
-        setIsLoading(false);
-        return;
+      if (hasBackendAuth) {
+        console.log('🔒 Backend auth active - skipping Supabase listener');
+        return { data: { subscription: { unsubscribe: () => {} } } };
       }
-      
-      if (session?.user) {
-        setUser(session.user);
-        setEmail(session.user.email || null);
-        if (!isBackendAuth) {
-          setIsAuthenticated(true);
+
+      return supabase.auth.onAuthStateChange((event, session) => {
+        console.log('Supabase auth state changed:', event, session?.user?.email || 'no user');
+        
+        if (!isMounted) return;
+        
+        // Double-check backend auth hasn't been set since listener was created
+        const currentBackendAuth = localStorage.getItem('memduo_backend_auth') === 'true';
+        if (currentBackendAuth) {
+          console.log('🔒 Backend auth now active - ignoring Supabase event');
+          return;
         }
-      } else {
-        setUser(null);
-        // Only clear auth if we don't have backend auth
-        if (!hasBackendAuth) {
+        
+        if (session?.user) {
+          setUser(session.user);
+          setEmail(session.user.email || null);
+          setIsAuthenticated(true);
+        } else {
+          setUser(null);
           setIsAuthenticated(false);
           setEmail(null);
         }
-      }
-      
-      setIsLoading(false);
-    });
+        
+        setIsLoading(false);
+      });
+    };
+
+    const { data: { subscription } } = setupSupabaseListener();
 
     return () => {
       isMounted = false;
