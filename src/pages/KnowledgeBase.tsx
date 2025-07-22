@@ -94,14 +94,15 @@ const KnowledgeBase = () => {
       console.log(`📤 Uploading ${files.length} file(s)...`);
       
       const uploadPromises = Array.from(files).map(async (file) => {
-        console.log(`📄 Uploading: ${file.name} (${file.size} bytes)`);
+        console.log(`📄 Uploading: "${file.name}" (${file.size} bytes)`);
         const result = await apiClient.uploadDocument(file);
-        console.log(`✅ Upload result for ${file.name}:`, result);
+        console.log(`✅ Upload result for "${file.name}":`, result);
         return result;
       });
       
       const results = await Promise.all(uploadPromises);
       console.log('📤 All uploads completed:', results);
+      console.log('📄 Uploaded filenames:', Array.from(files).map(f => f.name));
       
       toast({
         title: "Upload Successful",
