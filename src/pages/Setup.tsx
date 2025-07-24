@@ -155,6 +155,9 @@ const Setup: React.FC = () => {
         // Don't fail the whole process for this
       }
 
+      // Sign out the user so they have to log in manually
+      await supabase.auth.signOut();
+
       toast({
         title: "Account created successfully!",
         description: "You can now sign in with your new account.",
