@@ -129,7 +129,7 @@ const Setup: React.FC = () => {
       });
 
       // Redirect to login page
-      navigate('/auth?message=account-created');
+      navigate('/register?message=account-created');
 
     } catch (error) {
       console.error('Error creating account:', error);
