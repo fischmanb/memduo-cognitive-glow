@@ -76,10 +76,8 @@ const PasswordEntry = () => {
       try {
         await apiClient.healthCheck();
         setBackendStatus('online');
-        console.log('🟢 Backend is online and accessible');
       } catch (error) {
         // Don't mark as offline immediately - the login endpoint might still work
-        console.warn('⚠️ Health check failed, but backend might still be accessible:', error);
         setBackendStatus('unknown');
       }
     };
@@ -133,10 +131,6 @@ const PasswordEntry = () => {
     setIsSubmitting(true);
 
     console.log('🚀 Starting authentication process...');
-    console.log('📧 Email provided:', email.trim());
-    console.log('🔑 Password length:', password.trim().length);
-    console.log('🔑 Password first 3 chars:', password.trim().substring(0, 3) + '...');
-    console.log('🔑 Password last 3 chars:', '...' + password.trim().substring(password.trim().length - 3));
 
     // Simulate validation delay for better UX
     await new Promise(resolve => setTimeout(resolve, 500));
@@ -156,11 +150,6 @@ const PasswordEntry = () => {
       // Try backend authentication if email is provided
       if (email.trim()) {
         console.log('🔄 Attempting backend authentication...');
-        console.log('📧 Email (raw):', JSON.stringify(email));
-        console.log('📧 Email (trimmed):', JSON.stringify(email.trim()));
-        console.log('🔑 Password (raw):', JSON.stringify(password));
-        console.log('🔑 Password (trimmed):', JSON.stringify(password.trim()));
-        console.log('📊 Email char codes:', [...email.trim()].map(c => c.charCodeAt(0)));
         
         try {
           const response = await apiClient.login({
@@ -386,12 +375,6 @@ const PasswordEntry = () => {
                     Contact Us
                   </a>
                 </p>
-                
-                {/* Debug Info */}
-                <div className="text-xs text-gray-500 space-y-1">
-                  <p>Backend Status: {backendStatus}</p>
-                  <p>Login endpoint working: {backendStatus !== 'unknown' ? 'Yes' : 'Testing...'}</p>
-                </div>
               </div>
             </div>
           </div>
