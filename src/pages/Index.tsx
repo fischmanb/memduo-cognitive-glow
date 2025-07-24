@@ -326,7 +326,7 @@ const Index = () => {
             ></div>
             
             <img 
-              src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+              src="/lovable-uploads/7b4c7179-5f77-44b2-8117-fba1f5c3a4a8.png"
               alt="MemDuo - Cognitive Growth Partner"
               itemProp="logo"
               className="h-64 sm:h-80 md:h-96 lg:h-[36rem] xl:h-[44rem] w-auto mx-auto animate-fade-in transition-all duration-1000 group-hover:scale-105 relative z-10"
@@ -570,7 +570,7 @@ const Index = () => {
               <div className="text-center mb-12" data-component="form-header">
                 <div className="inline-block p-6 rounded-3xl neural-glass mb-6">
                   <img 
-                    src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+                    src="/lovable-uploads/7b4c7179-5f77-44b2-8117-fba1f5c3a4a8.png"
                     alt="MemDuo" 
                     className="h-16 sm:h-20 w-auto"
                     data-component="form-logo"
@@ -856,7 +856,7 @@ const Index = () => {
           <div className="mb-8">
             <div className="inline-block p-4 neural-glass rounded-2xl mb-4">
               <img 
-                src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+                src="/lovable-uploads/7b4c7179-5f77-44b2-8117-fba1f5c3a4a8.png" 
                 alt="MemDuo" 
                 className="h-12 w-auto"
                 itemProp="logo"

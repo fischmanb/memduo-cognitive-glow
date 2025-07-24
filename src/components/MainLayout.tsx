@@ -53,7 +53,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           <div className="flex items-center justify-between p-6 border-b border-white/10">
             <div className="flex items-center space-x-3">
               <img 
-                src="/lovable-uploads/101a3a9b-610a-41f7-b143-4f57fcf9ed32.png" 
+                src="/lovable-uploads/7b4c7179-5f77-44b2-8117-fba1f5c3a4a8.png" 
                 alt="MemDuo" 
                 className="h-8 w-8 object-contain"
               />

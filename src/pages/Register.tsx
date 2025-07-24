@@ -250,7 +250,7 @@ const Register = () => {
         <CardHeader>
           <div className="flex items-center justify-center mb-4">
             <img 
-              src="/lovable-uploads/101a3a9b-610a-41f7-b143-4f57fcf9ed32.png" 
+              src="/lovable-uploads/7b4c7179-5f77-44b2-8117-fba1f5c3a4a8.png" 
               alt="MemDuo" 
               className="h-12 w-12 object-contain"
             />

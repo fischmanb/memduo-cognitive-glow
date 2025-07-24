@@ -7,7 +7,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-center">
           <img 
-            src="/lovable-uploads/b8c23cd3-4a1d-4cc1-81fc-9b1d0f9ea54a.png" 
+            src="/lovable-uploads/7b4c7179-5f77-44b2-8117-fba1f5c3a4a8.png" 
             alt="MemDuo" 
             className="h-64 w-auto mb-5"
             style={{
