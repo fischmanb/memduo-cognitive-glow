@@ -2,7 +2,10 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.50.2";
 import { Resend } from "npm:resend@2.0.0";
 
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+const resendApiKey = Deno.env.get("RESEND_API_KEY");
+console.log('RESEND_API_KEY configured:', resendApiKey ? 'Yes' : 'No');
+
+const resend = new Resend(resendApiKey);
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -77,12 +80,15 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error('Failed to create magic link');
     }
 
-    // Create magic link URL pointing to GitHub app
-    const setupUrl = `https://your-github-app-domain.com/magic-login/${setupToken}`;
+    // Create magic link URL pointing to the app
+    const setupUrl = `${Deno.env.get('SUPABASE_URL')}/auth/v1/verify?token=${setupToken}&type=magic_link&redirect_to=${encodeURIComponent('https://your-app-domain.com/account-setup')}`;
 
     // Send approval email
+    console.log('Attempting to send email to:', email);
+    console.log('Using setup URL:', setupUrl);
+    
     const emailResponse = await resend.emails.send({
-      from: "MemDuo <noreply@memduo.com>",
+      from: "MemDuo <onboarding@resend.dev>",
       to: [email],
       subject: "Welcome to MemDuo - Set up your account",
       html: `
@@ -143,7 +149,12 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("Approval email sent successfully:", emailResponse);
+    console.log("Email send response:", JSON.stringify(emailResponse, null, 2));
+    
+    if (emailResponse.error) {
+      console.error("Resend API error:", emailResponse.error);
+      throw new Error(`Email sending failed: ${emailResponse.error.message || emailResponse.error}`);
+    }
 
     return new Response(JSON.stringify({ 
       success: true, 
