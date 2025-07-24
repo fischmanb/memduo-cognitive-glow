@@ -43,11 +43,12 @@ interface WaitlistSubmission {
   last_name: string;
   email: string;
   interest: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'pending' | 'approved' | 'rejected' | 'registered' | 'active';
   admin_notes: string;
   created_at: string;
   reviewed_at: string;
   reviewed_by: string;
+  last_login_at: string | null;
 }
 
 interface FastAPIUser {
@@ -244,6 +245,10 @@ const AdminDashboard: React.FC = () => {
     switch (status) {
       case 'approved':
         return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Approved</Badge>;
+      case 'registered':
+        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Registered</Badge>;
+      case 'active':
+        return <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Active User</Badge>;
       case 'rejected':
         return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Rejected</Badge>;
       default:
@@ -255,6 +260,8 @@ const AdminDashboard: React.FC = () => {
     total: submissions.length,
     pending: submissions.filter(s => s.status === 'pending').length,
     approved: submissions.filter(s => s.status === 'approved').length,
+    registered: submissions.filter(s => s.status === 'registered').length,
+    active: submissions.filter(s => s.status === 'active').length,
     rejected: submissions.filter(s => s.status === 'rejected').length,
   };
 
@@ -290,7 +297,7 @@ const AdminDashboard: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Applications</CardTitle>
@@ -323,21 +330,31 @@ const AdminDashboard: React.FC = () => {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Rejected</CardTitle>
-              <XCircle className="h-4 w-4 text-red-600" />
+              <CardTitle className="text-sm font-medium">Registered</CardTitle>
+              <Users className="h-4 w-4 text-blue-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">{stats.rejected}</div>
+              <div className="text-2xl font-bold text-blue-600">{stats.registered}</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Backend Users</CardTitle>
-              <Database className="h-4 w-4 text-blue-600" />
+              <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+              <CheckCircle className="h-4 w-4 text-purple-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{users.length}</div>
+              <div className="text-2xl font-bold text-purple-600">{stats.active}</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Rejected</CardTitle>
+              <XCircle className="h-4 w-4 text-red-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-red-600">{stats.rejected}</div>
             </CardContent>
           </Card>
         </div>
@@ -374,6 +391,7 @@ const AdminDashboard: React.FC = () => {
                         <TableHead>Interest</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Submitted</TableHead>
+                        <TableHead>Last Login</TableHead>
                         <TableHead>Actions</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -390,6 +408,12 @@ const AdminDashboard: React.FC = () => {
                           <TableCell>{getStatusBadge(submission.status)}</TableCell>
                           <TableCell>
                             {new Date(submission.created_at).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            {submission.last_login_at 
+                              ? new Date(submission.last_login_at).toLocaleDateString()
+                              : '-'
+                            }
                           </TableCell>
                            <TableCell>
                              <div className="flex space-x-2">

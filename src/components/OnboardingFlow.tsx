@@ -99,6 +99,17 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
       const response = await apiClient.register(registrationData);
       console.log('API registration successful:', response);
 
+      // Update waitlist status to "registered"
+      const { error: statusError } = await supabase
+        .from('waitlist_submissions')
+        .update({ status: 'registered' })
+        .eq('email', email);
+
+      if (statusError) {
+        console.error('Error updating waitlist status:', statusError);
+        // Don't fail the registration if this fails
+      }
+
       // Create the Supabase account as well for local auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,

@@ -191,6 +191,7 @@ export type Database = {
           first_name: string
           id: string
           interest: string | null
+          last_login_at: string | null
           last_name: string
           reviewed_at: string | null
           reviewed_by: string | null
@@ -203,6 +204,7 @@ export type Database = {
           first_name: string
           id?: string
           interest?: string | null
+          last_login_at?: string | null
           last_name: string
           reviewed_at?: string | null
           reviewed_by?: string | null
@@ -215,6 +217,7 @@ export type Database = {
           first_name?: string
           id?: string
           interest?: string | null
+          last_login_at?: string | null
           last_name?: string
           reviewed_at?: string | null
           reviewed_by?: string | null

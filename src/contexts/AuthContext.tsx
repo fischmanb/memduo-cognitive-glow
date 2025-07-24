@@ -161,6 +161,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setIsAuthenticated(true);
         setEmail(data.user.email || null);
         
+        // Update waitlist status to "active" and track last login
+        try {
+          const { error: statusError } = await supabase
+            .from('waitlist_submissions')
+            .update({ 
+              status: 'active',
+              last_login_at: new Date().toISOString()
+            })
+            .eq('email', email);
+
+          if (statusError) {
+            console.error('Error updating waitlist status:', statusError);
+            // Don't fail the login if this fails
+          }
+        } catch (statusUpdateError) {
+          console.error('Error updating last login:', statusUpdateError);
+          // Don't fail the login if this fails
+        }
+        
         // Step 2: Authenticate with backend to get token
         console.log('🔄 Getting backend token after Supabase login...');
         try {
