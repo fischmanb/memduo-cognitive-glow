@@ -32,7 +32,8 @@ import {
   Clock, 
   Eye,
   MessageSquare,
-  Database 
+  Database,
+  Mail 
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -202,6 +203,43 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const resendApprovalEmail = async (submission: any) => {
+    setUpdating(true);
+    try {
+      const { error: emailError } = await supabase.functions.invoke('send-approval-email', {
+        body: {
+          waitlistSubmissionId: submission.id,
+          firstName: submission.first_name,
+          lastName: submission.last_name,
+          email: submission.email,
+        },
+      });
+
+      if (emailError) {
+        console.error('Error resending approval email:', emailError);
+        toast({
+          title: "Error",
+          description: `Failed to resend email: ${emailError.message}`,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: `Setup email resent to ${submission.email}`,
+        });
+      }
+    } catch (error) {
+      console.error('Error resending approval email:', error);
+      toast({
+        title: "Error",
+        description: "Failed to resend email",
+        variant: "destructive",
+      });
+    } finally {
+      setUpdating(false);
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'approved':
@@ -353,101 +391,127 @@ const AdminDashboard: React.FC = () => {
                           <TableCell>
                             {new Date(submission.created_at).toLocaleDateString()}
                           </TableCell>
-                          <TableCell>
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    setSelectedSubmission(submission);
-                                    setAdminNotes(submission.admin_notes || '');
-                                  }}
-                                >
-                                  <Eye className="h-4 w-4 mr-1" />
-                                  Review
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent className="max-w-2xl">
-                                <DialogHeader>
-                                  <DialogTitle>Review Application</DialogTitle>
-                                  <DialogDescription>
-                                    Review and update the status of this waitlist application
-                                  </DialogDescription>
-                                </DialogHeader>
-                                
-                                {selectedSubmission && (
-                                  <div className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-4">
-                                      <div>
-                                        <label className="text-sm font-medium">Name</label>
-                                        <p className="text-sm text-muted-foreground">
-                                          {selectedSubmission.first_name} {selectedSubmission.last_name}
-                                        </p>
-                                      </div>
-                                      <div>
-                                        <label className="text-sm font-medium">Email</label>
-                                        <p className="text-sm text-muted-foreground">
-                                          {selectedSubmission.email}
-                                        </p>
-                                      </div>
-                                    </div>
+                           <TableCell>
+                             <div className="flex space-x-2">
+                               <Dialog>
+                                 <DialogTrigger asChild>
+                                   <Button
+                                     variant="outline"
+                                     size="sm"
+                                     onClick={() => {
+                                       setSelectedSubmission(submission);
+                                       setAdminNotes(submission.admin_notes || '');
+                                     }}
+                                   >
+                                     <Eye className="h-4 w-4 mr-1" />
+                                     Review
+                                   </Button>
+                                 </DialogTrigger>
+                                 <DialogContent className="max-w-2xl">
+                                   <DialogHeader>
+                                     <DialogTitle>Review Application</DialogTitle>
+                                     <DialogDescription>
+                                       Review and update the status of this waitlist application
+                                     </DialogDescription>
+                                   </DialogHeader>
+                                   
+                                   {selectedSubmission && (
+                                     <div className="space-y-4">
+                                       <div className="grid grid-cols-2 gap-4">
+                                         <div>
+                                           <label className="text-sm font-medium">Name</label>
+                                           <p className="text-sm text-muted-foreground">
+                                             {selectedSubmission.first_name} {selectedSubmission.last_name}
+                                           </p>
+                                         </div>
+                                         <div>
+                                           <label className="text-sm font-medium">Email</label>
+                                           <p className="text-sm text-muted-foreground">
+                                             {selectedSubmission.email}
+                                           </p>
+                                         </div>
+                                       </div>
 
-                                    <div>
-                                      <label className="text-sm font-medium">Interest/Message</label>
-                                      <p className="text-sm text-muted-foreground mt-1 p-3 bg-muted rounded-md">
-                                        {selectedSubmission.interest || 'No message provided'}
-                                      </p>
-                                    </div>
+                                       <div>
+                                         <label className="text-sm font-medium">Interest/Message</label>
+                                         <p className="text-sm text-muted-foreground mt-1 p-3 bg-muted rounded-md">
+                                           {selectedSubmission.interest || 'No message provided'}
+                                         </p>
+                                       </div>
 
-                                    <div>
-                                      <label className="text-sm font-medium">Current Status</label>
-                                      <div className="mt-1">
-                                        {getStatusBadge(selectedSubmission.status)}
-                                      </div>
-                                    </div>
+                                       <div>
+                                         <label className="text-sm font-medium">Current Status</label>
+                                         <div className="mt-1">
+                                           {getStatusBadge(selectedSubmission.status)}
+                                         </div>
+                                       </div>
 
-                                    <div>
-                                      <label className="text-sm font-medium">Admin Notes</label>
-                                      <Textarea
-                                        placeholder="Add notes about this application..."
-                                        value={adminNotes}
-                                        onChange={(e) => setAdminNotes(e.target.value)}
-                                        className="mt-1"
-                                        rows={3}
-                                      />
-                                    </div>
+                                       <div>
+                                         <label className="text-sm font-medium">Admin Notes</label>
+                                         <Textarea
+                                           placeholder="Add notes about this application..."
+                                           value={adminNotes}
+                                           onChange={(e) => setAdminNotes(e.target.value)}
+                                           className="mt-1"
+                                           rows={3}
+                                         />
+                                       </div>
 
-                                    <div className="flex space-x-2 pt-4">
-                                      <Button
-                                        onClick={() => updateSubmissionStatus(
-                                          selectedSubmission.id,
-                                          'approved',
-                                          adminNotes
-                                        )}
-                                        disabled={updating}
-                                        className="bg-green-600 hover:bg-green-700"
-                                      >
-                                        <CheckCircle className="h-4 w-4 mr-1" />
-                                        Approve
-                                      </Button>
-                                      <Button
-                                        onClick={() => updateSubmissionStatus(
-                                          selectedSubmission.id,
-                                          'rejected',
-                                          adminNotes
-                                        )}
-                                        disabled={updating}
-                                        variant="destructive"
-                                      >
-                                        <XCircle className="h-4 w-4 mr-1" />
-                                        Reject
-                                      </Button>
-                                    </div>
-                                  </div>
-                                )}
-                              </DialogContent>
-                            </Dialog>
+                                       <div className="flex space-x-2 pt-4">
+                                         <Button
+                                           onClick={() => updateSubmissionStatus(
+                                             selectedSubmission.id,
+                                             'approved',
+                                             adminNotes
+                                           )}
+                                           disabled={updating}
+                                           className="bg-green-600 hover:bg-green-700"
+                                         >
+                                           <CheckCircle className="h-4 w-4 mr-1" />
+                                           Approve
+                                         </Button>
+                                         <Button
+                                           onClick={() => updateSubmissionStatus(
+                                             selectedSubmission.id,
+                                             'rejected',
+                                             adminNotes
+                                           )}
+                                           disabled={updating}
+                                           variant="destructive"
+                                         >
+                                           <XCircle className="h-4 w-4 mr-1" />
+                                           Reject
+                                         </Button>
+                                         {selectedSubmission.status === 'approved' && (
+                                           <Button
+                                             onClick={() => resendApprovalEmail(selectedSubmission)}
+                                             disabled={updating}
+                                             variant="outline"
+                                             className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+                                           >
+                                             <Mail className="h-4 w-4 mr-1" />
+                                             Resend Email
+                                           </Button>
+                                         )}
+                                       </div>
+                                     </div>
+                                   )}
+                                 </DialogContent>
+                               </Dialog>
+                               
+                               {submission.status === 'approved' && (
+                                 <Button
+                                   onClick={() => resendApprovalEmail(submission)}
+                                   disabled={updating}
+                                   variant="outline"
+                                   size="sm"
+                                   className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+                                 >
+                                   <Mail className="h-4 w-4 mr-1" />
+                                   Resend
+                                 </Button>
+                               )}
+                             </div>
                           </TableCell>
                         </TableRow>
                       ))}
