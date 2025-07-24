@@ -1,47 +1,78 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ArrowRight, ArrowLeft, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { apiClient } from "@/lib/api";
 
-interface OnboardingData {
-  aiName: string;
-  familiarityComfort: string;
-  perspectiveNeutrality: string;
-  uncertaintyHandling: string;
-  responseDepth: string;
-  domainSpecificity: string;
+interface QuestionOption {
+  text: string;
+  score: number;
+  belief?: string;
 }
 
 interface OnboardingFlowProps {
   onComplete: () => void;
 }
 
+const questions = [
+  {
+    q: "🧠 You're reading two articles with totally different views. What's your instinct?",
+    options: [
+      { text: 'Pick the one that feels most right and move on', score: 0.2 },
+      { text: 'Compare their facts and side with the stronger case', score: 0.4 },
+      { text: 'Consider both valid until more is known', score: 0.6 },
+      { text: 'See value in both, even if they conflict', score: 0.8 },
+    ],
+  },
+  {
+    q: '🧠 When someone changes their opinion frequently, how do you feel?',
+    options: [
+      { text: 'I find it unreliable', score: 0.2 },
+      { text: 'I question their reasoning', score: 0.4 },
+      { text: "I think they're learning", score: 0.6 },
+      { text: 'I admire their flexibility', score: 0.8 },
+    ],
+  },
+  {
+    q: '🧠 Which statement sounds most like you?',
+    options: [
+      { text: "There's usually a right and wrong", score: 0.1 },
+      { text: 'Truth is often in the middle', score: 0.4 },
+      { text: 'It depends on the lens you use', score: 0.7 },
+      { text: 'Truth shifts depending on who sees it', score: 0.9 },
+    ],
+  },
+  {
+    q: '🧠 When two people disagree passionately, you...',
+    options: [
+      { text: 'Want to calm things and find one answer', score: 0.2 },
+      { text: 'Try to find common ground', score: 0.4 },
+      { text: 'Let both express their truth freely', score: 0.6 },
+      { text: 'Think the disagreement itself has value', score: 0.8 },
+    ],
+  },
+  {
+    q: '🧠 When someone challenges a belief you hold, what happens?',
+    options: [
+      { text: 'I feel it deeply and defend it', score: 0.2, belief: 'high' },
+      { text: 'I feel a little shaken but open to change', score: 0.5, belief: 'moderate' },
+      { text: 'I get curious and reconsider', score: 0.8, belief: 'low' },
+    ],
+  },
+];
+
 const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState<OnboardingData>({
-    aiName: '',
-    familiarityComfort: '',
-    perspectiveNeutrality: '',
-    uncertaintyHandling: '',
-    responseDepth: '',
-    domainSpecificity: '',
-  });
+  const [aiName, setAiName] = useState('');
+  const [answers, setAnswers] = useState<number[]>([]);
+  const [beliefSensitivity, setBeliefSensitivity] = useState('');
 
-  const totalSteps = 6;
-
-  const handleInputChange = (field: keyof OnboardingData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
+  const totalSteps = 7; // 1 intro + 1 name + 5 questions
 
   const nextStep = () => {
     if (currentStep < totalSteps) {
@@ -55,13 +86,31 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
     }
   };
 
-  const handleComplete = async () => {
-    // Validate required fields
-    const requiredFields = ['aiName', 'familiarityComfort', 'perspectiveNeutrality', 'uncertaintyHandling', 'responseDepth', 'domainSpecificity'];
-    const missingFields = requiredFields.filter(field => !formData[field as keyof OnboardingData]);
-    
-    if (missingFields.length > 0) {
-      toast.error('Please fill in all required fields');
+  const handleAnswer = async (score: number, belief?: string) => {
+    const newAnswers = [...answers, score];
+    setAnswers(newAnswers);
+
+    // If this option has a belief value, set it and submit
+    if (belief) {
+      setBeliefSensitivity(belief);
+      await handleComplete(newAnswers, belief);
+    } else {
+      // Otherwise, advance to the next step
+      nextStep();
+    }
+  };
+
+  const handleComplete = async (finalAnswers?: number[], finalBelief?: string) => {
+    if (!aiName) {
+      toast.error('Please provide an AI name');
+      return;
+    }
+
+    const answersToUse = finalAnswers || answers;
+    const beliefToUse = finalBelief || beliefSensitivity;
+
+    if (answersToUse.length < 5) {
+      toast.error('Please complete all questions');
       return;
     }
 
@@ -76,24 +125,20 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
 
       const { email, password, firstName, lastName } = JSON.parse(setupData);
       
-      // Create the belief sensitivity JSON string
-      const beliefSensitivityData = {
-        familiarityComfort: formData.familiarityComfort,
-        perspectiveNeutrality: formData.perspectiveNeutrality,
-        uncertaintyHandling: formData.uncertaintyHandling,
-        responseDepth: formData.responseDepth,
-        domainSpecificity: formData.domainSpecificity
-      };
+      // Calculate contradiction tolerance as average of scores
+      const contradictionTolerance = parseFloat((answersToUse.reduce((a, b) => a + b, 0) / answersToUse.length).toFixed(2));
 
       // Create the API registration payload
       const registrationData = {
         email,
         name: `${firstName} ${lastName}`,
         password,
-        machine_name: formData.aiName,
-        contradiction_tolerance: 0, // Default value
-        belief_sensitivity: JSON.stringify(beliefSensitivityData)
+        machine_name: aiName,
+        contradiction_tolerance: contradictionTolerance,
+        belief_sensitivity: beliefToUse
       };
+
+      console.log('Registration data:', registrationData);
 
       // Create the API account
       const response = await apiClient.register(registrationData);
@@ -161,25 +206,20 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
     switch (currentStep) {
       case 1:
         return (
-          <div className="space-y-6">
-            <div className="text-center mb-6">
+          <div className="space-y-6 text-center">
+            <div className="mb-6">
               <h2 className="text-2xl font-bold bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
-                Name Your AI Assistant
+                Hello there!
               </h2>
-              <p className="text-muted-foreground mt-2">What would you like to call your AI research companion?</p>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="aiName">AI Assistant Name *</Label>
-              <Input
-                id="aiName"
-                value={formData.aiName}
-                onChange={(e) => handleInputChange('aiName', e.target.value)}
-                placeholder="e.g., Alex, Research Assistant, Scholar"
-                required
-                className="text-center text-lg"
-              />
-              <p className="text-sm text-muted-foreground">Choose a name that feels natural to you</p>
+              <p className="text-muted-foreground mt-4">
+                I'm here to grow with you—understanding how you think and what matters most to you.
+              </p>
+              <p className="text-muted-foreground mt-2">
+                Let's begin by getting a feel for your unique way of thinking.
+              </p>
+              <p className="text-muted-foreground mt-2">
+                Before we begin, give me a name I'll carry it with me as we grow 🧠 together
+              </p>
             </div>
           </div>
         );
@@ -189,231 +229,67 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
           <div className="space-y-6">
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
-                Familiarity & Comfort
+                Name Your AI Assistant
               </h2>
-              <p className="text-muted-foreground mt-2">How should your AI communicate with you?</p>
+              <p className="text-muted-foreground mt-2">What would you like to call me?</p>
             </div>
-
-            <div className="space-y-4">
-              <Label className="text-base font-medium">Communication Style *</Label>
-              <RadioGroup 
-                value={formData.familiarityComfort} 
-                onValueChange={(value) => handleInputChange('familiarityComfort', value)}
-                className="space-y-3"
-              >
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="formal" id="formal" />
-                  <Label htmlFor="formal" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Professional & Formal</div>
-                    <div className="text-sm text-muted-foreground">Respectful, academic tone with proper titles</div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="friendly" id="friendly" />
-                  <Label htmlFor="friendly" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Friendly & Approachable</div>
-                    <div className="text-sm text-muted-foreground">Warm, conversational, like a knowledgeable colleague</div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="casual" id="casual" />
-                  <Label htmlFor="casual" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Casual & Relaxed</div>
-                    <div className="text-sm text-muted-foreground">Informal, like chatting with a smart friend</div>
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-          </div>
-        );
-
-      case 3:
-        return (
-          <div className="space-y-6">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
-                Perspective & Neutrality
-              </h2>
-              <p className="text-muted-foreground mt-2">How should your AI handle controversial topics?</p>
-            </div>
-
-            <div className="space-y-4">
-              <Label className="text-base font-medium">Approach to Sensitive Topics *</Label>
-              <RadioGroup 
-                value={formData.perspectiveNeutrality} 
-                onValueChange={(value) => handleInputChange('perspectiveNeutrality', value)}
-                className="space-y-3"
-              >
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="strict-neutral" id="strict-neutral" />
-                  <Label htmlFor="strict-neutral" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Strictly Neutral</div>
-                    <div className="text-sm text-muted-foreground">Present all sides equally, avoid any stance</div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="balanced-analysis" id="balanced-analysis" />
-                  <Label htmlFor="balanced-analysis" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Balanced Analysis</div>
-                    <div className="text-sm text-muted-foreground">Thoughtful examination of different viewpoints</div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="evidence-based" id="evidence-based" />
-                  <Label htmlFor="evidence-based" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Evidence-Based</div>
-                    <div className="text-sm text-muted-foreground">Focus on research and empirical evidence</div>
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-          </div>
-        );
-
-      case 4:
-        return (
-          <div className="space-y-6">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
-                Uncertainty & Limitations
-              </h2>
-              <p className="text-muted-foreground mt-2">How should your AI handle uncertain or incomplete information?</p>
-            </div>
-
-            <div className="space-y-4">
-              <Label className="text-base font-medium">Response to Uncertainty *</Label>
-              <RadioGroup 
-                value={formData.uncertaintyHandling} 
-                onValueChange={(value) => handleInputChange('uncertaintyHandling', value)}
-                className="space-y-3"
-              >
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="very-cautious" id="very-cautious" />
-                  <Label htmlFor="very-cautious" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Very Cautious</div>
-                    <div className="text-sm text-muted-foreground">Frequently acknowledge limitations and uncertainty</div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="moderate-confidence" id="moderate-confidence" />
-                  <Label htmlFor="moderate-confidence" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Moderate Confidence</div>
-                    <div className="text-sm text-muted-foreground">Balance confidence with appropriate caveats</div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="confident-helpful" id="confident-helpful" />
-                  <Label htmlFor="confident-helpful" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Confident & Helpful</div>
-                    <div className="text-sm text-muted-foreground">Provide clear guidance while noting limitations when critical</div>
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-          </div>
-        );
-
-      case 5:
-        return (
-          <div className="space-y-6">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
-                Response Depth & Detail
-              </h2>
-              <p className="text-muted-foreground mt-2">How detailed should your AI's responses be?</p>
-            </div>
-
-            <div className="space-y-4">
-              <Label className="text-base font-medium">Level of Detail *</Label>
-              <RadioGroup 
-                value={formData.responseDepth} 
-                onValueChange={(value) => handleInputChange('responseDepth', value)}
-                className="space-y-3"
-              >
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="concise" id="concise" />
-                  <Label htmlFor="concise" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Concise & Direct</div>
-                    <div className="text-sm text-muted-foreground">Brief, to-the-point answers focusing on key insights</div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="balanced" id="balanced" />
-                  <Label htmlFor="balanced" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Balanced Detail</div>
-                    <div className="text-sm text-muted-foreground">Moderate depth with context and examples</div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="comprehensive" id="comprehensive" />
-                  <Label htmlFor="comprehensive" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Comprehensive</div>
-                    <div className="text-sm text-muted-foreground">Thorough explanations with background and implications</div>
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-          </div>
-        );
-
-      case 6:
-        return (
-          <div className="space-y-6">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400">
-                Domain Expertise
-              </h2>
-              <p className="text-muted-foreground mt-2">How should your AI approach specialized knowledge?</p>
-            </div>
-
-            <div className="space-y-4">
-              <Label className="text-base font-medium">Specialized Knowledge Approach *</Label>
-              <RadioGroup 
-                value={formData.domainSpecificity} 
-                onValueChange={(value) => handleInputChange('domainSpecificity', value)}
-                className="space-y-3"
-              >
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="generalist" id="generalist" />
-                  <Label htmlFor="generalist" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Broad Generalist</div>
-                    <div className="text-sm text-muted-foreground">Wide range of topics with accessible explanations</div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="adaptive" id="adaptive" />
-                  <Label htmlFor="adaptive" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Adaptive Specialist</div>
-                    <div className="text-sm text-muted-foreground">Adjust technical depth based on context</div>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-accent/50">
-                  <RadioGroupItem value="expert-level" id="expert-level" />
-                  <Label htmlFor="expert-level" className="flex-1 cursor-pointer">
-                    <div className="font-medium">Expert-Level</div>
-                    <div className="text-sm text-muted-foreground">Assume high expertise, use technical language</div>
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-
-            <div className="neural-glass p-4 rounded-lg mt-6">
-              <h3 className="font-semibold mb-3">Your AI Personality Summary</h3>
-              <div className="text-sm text-muted-foreground space-y-2">
-                <p><span className="font-medium">Name:</span> {formData.aiName}</p>
-                <p><span className="font-medium">Style:</span> {formData.familiarityComfort}</p>
-                <p><span className="font-medium">Neutrality:</span> {formData.perspectiveNeutrality}</p>
-                <p><span className="font-medium">Uncertainty:</span> {formData.uncertaintyHandling}</p>
-                <p><span className="font-medium">Detail:</span> {formData.responseDepth}</p>
-                <p><span className="font-medium">Expertise:</span> {formData.domainSpecificity}</p>
-              </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="aiName">AI Assistant Name *</Label>
+              <Input
+                id="aiName"
+                value={aiName}
+                onChange={(e) => setAiName(e.target.value)}
+                placeholder="Name me..."
+                required
+                className="text-center text-lg"
+              />
             </div>
           </div>
         );
 
       default:
+        // Questions (steps 3-7)
+        const questionIndex = currentStep - 3;
+        if (questionIndex >= 0 && questionIndex < questions.length) {
+          const question = questions[questionIndex];
+          return (
+            <div className="space-y-6">
+              <div className="text-center mb-6">
+                <div className="text-sm text-muted-foreground mb-2">
+                  Question {questionIndex + 1} of {questions.length}
+                </div>
+                <div className="w-full bg-muted rounded-full h-2 mb-4">
+                  <div 
+                    className="bg-gradient-to-r from-blue-400 to-purple-400 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${((questionIndex + 1) / questions.length) * 100}%` }}
+                  />
+                </div>
+                <h3 className="text-xl font-medium">{question.q}</h3>
+              </div>
+
+              <div className="space-y-3">
+                {question.options.map((option: QuestionOption, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 rounded-lg border cursor-pointer hover:bg-accent/50 transition-colors"
+                    onClick={() => handleAnswer(option.score, option.belief)}
+                  >
+                    {option.text}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        }
         return null;
     }
+  };
+
+  const canProceed = () => {
+    if (currentStep === 1) return true;
+    if (currentStep === 2) return aiName.trim() !== '';
+    return true;
   };
 
   return (
@@ -440,42 +316,52 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
           <CardContent>
             {renderStep()}
 
-            <div className="flex justify-between mt-8">
-              <Button
-                variant="outline"
-                onClick={prevStep}
-                disabled={currentStep === 1}
-                className="neural-glass-hover"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Previous
-              </Button>
-
-              {currentStep < totalSteps ? (
-                <Button onClick={nextStep} className="neural-glass-hover">
-                  Next
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-              ) : (
-                <Button 
-                  onClick={handleComplete} 
+            {/* Navigation - only show for non-question steps */}
+            {currentStep <= 2 && (
+              <div className="flex justify-between mt-8">
+                <Button
+                  variant="outline"
+                  onClick={prevStep}
+                  disabled={currentStep === 1}
                   className="neural-glass-hover"
-                  disabled={isLoading}
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Previous
+                </Button>
+
+                <Button 
+                  onClick={nextStep} 
+                  className="neural-glass-hover"
+                  disabled={!canProceed() || isLoading}
                 >
                   {isLoading ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
-                      Creating Account...
+                      Processing...
                     </>
                   ) : (
                     <>
-                      Complete Setup
-                      <CheckCircle className="w-4 h-4 ml-2" />
+                      Next
+                      <ArrowRight className="w-4 h-4 ml-2" />
                     </>
                   )}
                 </Button>
-              )}
-            </div>
+              </div>
+            )}
+
+            {/* Back button for questions */}
+            {currentStep > 2 && (
+              <div className="flex justify-start mt-8">
+                <Button
+                  variant="outline"
+                  onClick={prevStep}
+                  className="neural-glass-hover"
+                >
+                  <ArrowLeft className="w-4 h-4 mr-2" />
+                  Back
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
