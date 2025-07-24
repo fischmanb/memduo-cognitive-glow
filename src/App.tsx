@@ -24,7 +24,11 @@ import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+console.log('🚀 App: Component loading...');
+
+const App = () => {
+  console.log('🚀 App: Component rendering...');
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
@@ -121,6 +125,7 @@ const App = () => (
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
