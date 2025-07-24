@@ -80,8 +80,8 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error('Failed to create magic link');
     }
 
-    // Create magic link URL pointing to the app
-    const setupUrl = `${Deno.env.get('SUPABASE_URL')}/auth/v1/verify?token=${setupToken}&type=magic_link&redirect_to=${encodeURIComponent('https://your-app-domain.com/account-setup')}`;
+    // Create magic link URL pointing to our app's setup page
+    const setupUrl = `${Deno.env.get('SUPABASE_URL').replace('supabase.co', 'lovableproject.com')}/magic-setup?token=${setupToken}`;
 
     // Send approval email
     console.log('Attempting to send email to:', email);

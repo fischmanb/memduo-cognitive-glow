@@ -21,6 +21,7 @@ import Settings from "./pages/Settings";
 import Help from "./pages/Help";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProtectedRoute from "./components/AdminProtectedRoute";
+import Setup from "./pages/Setup";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => {
               <Route path="/" element={<HomePage />} />
               <Route path="/demo" element={<Index />} />
               <Route path="/setup" element={<AccountSetup />} />
+              <Route path="/magic-setup" element={<Setup />} />
               <Route path="/register" element={<Register />} />
               <Route 
                 path="/onboarding" 
