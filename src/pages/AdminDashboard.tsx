@@ -245,21 +245,30 @@ const AdminDashboard: React.FC = () => {
   const cleanupUser = async (email: string) => {
     setUpdating(true);
     try {
+      console.log('Starting cleanup for:', email);
       const result = await deleteBackendUserAndCleanup(email);
+      console.log('Cleanup result:', result);
+      
       if (result.success) {
         toast({
           title: "Success",
-          description: `User ${email} cleaned up successfully`,
+          description: `User ${email} reset successfully`,
         });
         await fetchSubmissions(); // Refresh the list
       } else {
-        throw new Error(result.error?.message || 'Cleanup failed');
+        console.error('Cleanup failed:', result.error, result.details);
+        toast({
+          title: "Warning", 
+          description: `Partial cleanup completed for ${email}. Check console for details.`,
+          variant: "destructive",
+        });
+        await fetchSubmissions(); // Still refresh to see any changes
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Cleanup error:', error);
       toast({
         title: "Error", 
-        description: "Failed to cleanup user",
+        description: `Failed to cleanup user: ${error.message || 'Unknown error'}`,
         variant: "destructive",
       });
     } finally {
