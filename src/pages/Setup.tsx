@@ -23,7 +23,7 @@ const Setup: React.FC = () => {
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState('');
 
-  const token = searchParams.get('token');
+  const token = searchParams.get('setup_token') || searchParams.get('token');
 
   useEffect(() => {
     console.log('Setup page loaded with token:', token);
@@ -155,18 +155,26 @@ const Setup: React.FC = () => {
         // Don't fail the whole process for this
       }
 
-      // Sign out the user so they have to log in manually
-      await supabase.auth.signOut();
+      // Don't sign out the user - we want to keep them logged in for onboarding
+      // await supabase.auth.signOut();
+
+      // Store setup data for onboarding flow
+      sessionStorage.setItem('setupData', JSON.stringify({
+        email,
+        password,
+        firstName,
+        lastName
+      }));
 
       toast({
         title: "Account created successfully!",
-        description: "You can now sign in with your new account.",
+        description: "Please complete your onboarding to set up your AI assistant.",
       });
 
-      // Use setTimeout to ensure the toast shows, then redirect
+      // Redirect to onboarding flow instead of login
       setTimeout(() => {
-        window.location.href = '/register?message=account-created';
-      }, 2000);
+        navigate('/onboarding');
+      }, 1000);
 
     } catch (error) {
       console.error('Error creating account:', error);
