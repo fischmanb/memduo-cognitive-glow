@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Lock, Eye, EyeOff, AlertCircle, Mail, Wifi, WifiOff } from "lucide-react";
+import { Lock, Eye, EyeOff, AlertCircle, Mail } from "lucide-react";
 import NeuralBackground from "../components/NeuralBackground";
 import { useAuth } from "../contexts/AuthContext";
 import AdminLogin from "./AdminLogin";
@@ -58,7 +58,7 @@ const PasswordEntry = () => {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [shiftPressed, setShiftPressed] = useState(false);
   const [typedSequence, setTypedSequence] = useState('');
-  const [backendStatus, setBackendStatus] = useState<'unknown' | 'online' | 'offline'>('unknown');
+  
   const { setBackendAuth } = useAuth();
 
   useEffect(() => {
@@ -70,20 +70,6 @@ const PasswordEntry = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Test backend connectivity on component mount
-  useEffect(() => {
-    const testBackendConnectivity = async () => {
-      try {
-        await apiClient.healthCheck();
-        setBackendStatus('online');
-      } catch (error) {
-        // Don't mark as offline immediately - the login endpoint might still work
-        setBackendStatus('unknown');
-      }
-    };
-
-    testBackendConnectivity();
-  }, []);
 
   // Secret admin access: Shift + "NOBLESSEOBLIGE" + Enter
   useEffect(() => {
@@ -269,28 +255,6 @@ const PasswordEntry = () => {
                     Private Access
                   </span>
                 </h1>
-                
-                {/* Backend Status Indicator */}
-                <div className="mt-4 flex items-center justify-center gap-2 text-sm">
-                  {backendStatus === 'online' && (
-                    <>
-                      <Wifi className="h-4 w-4 text-green-400" />
-                      <span className="text-green-400">Backend Online</span>
-                    </>
-                  )}
-                  {backendStatus === 'offline' && (
-                    <>
-                      <WifiOff className="h-4 w-4 text-red-400" />
-                      <span className="text-red-400">Backend Offline</span>
-                    </>
-                  )}
-                  {backendStatus === 'unknown' && (
-                    <>
-                      <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                      <span className="text-gray-400">Checking Backend...</span>
-                    </>
-                  )}
-                </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
