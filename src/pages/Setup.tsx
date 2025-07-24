@@ -160,8 +160,10 @@ const Setup: React.FC = () => {
         description: "You can now sign in with your new account.",
       });
 
-      // Redirect to register page with success message
-      navigate('/register?message=account-created');
+      // Use setTimeout to ensure the toast shows, then redirect
+      setTimeout(() => {
+        window.location.href = '/register?message=account-created';
+      }, 2000);
 
     } catch (error) {
       console.error('Error creating account:', error);
