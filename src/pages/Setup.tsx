@@ -61,6 +61,7 @@ const Setup: React.FC = () => {
         return;
       }
 
+      console.log('Token validation result:', approvedUser);
       setValidToken(true);
       setUserInfo(approvedUser);
       setLoading(false);
