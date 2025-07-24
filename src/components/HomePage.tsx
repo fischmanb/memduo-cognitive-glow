@@ -2,21 +2,8 @@ import { useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import PasswordEntry from '../pages/PasswordEntry';
 
-console.log('🏠 HomePage: Component loading...');
-
 const HomePage = () => {
-  console.log('🏠 HomePage: Component rendering...');
-  
-  let authData;
-  try {
-    authData = useAuth();
-    console.log('🏠 HomePage: useAuth successful:', { isAuthenticated: authData.isAuthenticated, isLoading: authData.isLoading });
-  } catch (error) {
-    console.error('🏠 HomePage: useAuth failed:', error);
-    throw error;
-  }
-  
-  const { isAuthenticated, isLoading } = authData;
+  const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
     // If authenticated, redirect to dashboard (but not if they're trying to access admin)

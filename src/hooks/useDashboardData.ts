@@ -45,8 +45,18 @@ export const useDashboardData = () => {
 
         try {
           const documentsResponse = await apiClient.getDocuments() as any;
-          documents = documentsResponse.documents || [];
-          console.log('✅ Documents fetched:', documents.length);
+          console.log('✅ Raw documents response:', documentsResponse);
+          
+          // Handle both array response and object with documents property
+          if (Array.isArray(documentsResponse)) {
+            documents = documentsResponse;
+          } else if (documentsResponse?.documents) {
+            documents = documentsResponse.documents;
+          } else {
+            documents = [];
+          }
+          
+          console.log('✅ Documents processed for dashboard:', documents.length);
         } catch (docError) {
           console.log('⚠️ Documents endpoint not available or empty:', docError);
           documents = [];

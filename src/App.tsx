@@ -24,10 +24,7 @@ import AdminProtectedRoute from "./components/AdminProtectedRoute";
 
 const queryClient = new QueryClient();
 
-console.log('🚀 App: Component loading...');
-
 const App = () => {
-  console.log('🚀 App: Component rendering...');
   return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>

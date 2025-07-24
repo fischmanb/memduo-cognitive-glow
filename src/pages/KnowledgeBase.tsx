@@ -275,6 +275,8 @@ const KnowledgeBase = () => {
     switch (status) {
       case 'pending':
         return <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">Pending</Badge>;
+      case 'uploaded':
+        return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">Uploaded</Badge>;
       case 'processing':
         return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">Processing</Badge>;
       case 'completed':
@@ -282,7 +284,7 @@ const KnowledgeBase = () => {
       case 'failed':
         return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Failed</Badge>;
       default:
-        return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">Unknown</Badge>;
+        return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">{status || 'Unknown'}</Badge>;
     }
   };
 
