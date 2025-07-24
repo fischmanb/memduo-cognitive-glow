@@ -127,65 +127,16 @@ const Chat = () => {
       // Use GraphRAG query endpoint through apiClient
       const data = await apiClient.queryRAG(userMessage.content);
 
-      // Data is already parsed by apiClient
-
-      // Add mock data for demonstration if backend doesn't provide it
-      const mockSources: DocumentSource[] = data.sources?.length ? data.sources : [
-        {
-          id: '1',
-          filename: 'The Fischman-Gardener Model-v12.pdf',
-          confidence: 0.92,
-          salience: 0.87,
-          excerpt: 'The FGM\'s principles of fluid processing, mutual intelligence adaptation, and dynamic resource allocation resonate with the Taoist view...',
-          page: 15
-        },
-        {
-          id: '2', 
-          filename: 'Tao Te Ching - Jane English (1).pdf',
-          confidence: 0.88,
-          salience: 0.91,
-          excerpt: 'Living in accordance with the Tao, which is characterized by spontaneity, effortlessness, and being in harmony...',
-          page: 42
-        }
-      ];
-
-      const mockReasoningNodes: ReasoningNode[] = data.reasoning_nodes?.length ? data.reasoning_nodes : [
-        {
-          id: 'node_1',
-          name: 'Computational Elasticity in Contemporary AI Context',
-          type: 'Entity',
-          confidence: 0.94,
-          salience: 0.89,
-          content: 'Core concept relating to adaptive processing capabilities in modern AI systems...',
-          relationships: ['related_to', 'part_of', 'requires']
-        },
-        {
-          id: 'node_2',
-          name: 'Fluid Signal-Noise Discrimination',
-          type: 'Special Entity',
-          confidence: 0.87,
-          salience: 0.93,
-          content: 'Advanced filtering mechanism for distinguishing relevant information from noise...',
-          relationships: ['enables', 'enhances', 'optimizes']
-        },
-        {
-          id: 'node_3',
-          name: 'Dynamic Resource Allocation',
-          type: 'Entity',
-          confidence: 0.91,
-          salience: 0.85,
-          content: 'Adaptive distribution of computational resources based on real-time requirements...',
-          relationships: ['manages', 'controls', 'balances']
-        }
-      ];
-
+      // Use real data from backend response
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: data.response || 'I apologize, but I encountered an error processing your request.',
         timestamp: new Date(),
-        reasoning_nodes: mockReasoningNodes,
-        sources: mockSources
+        reasoning_nodes: data.reasoning_nodes || [],
+        sources: data.sources || [],
+        avg_confidence: data.avg_confidence,
+        avg_salience: data.avg_salience
       };
 
       setMessages(prev => [...prev, assistantMessage]);
