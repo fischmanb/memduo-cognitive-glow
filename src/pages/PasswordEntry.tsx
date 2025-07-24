@@ -286,7 +286,7 @@ const PasswordEntry = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="neural-input py-4 pr-12 rounded-xl font-medium"
-                      placeholder="Enter master code or backend password"
+                      placeholder="Enter waitlist code or password"
                       required
                       disabled={isSubmitting}
                     />
