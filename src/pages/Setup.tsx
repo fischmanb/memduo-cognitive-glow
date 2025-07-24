@@ -43,7 +43,7 @@ const Setup: React.FC = () => {
         .from('approved_users')
         .select(`
           *,
-          waitlist_submissions!waitlist_submission_id (
+          waitlist_submissions (
             first_name,
             last_name,
             email
