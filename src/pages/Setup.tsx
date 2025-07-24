@@ -38,32 +38,41 @@ const Setup: React.FC = () => {
 
   const validateToken = async (setupToken: string) => {
     try {
-      // Check if token exists and is valid
-      const { data: approvedUser, error: tokenError } = await supabase
+      // First get the approved user record
+      const { data: approvedUser, error: approvedError } = await supabase
         .from('approved_users')
-        .select(`
-          *,
-          waitlist_submissions!waitlist_submission_id (
-            first_name,
-            last_name,
-            email
-          )
-        `)
+        .select('*')
         .eq('setup_token', setupToken)
         .eq('account_created', false)
         .gte('expires_at', new Date().toISOString())
         .single();
 
-      if (tokenError || !approvedUser) {
-        console.error('Token validation error:', tokenError);
+      if (approvedError || !approvedUser) {
+        console.error('Approved user error:', approvedError);
         setError('Invalid or expired setup token');
         setLoading(false);
         return;
       }
 
-      console.log('Token validation result:', approvedUser);
+      // Then get the waitlist submission
+      const { data: waitlistData, error: waitlistError } = await supabase
+        .from('waitlist_submissions')
+        .select('first_name, last_name, email')
+        .eq('id', approvedUser.waitlist_submission_id)
+        .single();
+
+      if (waitlistError || !waitlistData) {
+        console.error('Waitlist data error:', waitlistError);
+        setError('Invalid setup token');
+        setLoading(false);
+        return;
+      }
+
       setValidToken(true);
-      setUserInfo(approvedUser);
+      setUserInfo({
+        ...approvedUser,
+        waitlist_submissions: waitlistData
+      });
       setLoading(false);
     } catch (error) {
       console.error('Error validating token:', error);
