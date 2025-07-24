@@ -226,7 +226,7 @@ class ApiClient {
     return this.request(`/documents/${documentId}`);
   }
 
-  async uploadDocument(file: File): Promise<any> {
+  async uploadDocument(file: File, onProgress?: (progress: number) => void): Promise<any> {
     const formData = new FormData();
     formData.append('files', file);  // Changed from 'file' to 'files' to match backend
 
@@ -240,62 +240,80 @@ class ApiClient {
       type: file.type
     });
     
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          // Don't set Content-Type - let browser set it with boundary for FormData
-        },
-        body: formData,
-      });
-
-      console.log(`📡 Upload response: ${response.status} ${response.statusText}`);
-
-      if (!response.ok) {
-        console.error(`❌ Upload failed with status: ${response.status}`);
-        console.error(`❌ Response headers:`, Object.fromEntries(response.headers.entries()));
-        
-        let errorDetail = `HTTP ${response.status}: ${response.statusText}`;
-        
-        try {
-          const errorData = await response.json();
-          console.error('❌ Error response body:', errorData);
-          // For 422 errors, look for validation details
-          if (response.status === 422 && errorData.detail) {
-            if (Array.isArray(errorData.detail)) {
-              errorDetail = errorData.detail.map((err: any) => 
-                `${err.loc?.join('.') || 'field'}: ${err.msg}`
-              ).join(', ');
-            } else if (typeof errorData.detail === 'string') {
-              errorDetail = errorData.detail;
-            } else {
-              errorDetail = JSON.stringify(errorData.detail);
-            }
-          } else {
-            errorDetail = errorData.detail || errorData.message || errorData.error || errorDetail;
-          }
-        } catch (parseError) {
-          console.error('❌ Failed to parse error response:', parseError);
-          try {
-            const responseText = await response.text();
-            console.error('❌ Raw error response text:', responseText);
-            errorDetail = responseText || errorDetail;
-          } catch (textError) {
-            console.error('❌ Could not read response as text:', textError);
-          }
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      
+      // Track upload progress
+      xhr.upload.addEventListener('progress', (event) => {
+        if (event.lengthComputable && onProgress) {
+          const percentComplete = Math.round((event.loaded / event.total) * 100);
+          onProgress(percentComplete);
         }
+      });
+      
+      xhr.addEventListener('load', () => {
+        console.log(`📡 Upload response: ${xhr.status} ${xhr.statusText}`);
         
-        throw new Error(errorDetail);
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const result = JSON.parse(xhr.responseText);
+            console.log('✅ Document upload successful:', result);
+            resolve(result);
+          } catch (parseError) {
+            console.error('❌ Failed to parse response:', parseError);
+            reject(new Error('Invalid response format'));
+          }
+        } else {
+          console.error(`❌ Upload failed with status: ${xhr.status}`);
+          
+          let errorDetail = `HTTP ${xhr.status}: ${xhr.statusText}`;
+          
+          try {
+            const errorData = JSON.parse(xhr.responseText);
+            console.error('❌ Error response body:', errorData);
+            
+            if (xhr.status === 422 && errorData.detail) {
+              if (Array.isArray(errorData.detail)) {
+                errorDetail = errorData.detail.map((err: any) => 
+                  `${err.loc?.join('.') || 'field'}: ${err.msg}`
+                ).join(', ');
+              } else if (typeof errorData.detail === 'string') {
+                errorDetail = errorData.detail;
+              } else {
+                errorDetail = JSON.stringify(errorData.detail);
+              }
+            } else {
+              errorDetail = errorData.detail || errorData.message || errorData.error || errorDetail;
+            }
+          } catch (parseError) {
+            console.error('❌ Failed to parse error response:', parseError);
+            errorDetail = xhr.responseText || errorDetail;
+          }
+          
+          reject(new Error(errorDetail));
+        }
+      });
+      
+      xhr.addEventListener('error', () => {
+        console.error('❌ Network error during upload');
+        reject(new Error('Network error during upload'));
+      });
+      
+      xhr.addEventListener('timeout', () => {
+        console.error('❌ Upload timeout');
+        reject(new Error('Upload timeout'));
+      });
+      
+      xhr.open('POST', url);
+      
+      // Set headers
+      if (token) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       }
-
-      const result = await response.json();
-      console.log('✅ Document upload successful:', result);
-      return result;
-    } catch (error) {
-      console.error('❌ Document upload failed:', error);
-      throw error;
-    }
+      
+      // Start upload
+      xhr.send(formData);
+    });
   }
 
   async deleteDocument(documentId: number): Promise<any> {

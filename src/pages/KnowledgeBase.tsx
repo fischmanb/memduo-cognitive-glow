@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -17,7 +18,8 @@ import {
   MoreVertical,
   Trash2,
   Download,
-  RotateCcw
+  RotateCcw,
+  X
 } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { apiClient } from '@/lib/api';
@@ -34,10 +36,19 @@ interface Document {
   is_indexed: boolean;
 }
 
+interface UploadProgress {
+  file: File;
+  progress: number;
+  id: string;
+  status: 'uploading' | 'completed' | 'error';
+  error?: string;
+}
+
 const KnowledgeBase = () => {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<UploadProgress[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -93,18 +104,78 @@ const KnowledgeBase = () => {
       setUploading(true);
       console.log(`📤 Uploading ${files.length} file(s)...`);
       
-      const uploadPromises = Array.from(files).map(async (file) => {
-        console.log(`📄 Uploading: "${file.name}" (${file.size} bytes)`);
-        const result = await apiClient.uploadDocument(file);
-        console.log(`✅ Upload result for "${file.name}":`, result);
-        return { file, result };
+      // Initialize upload progress for each file
+      const initialProgress: UploadProgress[] = Array.from(files).map((file) => ({
+        file,
+        progress: 0,
+        id: `upload-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        status: 'uploading' as const
+      }));
+      
+      setUploadProgress(initialProgress);
+      
+      // Upload files with progress tracking
+      const uploadPromises = initialProgress.map(async (progressItem) => {
+        try {
+          console.log(`📄 Uploading: "${progressItem.file.name}" (${progressItem.file.size} bytes)`);
+          
+          const result = await apiClient.uploadDocument(
+            progressItem.file,
+            (progress) => {
+              setUploadProgress(prev => 
+                prev.map(item => 
+                  item.id === progressItem.id 
+                    ? { ...item, progress }
+                    : item
+                )
+              );
+            }
+          );
+          
+          console.log(`✅ Upload result for "${progressItem.file.name}":`, result);
+          
+          // Mark as completed
+          setUploadProgress(prev => 
+            prev.map(item => 
+              item.id === progressItem.id 
+                ? { ...item, status: 'completed' as const, progress: 100 }
+                : item
+            )
+          );
+          
+          return { file: progressItem.file, result };
+        } catch (error) {
+          console.error(`❌ Upload failed for "${progressItem.file.name}":`, error);
+          
+          // Mark as error
+          setUploadProgress(prev => 
+            prev.map(item => 
+              item.id === progressItem.id 
+                ? { 
+                    ...item, 
+                    status: 'error' as const, 
+                    error: error instanceof Error ? error.message : 'Upload failed' 
+                  }
+                : item
+            )
+          );
+          
+          throw error;
+        }
       });
       
-      const results = await Promise.all(uploadPromises);
+      const results = await Promise.allSettled(uploadPromises);
       console.log('📤 All uploads completed:', results);
       
+      // Process successful uploads
+      const successfulResults = results
+        .filter((result): result is PromiseFulfilledResult<{file: File, result: any}> => 
+          result.status === 'fulfilled'
+        )
+        .map(result => result.value);
+      
       // Add uploaded documents directly to UI state
-      const newDocuments = results.map(({ file, result }) => ({
+      const newDocuments = successfulResults.map(({ file, result }) => ({
         id: result.id || Date.now() + Math.random(), // Fallback ID
         filename: file.name,
         file_size: file.size,
@@ -118,10 +189,29 @@ const KnowledgeBase = () => {
       // Update UI immediately with new documents
       setDocuments(prev => [...newDocuments, ...prev]);
       
-      toast({
-        title: "Upload Successful",
-        description: `${files.length} file(s) uploaded successfully`,
-      });
+      // Show success message
+      const successCount = successfulResults.length;
+      const failCount = files.length - successCount;
+      
+      if (successCount > 0) {
+        toast({
+          title: "Upload Successful",
+          description: `${successCount} file(s) uploaded successfully${failCount > 0 ? `, ${failCount} failed` : ''}`,
+        });
+      }
+      
+      if (failCount > 0) {
+        toast({
+          title: "Some uploads failed",
+          description: `${failCount} file(s) failed to upload. Check the upload progress for details.`,
+          variant: "destructive"
+        });
+      }
+      
+      // Clear upload progress after a delay
+      setTimeout(() => {
+        setUploadProgress([]);
+      }, 3000);
 
       // Smart background sync that preserves optimistic updates
       setTimeout(async () => {
@@ -158,32 +248,26 @@ const KnowledgeBase = () => {
       }, 2000);
       
     } catch (error) {
-      console.error('Upload error:', error);
-      
-      let errorMessage = "Upload failed";
-      
-      if (error instanceof Error) {
-        errorMessage = error.message;
-        if (error.message.includes('401') || error.message.includes('Unauthorized')) {
-          errorMessage = "Authentication failed. Please log in again.";
-        } else if (error.message.includes('413') || error.message.includes('too large')) {
-          errorMessage = "File too large. Please select smaller files.";
-        }
-      } else if (typeof error === 'string') {
-        errorMessage = error;
-      }
-      
+      console.error('❌ Error during upload:', error);
       toast({
         title: "Upload Failed",
-        description: errorMessage,
+        description: error instanceof Error ? error.message : "Failed to upload files",
         variant: "destructive"
       });
+      
+      // Clear upload progress on error
+      setUploadProgress([]);
     } finally {
       setUploading(false);
+      // Reset file input
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
     }
+  };
+
+  const cancelUpload = (uploadId: string) => {
+    setUploadProgress(prev => prev.filter(item => item.id !== uploadId));
   };
 
   const deleteDocument = async (documentId: number) => {
@@ -461,6 +545,81 @@ const KnowledgeBase = () => {
             <option value="failed">Failed</option>
           </select>
         </div>
+
+        {/* Upload Progress */}
+        {uploadProgress.length > 0 && (
+          <Card className="neural-glass border-blue-500/30">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-white flex items-center">
+                <Upload className="mr-2 h-5 w-5 text-blue-400" />
+                Upload Progress
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {uploadProgress.map((upload) => (
+                <div key={upload.id} className="neural-glass rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-3 flex-1 min-w-0">
+                      <FileText className="h-4 w-4 text-blue-400 flex-shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-white truncate">
+                          {upload.file.name}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {formatFileSize(upload.file.size)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2 flex-shrink-0">
+                      {upload.status === 'uploading' && (
+                        <>
+                          <span className="text-sm text-blue-400 font-medium">
+                            {upload.progress}%
+                          </span>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => cancelUpload(upload.id)}
+                            className="h-6 w-6 p-0 text-gray-400 hover:text-red-400"
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        </>
+                      )}
+                      {upload.status === 'completed' && (
+                        <CheckCircle className="h-4 w-4 text-green-400" />
+                      )}
+                      {upload.status === 'error' && (
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <XCircle className="h-4 w-4 text-red-400" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-xs">{upload.error}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-1">
+                    <Progress 
+                      value={upload.progress} 
+                      className={`h-2 ${
+                        upload.status === 'completed' ? 'bg-green-500/20' :
+                        upload.status === 'error' ? 'bg-red-500/20' :
+                        'bg-blue-500/20'
+                      }`}
+                    />
+                    {upload.status === 'error' && upload.error && (
+                      <p className="text-xs text-red-400 mt-1">{upload.error}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
 
         {/* Documents List */}
         <Card className="neural-glass-premium">
