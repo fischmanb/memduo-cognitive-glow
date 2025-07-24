@@ -81,8 +81,8 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Create magic link URL pointing to our app's setup page
-    // Use the app's actual domain - get this from environment or use current preview URL
-    const appUrl = Deno.env.get('APP_URL') || 'https://uhyeshpefxscydmsxeqp.lovableproject.com';
+    // Use localhost for development or get from environment
+    const appUrl = Deno.env.get('APP_URL') || 'http://localhost:8080';
     const setupUrl = `${appUrl}/magic-setup?token=${setupToken}`;
 
     // Send approval email
