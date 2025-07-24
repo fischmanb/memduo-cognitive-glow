@@ -550,16 +550,27 @@ const AdminDashboard: React.FC = () => {
                                </Dialog>
                                
                                 {submission.status === 'approved' && (
-                                  <Button
-                                    onClick={() => resendApprovalEmail(submission)}
-                                    disabled={updating}
-                                    variant="outline"
-                                    size="sm"
-                                    className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
-                                  >
-                                    <Mail className="h-4 w-4 mr-1" />
-                                    Resend
-                                  </Button>
+                                  <>
+                                    <Button
+                                      onClick={() => resendApprovalEmail(submission)}
+                                      disabled={updating}
+                                      variant="outline"
+                                      size="sm"
+                                      className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+                                    >
+                                      <Mail className="h-4 w-4 mr-1" />
+                                      Resend
+                                    </Button>
+                                    <Button
+                                      onClick={() => cleanupUser(submission.email)}
+                                      disabled={updating}
+                                      variant="outline"
+                                      size="sm"
+                                      className="bg-red-50 border-red-200 text-red-700 hover:bg-red-100 ml-2"
+                                    >
+                                      🗑️ Reset
+                                    </Button>
+                                  </>
                                 )}
                                 {(submission.status === 'registered' || submission.status === 'active') && (
                                   <Button
