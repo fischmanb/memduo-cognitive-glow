@@ -81,7 +81,9 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Create magic link URL pointing to our app's setup page
-    const setupUrl = `${Deno.env.get('SUPABASE_URL').replace('supabase.co', 'lovableproject.com')}/magic-setup?token=${setupToken}`;
+    // Use the app's actual domain - get this from environment or use current preview URL
+    const appUrl = Deno.env.get('APP_URL') || 'https://uhyeshpefxscydmsxeqp.lovableproject.com';
+    const setupUrl = `${appUrl}/magic-setup?token=${setupToken}`;
 
     // Send approval email
     console.log('Attempting to send email to:', email);
