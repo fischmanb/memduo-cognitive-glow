@@ -398,7 +398,8 @@ const KnowledgeBase = () => {
 
   // Helper function to determine if a document can be safely deleted
   const canDeleteDocument = (status: string, isIndexed: boolean) => {
-    return status === 'failed' || status === 'pending';
+    // Only allow deletion for failed documents or documents that haven't been processed yet
+    return status === 'failed' || status === 'pending' || status === 'uploaded';
   };
 
   const getDeleteTooltipMessage = (status: string, isIndexed: boolean) => {
@@ -407,6 +408,9 @@ const KnowledgeBase = () => {
     }
     if (status === 'completed' || isIndexed) {
       return "Cannot delete indexed documents - this would break graph connections";
+    }
+    if (status === 'uploaded') {
+      return "Delete this uploaded document";
     }
     return "Delete this document";
   };
@@ -707,29 +711,24 @@ const KnowledgeBase = () => {
                           </Button>
                         )}
                         
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div>
+                        {canDeleteDocument(doc.status, doc.is_indexed) && (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
                               <Button
                                 size="sm"
                                 variant="destructive"
                                 onClick={() => deleteDocument(doc.id)}
-                                disabled={!canDeleteDocument(doc.status, doc.is_indexed)}
-                                className={`neural-glass-hover ${
-                                  !canDeleteDocument(doc.status, doc.is_indexed) 
-                                    ? 'opacity-50 cursor-not-allowed' 
-                                    : ''
-                                }`}
+                                className="neural-glass-hover"
                               >
                                 <Trash2 className="h-4 w-4 mr-1" />
                                 Delete
                               </Button>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>{getDeleteTooltipMessage(doc.status, doc.is_indexed)}</p>
-                          </TooltipContent>
-                        </Tooltip>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{getDeleteTooltipMessage(doc.status, doc.is_indexed)}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        )}
                       </div>
                     </div>
                   </div>
