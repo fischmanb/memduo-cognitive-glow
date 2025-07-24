@@ -244,7 +244,7 @@ const PasswordEntry = () => {
                   <img 
                     src="/lovable-uploads/7b4c7179-5f77-44b2-8117-fba1f5c3a4a8.png" 
                     alt="MemDuo" 
-                    className="h-28 w-auto"
+                    className="h-36 w-auto"
                     style={{
                       filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8))',
                     }}
