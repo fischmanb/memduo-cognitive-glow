@@ -46,10 +46,9 @@ const App = () => {
                 element={
                   <ProtectedRoute>
                     <OnboardingFlow 
-                      onComplete={(data) => {
-                        console.log('Onboarding completed:', data);
-                        // TODO: Save onboarding data to database
-                        window.location.href = '/dashboard';
+                      onComplete={() => {
+                        console.log('Onboarding completed');
+                        window.location.href = '/';
                       }} 
                     />
                   </ProtectedRoute>
