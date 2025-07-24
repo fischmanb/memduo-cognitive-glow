@@ -250,7 +250,7 @@ const PasswordEntry = () => {
                     }}
                   />
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight">
+                <h1 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight font-inter">
                   <span className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
                     Demo Environment
                   </span>
