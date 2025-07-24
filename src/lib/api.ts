@@ -19,9 +19,11 @@ export interface LoginResponse {
 
 export interface RegisterRequest {
   email: string;
+  name: string;
   password: string;
-  first_name?: string;
-  last_name?: string;
+  machine_name: string;
+  contradiction_tolerance: number;
+  belief_sensitivity: string;
 }
 
 export interface ApiError {
@@ -570,4 +572,5 @@ class ApiClient {
   }
 }
 
+// Export singleton instance
 export const apiClient = new ApiClient();

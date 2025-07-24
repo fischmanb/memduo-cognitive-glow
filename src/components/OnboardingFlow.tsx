@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ArrowRight, ArrowLeft, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { apiClient } from "@/lib/api";
 
 interface OnboardingData {
   aiName: string;
@@ -75,7 +76,30 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
 
       const { email, password, firstName, lastName } = JSON.parse(setupData);
       
-      // Create the Supabase account
+      // Create the belief sensitivity JSON string
+      const beliefSensitivityData = {
+        familiarityComfort: formData.familiarityComfort,
+        perspectiveNeutrality: formData.perspectiveNeutrality,
+        uncertaintyHandling: formData.uncertaintyHandling,
+        responseDepth: formData.responseDepth,
+        domainSpecificity: formData.domainSpecificity
+      };
+
+      // Create the API registration payload
+      const registrationData = {
+        email,
+        name: `${firstName} ${lastName}`,
+        password,
+        machine_name: formData.aiName,
+        contradiction_tolerance: 0, // Default value
+        belief_sensitivity: JSON.stringify(beliefSensitivityData)
+      };
+
+      // Create the API account
+      const response = await apiClient.register(registrationData);
+      console.log('API registration successful:', response);
+
+      // Create the Supabase account as well for local auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -88,21 +112,9 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
         }
       });
 
-      if (authError) {
-        if (authError.message.includes('already registered')) {
-          // User already exists, try to sign them in
-          const { error: signInError } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-          });
-          if (signInError) throw signInError;
-        } else {
-          throw authError;
-        }
+      if (authError && !authError.message.includes('already registered')) {
+        throw authError;
       }
-
-      // Store belief sensitivity preferences (you can add this to a preferences table later)
-      console.log('Storing belief sensitivity preferences:', formData);
       
       // Clear setup data
       sessionStorage.removeItem('setupData');

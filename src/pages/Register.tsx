@@ -116,8 +116,10 @@ const Register = () => {
         await apiClient.register({
           email: formData.email,
           password: formData.password,
-          first_name: formData.firstName,
-          last_name: formData.lastName
+          name: `${formData.firstName} ${formData.lastName}`,
+          machine_name: "Assistant", // Default name
+          contradiction_tolerance: 0,
+          belief_sensitivity: "{}" // Default empty JSON
         });
         console.log('✅ Backend registration successful');
       } catch (backendError) {

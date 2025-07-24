@@ -210,8 +210,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         await apiClient.register({
           email,
           password,
-          first_name: firstName,
-          last_name: lastName
+          name: `${firstName} ${lastName}`,
+          machine_name: "Assistant", // Default name
+          contradiction_tolerance: 0,
+          belief_sensitivity: "{}" // Default empty JSON
         });
         console.log('✅ Backend registration successful');
       } catch (backendError) {
