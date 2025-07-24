@@ -36,6 +36,7 @@ import {
   Mail 
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { deleteBackendUserAndCleanup } from '@/utils/deleteUser';
 
 interface WaitlistSubmission {
   id: string;
@@ -234,6 +235,31 @@ const AdminDashboard: React.FC = () => {
       toast({
         title: "Error",
         description: "Failed to resend email",
+        variant: "destructive",
+      });
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const cleanupUser = async (email: string) => {
+    setUpdating(true);
+    try {
+      const result = await deleteBackendUserAndCleanup(email);
+      if (result.success) {
+        toast({
+          title: "Success",
+          description: `User ${email} cleaned up successfully`,
+        });
+        await fetchSubmissions(); // Refresh the list
+      } else {
+        throw new Error(result.error?.message || 'Cleanup failed');
+      }
+    } catch (error) {
+      console.error('Cleanup error:', error);
+      toast({
+        title: "Error", 
+        description: "Failed to cleanup user",
         variant: "destructive",
       });
     } finally {
@@ -533,6 +559,17 @@ const AdminDashboard: React.FC = () => {
                                   >
                                     <Mail className="h-4 w-4 mr-1" />
                                     Resend
+                                  </Button>
+                                )}
+                                {(submission.status === 'registered' || submission.status === 'active') && (
+                                  <Button
+                                    onClick={() => cleanupUser(submission.email)}
+                                    disabled={updating}
+                                    variant="outline"
+                                    size="sm"
+                                    className="bg-red-50 border-red-200 text-red-700 hover:bg-red-100"
+                                  >
+                                    🗑️ Cleanup
                                   </Button>
                                 )}
                              </div>
