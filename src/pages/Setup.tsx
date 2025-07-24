@@ -38,6 +38,9 @@ const Setup: React.FC = () => {
 
   const validateToken = async (setupToken: string) => {
     try {
+      console.log('Validating token:', setupToken);
+      console.log('Current time:', new Date().toISOString());
+      
       // First get the approved user record
       const { data: approvedUser, error: approvedError } = await supabase
         .from('approved_users')
@@ -47,8 +50,34 @@ const Setup: React.FC = () => {
         .gte('expires_at', new Date().toISOString())
         .single();
 
-      if (approvedError || !approvedUser) {
+      console.log('Approved user query result:', { approvedUser, approvedError });
+
+      if (approvedError) {
         console.error('Approved user error:', approvedError);
+        
+        // Try without the time constraint to see if the token exists at all
+        const { data: tokenCheck, error: tokenCheckError } = await supabase
+          .from('approved_users')
+          .select('*')
+          .eq('setup_token', setupToken)
+          .single();
+          
+        console.log('Token check result:', { tokenCheck, tokenCheckError });
+        
+        if (tokenCheckError) {
+          setError('Invalid setup token');
+        } else if (tokenCheck.account_created) {
+          setError('This registration link has already been used');
+        } else if (new Date(tokenCheck.expires_at) < new Date()) {
+          setError('This registration link has expired');
+        } else {
+          setError('Invalid or expired setup token');
+        }
+        setLoading(false);
+        return;
+      }
+
+      if (!approvedUser) {
         setError('Invalid or expired setup token');
         setLoading(false);
         return;
@@ -61,6 +90,8 @@ const Setup: React.FC = () => {
         .eq('id', approvedUser.waitlist_submission_id)
         .single();
 
+      console.log('Waitlist query result:', { waitlistData, waitlistError });
+
       if (waitlistError || !waitlistData) {
         console.error('Waitlist data error:', waitlistError);
         setError('Invalid setup token');
@@ -68,6 +99,7 @@ const Setup: React.FC = () => {
         return;
       }
 
+      console.log('Token validation successful');
       setValidToken(true);
       setUserInfo({
         ...approvedUser,
