@@ -26,9 +26,11 @@ const Setup: React.FC = () => {
   const token = searchParams.get('token');
 
   useEffect(() => {
+    console.log('Setup page loaded with token:', token);
     if (token) {
       validateToken(token);
     } else {
+      console.log('No setup token provided');
       setLoading(false);
       setError('No setup token provided');
     }
