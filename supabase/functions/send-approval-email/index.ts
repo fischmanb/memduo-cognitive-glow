@@ -81,8 +81,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Create magic link URL pointing to our app's setup page
-    // Use localhost for development or get from environment
-    const appUrl = Deno.env.get('APP_URL') || 'http://localhost:8080';
+    const appUrl = Deno.env.get('APP_URL') || 'https://memduo.com';
     const setupUrl = `${appUrl}/magic-setup?token=${setupToken}`;
 
     // Send approval email
