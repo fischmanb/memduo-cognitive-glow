@@ -117,6 +117,28 @@ const Setup: React.FC = () => {
 
       if (signUpError) {
         console.error('Sign up error:', signUpError);
+        
+        // If user already exists, that's actually OK - the account was created before
+        if (signUpError.message?.includes('already registered')) {
+          // Mark the token as used and proceed
+          const { error: updateError } = await supabase
+            .from('approved_users')
+            .update({ account_created: true })
+            .eq('id', userInfo.id);
+
+          if (updateError) {
+            console.error('Error updating approved user:', updateError);
+          }
+
+          toast({
+            title: "Account already exists",
+            description: "Please sign in with your existing credentials.",
+          });
+          
+          navigate('/register');
+          return;
+        }
+        
         setError(signUpError.message || 'Failed to create account');
         setCreating(false);
         return;
@@ -130,6 +152,7 @@ const Setup: React.FC = () => {
 
       if (updateError) {
         console.error('Error updating approved user:', updateError);
+        // Don't fail the whole process for this
       }
 
       toast({
@@ -137,7 +160,7 @@ const Setup: React.FC = () => {
         description: "You can now sign in with your new account.",
       });
 
-      // Redirect to login page
+      // Redirect to register page with success message
       navigate('/register?message=account-created');
 
     } catch (error) {
