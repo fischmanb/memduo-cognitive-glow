@@ -30,40 +30,98 @@ const handler = async (req: Request): Promise<Response> => {
     
     console.log('Processing approval email for:', { waitlistSubmissionId, email });
 
-    // Initialize Supabase client
+    // Initialize Supabase client with service role key
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    
+    console.log('Supabase URL:', supabaseUrl);
+    console.log('Service key configured:', supabaseServiceKey ? 'Yes' : 'No');
+    
+    const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    });
 
-    // Generate a secure setup token
-    const setupToken = crypto.randomUUID();
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7); // 7 days from now
-
-    // Insert into approved_users table
-    const { data: approvedUser, error: insertError } = await supabase
+    // Check if an approved user record already exists for this waitlist submission
+    const { data: existingApproved, error: checkError } = await supabase
       .from('approved_users')
-      .insert({
-        waitlist_submission_id: waitlistSubmissionId,
-        setup_token: setupToken,
-        expires_at: expiresAt.toISOString(),
-      })
-      .select()
+      .select('*')
+      .eq('waitlist_submission_id', waitlistSubmissionId)
       .single();
 
-    if (insertError) {
-      console.error('Error creating approved user record:', insertError);
-      throw new Error('Failed to create setup token');
+    if (checkError && checkError.code !== 'PGRST116') {
+      console.error('Error checking existing approved user:', checkError);
+      throw new Error('Database error while checking existing records');
     }
 
-    console.log('Created approved user record:', approvedUser);
+    let approvedUser;
+    
+    if (existingApproved) {
+      console.log('Existing approved user found, updating token...');
+      // Generate new token and update existing record
+      const setupToken = crypto.randomUUID();
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 7); // 7 days from now
+
+      const { data: updatedUser, error: updateError } = await supabase
+        .from('approved_users')
+        .update({
+          setup_token: setupToken,
+          expires_at: expiresAt.toISOString(),
+          account_created: false
+        })
+        .eq('id', existingApproved.id)
+        .select()
+        .single();
+
+      if (updateError) {
+        console.error('Error updating approved user record:', updateError);
+        throw new Error('Failed to update setup token');
+      }
+
+      approvedUser = updatedUser;
+    } else {
+      console.log('Creating new approved user record...');
+      // Generate a secure setup token
+      const setupToken = crypto.randomUUID();
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 7); // 7 days from now
+
+      // Insert into approved_users table
+      const { data: newUser, error: insertError } = await supabase
+        .from('approved_users')
+        .insert({
+          waitlist_submission_id: waitlistSubmissionId,
+          setup_token: setupToken,
+          expires_at: expiresAt.toISOString(),
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error('Error creating approved user record:', insertError);
+        throw new Error('Failed to create setup token');
+      }
+
+      approvedUser = newUser;
+    }
+
+    console.log('Approved user record ready:', approvedUser);
 
     // Generate SHA-256 hash of the token for secure storage
     const encoder = new TextEncoder();
-    const data = encoder.encode(setupToken);
+    const data = encoder.encode(approvedUser.setup_token);
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     const tokenHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+    // Clean up any existing magic links for this approved user
+    await supabase
+      .from('magic_links')
+      .delete()
+      .eq('approved_user_id', approvedUser.id);
 
     // Insert into magic_links table
     const { error: magicLinkError } = await supabase
@@ -72,7 +130,7 @@ const handler = async (req: Request): Promise<Response> => {
         approved_user_id: approvedUser.id,
         email: email,
         token_hash: tokenHash,
-        expires_at: expiresAt.toISOString(),
+        expires_at: approvedUser.expires_at,
       });
 
     if (magicLinkError) {
@@ -82,7 +140,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Create magic link URL pointing to our app's setup page
     const appUrl = Deno.env.get('APP_URL') || 'https://memduo.com';
-    const setupUrl = `${appUrl}/magic-setup?token=${setupToken}`;
+    const setupUrl = `${appUrl}/magic-setup?token=${approvedUser.setup_token}`;
 
     // Send approval email
     console.log('Attempting to send email to:', email);
@@ -159,7 +217,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     return new Response(JSON.stringify({ 
       success: true, 
-      setupToken,
+      setupToken: approvedUser.setup_token,
       emailResponse 
     }), {
       status: 200,
