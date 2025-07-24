@@ -277,7 +277,7 @@ const PasswordEntry = () => {
                 <div>
                   <label htmlFor="password" className="flex items-center gap-2 text-sm font-bold text-white mb-3">
                     <Lock size={16} className="text-cyan-400" />
-                    Access Code
+                    Code or Password
                   </label>
                   <div className="relative">
                     <Input
