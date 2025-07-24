@@ -506,35 +506,35 @@ const AdminDashboard: React.FC = () => {
                                            <XCircle className="h-4 w-4 mr-1" />
                                            Reject
                                          </Button>
-                                         {selectedSubmission.status === 'approved' && (
-                                           <Button
-                                             onClick={() => resendApprovalEmail(selectedSubmission)}
-                                             disabled={updating}
-                                             variant="outline"
-                                             className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
-                                           >
-                                             <Mail className="h-4 w-4 mr-1" />
-                                             Resend Email
-                                           </Button>
-                                         )}
+                                          {selectedSubmission.status === 'approved' && (
+                                            <Button
+                                              onClick={() => resendApprovalEmail(selectedSubmission)}
+                                              disabled={updating}
+                                              variant="outline"
+                                              className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+                                            >
+                                              <Mail className="h-4 w-4 mr-1" />
+                                              Resend Email
+                                            </Button>
+                                          )}
                                        </div>
                                      </div>
                                    )}
                                  </DialogContent>
                                </Dialog>
                                
-                               {submission.status === 'approved' && (
-                                 <Button
-                                   onClick={() => resendApprovalEmail(submission)}
-                                   disabled={updating}
-                                   variant="outline"
-                                   size="sm"
-                                   className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
-                                 >
-                                   <Mail className="h-4 w-4 mr-1" />
-                                   Resend
-                                 </Button>
-                               )}
+                                {submission.status === 'approved' && (
+                                  <Button
+                                    onClick={() => resendApprovalEmail(submission)}
+                                    disabled={updating}
+                                    variant="outline"
+                                    size="sm"
+                                    className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+                                  >
+                                    <Mail className="h-4 w-4 mr-1" />
+                                    Resend
+                                  </Button>
+                                )}
                              </div>
                           </TableCell>
                         </TableRow>
