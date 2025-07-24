@@ -252,7 +252,7 @@ const PasswordEntry = () => {
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-bold mb-4 leading-tight">
                   <span className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
-                    Private Access
+                    Demo Environment
                   </span>
                 </h1>
               </div>
