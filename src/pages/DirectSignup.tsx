@@ -16,6 +16,20 @@ const DirectSignup = () => {
   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [hasSecretAccess, setHasSecretAccess] = useState(false);
+  
+  // Check for secret access on component mount
+  React.useEffect(() => {
+    const secretAccess = sessionStorage.getItem('memduoSecretAccess');
+    if (secretAccess === 'granted') {
+      setHasSecretAccess(true);
+      // Clear the access token after use
+      sessionStorage.removeItem('memduoSecretAccess');
+    } else {
+      // Redirect to home if no secret access
+      navigate('/', { replace: true });
+    }
+  }, [navigate]);
   
   const [formData, setFormData] = useState({
     firstName: '',
@@ -126,6 +140,15 @@ const DirectSignup = () => {
       setIsLoading(false);
     }
   };
+
+  // Don't render anything if secret access hasn't been verified
+  if (!hasSecretAccess) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-black">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-black p-4">

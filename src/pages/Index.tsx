@@ -908,6 +908,8 @@ const Index = () => {
               
               <Button
                 onClick={() => {
+                  // Set secret access token before navigation
+                  sessionStorage.setItem('memduoSecretAccess', 'granted');
                   setShowDirectSignup(false);
                   window.location.href = '/signup';
                 }}
