@@ -87,6 +87,7 @@ const Index = () => {
   const DIRECT_SIGNUP_SEQUENCE = 'GO';
 
   useEffect(() => {
+    console.log('🚀 Index component: Setting up event listeners...');
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
@@ -149,7 +150,10 @@ const Index = () => {
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     
+    console.log('✅ Event listeners added successfully');
+    
     return () => {
+      console.log('🧹 Cleaning up event listeners...');
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('keydown', handleKeyDown);
