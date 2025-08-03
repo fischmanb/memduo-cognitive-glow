@@ -108,6 +108,8 @@ const Index = () => {
 
     // Secret admin access key handlers
     const handleKeyDown = (e: KeyboardEvent) => {
+      console.log('🎯 Key pressed:', e.key, 'Shift pressed:', shiftPressed, 'Current sequence:', typedSequence);
+      
       if (e.key === 'Shift') {
         setShiftPressed(true);
       } else if (e.key === 'Escape' && showAdminLogin) {
@@ -116,15 +118,20 @@ const Index = () => {
         setShowDirectSignup(false);
       } else if (shiftPressed) {
         if (e.key === 'Enter') {
+          console.log('🔍 Checking sequences - typed:', typedSequence.toUpperCase(), 'admin:', SECRET_SEQUENCE, 'signup:', DIRECT_SIGNUP_SEQUENCE);
           if (typedSequence.toUpperCase() === SECRET_SEQUENCE) {
+            console.log('✅ Admin sequence matched!');
             setShowAdminLogin(true);
             setTypedSequence('');
           } else if (typedSequence.toUpperCase() === DIRECT_SIGNUP_SEQUENCE) {
+            console.log('✅ Direct signup sequence matched!');
             setShowDirectSignup(true);
             setTypedSequence('');
           }
         } else if (e.key.length === 1) {
           // Only add printable characters
+          const newSequence = typedSequence + e.key.toUpperCase();
+          console.log('📝 Adding character, new sequence:', newSequence);
           setTypedSequence(prev => prev + e.key.toUpperCase());
         }
       }

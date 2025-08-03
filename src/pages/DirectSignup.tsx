@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,13 +19,18 @@ const DirectSignup = () => {
   const [hasSecretAccess, setHasSecretAccess] = useState(false);
   
   // Check for secret access on component mount
-  React.useEffect(() => {
+  useEffect(() => {
+    console.log('🔍 DirectSignup: Checking for secret access...');
     const secretAccess = sessionStorage.getItem('memduoSecretAccess');
+    console.log('🔍 Secret access token:', secretAccess);
+    
     if (secretAccess === 'granted') {
+      console.log('✅ Secret access granted, showing signup form');
       setHasSecretAccess(true);
       // Clear the access token after use
       sessionStorage.removeItem('memduoSecretAccess');
     } else {
+      console.log('❌ No secret access, redirecting to home');
       // Redirect to home if no secret access
       navigate('/', { replace: true });
     }
