@@ -218,7 +218,7 @@ const Chat = () => {
           <AlertCircle className="h-12 w-12 text-yellow-400 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-white mb-2">Backend Connection Issue</h2>
           <p className="text-gray-400 mb-6">
-            The backend at http://3.144.130.186:3000 appears to be unavailable. 
+            The backend at http://3.144.130.186:8000 appears to be unavailable. 
             This could be due to network issues or the server being offline.
           </p>
           <div className="space-y-4">
@@ -231,7 +231,7 @@ const Chat = () => {
             </Button>
             <div className="text-sm text-gray-500">
               Backend Status: {navigator.onLine ? 'Online' : 'Offline'} • 
-              Server: http://3.144.130.186:3000/api/v1
+              Server: http://3.144.130.186:8000/api/v1
             </div>
           </div>
         </div>
