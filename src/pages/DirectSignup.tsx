@@ -69,8 +69,10 @@ const DirectSignup = () => {
     try {
       // Step 1: Register with backend first
       console.log('🔄 Direct signup - Registering with backend...');
+      let backendRegistrationSuccess = false;
+      
       try {
-        await apiClient.register({
+        const registrationResult = await apiClient.register({
           email: formData.email,
           password: formData.password,
           name: `${formData.firstName} ${formData.lastName}`,
@@ -78,10 +80,15 @@ const DirectSignup = () => {
           contradiction_tolerance: 0,
           belief_sensitivity: "{}" // Default empty JSON
         });
-        console.log('✅ Backend registration successful');
+        console.log('✅ Backend registration successful:', registrationResult);
+        backendRegistrationSuccess = true;
       } catch (backendError) {
-        console.log('⚠️ Backend registration failed, continuing with Supabase...');
-        // Continue anyway - user might already exist in backend
+        console.error('❌ Backend registration failed:', backendError);
+        console.log('⚠️ Will try to continue with Supabase-only auth...');
+        // Show warning but continue
+        toast("Backend connection failed - you'll have limited features", {
+          description: "Some advanced features may not be available"
+        });
       }
 
       // Step 2: Create Supabase user account
@@ -107,33 +114,44 @@ const DirectSignup = () => {
         return;
       }
 
-      // Step 3: Authenticate with backend to get token
+      // Step 3: Authenticate with backend to get token (only if registration succeeded)
       console.log('🔄 Getting backend token...');
-      try {
-        const loginResponse = await apiClient.login({
-          email: formData.email,
-          password: formData.password
-        });
+      let backendAuthSuccess = false;
+      
+      if (backendRegistrationSuccess) {
+        try {
+          const loginResponse = await apiClient.login({
+            email: formData.email,
+            password: formData.password
+          });
 
-        if (loginResponse.access_token) {
-          // Store backend token and user data
-          localStorage.setItem('memduo_token', loginResponse.access_token);
-          localStorage.setItem('memduo_backend_auth', 'true');
-          localStorage.setItem('memduo_user_email', formData.email);
-          if (loginResponse.user) {
-            localStorage.setItem('memduo_user_data', JSON.stringify(loginResponse.user));
+          if (loginResponse.access_token) {
+            // Store backend token and user data
+            localStorage.setItem('memduo_token', loginResponse.access_token);
+            localStorage.setItem('memduo_backend_auth', 'true');
+            localStorage.setItem('memduo_user_email', formData.email);
+            if (loginResponse.user) {
+              localStorage.setItem('memduo_user_data', JSON.stringify(loginResponse.user));
+            }
+
+            // Set backend auth state
+            setBackendAuth(true, loginResponse.user || null);
+            console.log('✅ Backend authentication successful');
+            backendAuthSuccess = true;
           }
-
-          // Set backend auth state
-          setBackendAuth(true, loginResponse.user || null);
-          console.log('✅ Backend authentication successful');
+        } catch (backendAuthError) {
+          console.error('❌ Backend authentication failed:', backendAuthError);
+          console.log('⚠️ Continuing with Supabase-only auth');
         }
-      } catch (backendAuthError) {
-        console.error('❌ Backend authentication failed:', backendAuthError);
-        // Continue anyway - user has Supabase account
+      } else {
+        console.log('⚠️ Skipping backend auth due to registration failure');
       }
 
-      toast.success('Account created successfully! Redirecting to onboarding...');
+      if (backendAuthSuccess) {
+        toast.success('Account created successfully with full backend access! Redirecting to onboarding...');
+      } else {
+        toast.success('Account created successfully! Some features may be limited. Redirecting to onboarding...');
+      }
       
       // Redirect to onboarding flow
       navigate('/onboarding', { replace: true });

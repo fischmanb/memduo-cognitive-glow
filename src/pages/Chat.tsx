@@ -216,8 +216,24 @@ const Chat = () => {
       <div className="space-y-8 animate-fade-in">
         <div className="text-center py-12">
           <AlertCircle className="h-12 w-12 text-yellow-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-white mb-2">Backend Access Required</h2>
-          <p className="text-gray-400">Chat requires full backend access to use GraphRAG functionality.</p>
+          <h2 className="text-xl font-semibold text-white mb-2">Backend Connection Issue</h2>
+          <p className="text-gray-400 mb-6">
+            The backend at http://3.144.130.186:3000 appears to be unavailable. 
+            This could be due to network issues or the server being offline.
+          </p>
+          <div className="space-y-4">
+            <Button 
+              onClick={() => window.location.reload()} 
+              className="neural-glass-premium mr-4"
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Retry Connection
+            </Button>
+            <div className="text-sm text-gray-500">
+              Backend Status: {navigator.onLine ? 'Online' : 'Offline'} • 
+              Server: http://3.144.130.186:3000/api/v1
+            </div>
+          </div>
         </div>
       </div>
     );
