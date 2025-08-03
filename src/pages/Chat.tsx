@@ -178,18 +178,21 @@ const Chat = () => {
     } catch (error) {
       console.error('Error sending message:', error);
       
-      const errorMessage: ChatMessage = {
+      // Extract the actual error message from the API response
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      
+      const errorChatMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'I apologize, but I encountered an error processing your request. Please check your connection and try again.',
+        content: `I apologize, but I encountered an error processing your request: ${errorMessage}`,
         timestamp: new Date()
       };
 
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages(prev => [...prev, errorChatMessage]);
       
       toast({
         title: "Message Failed",
-        description: "Failed to send message",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
