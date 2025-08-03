@@ -211,7 +211,7 @@ class ApiClient {
   async askChatQuestion(sessionId: string, question: string): Promise<any> {
     return this.request(`/chat/session/${sessionId}/ask`, {
       method: 'POST',
-      body: JSON.stringify({ question }),
+      body: JSON.stringify({ text: question }),
     });
   }
 
