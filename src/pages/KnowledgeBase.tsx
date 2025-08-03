@@ -208,44 +208,40 @@ const KnowledgeBase = () => {
         });
       }
       
-      // Clear upload progress after a delay
-      setTimeout(() => {
-        setUploadProgress([]);
-      }, 3000);
+      // Clear upload progress immediately
+      setUploadProgress([]);
 
-      // Smart background sync that preserves optimistic updates
-      setTimeout(async () => {
-        try {
-          const backendDocs = await apiClient.getDocuments();
-          const backendArray = Array.isArray(backendDocs) ? backendDocs : (backendDocs as any)?.documents || [];
+      // Immediate background sync that preserves optimistic updates
+      try {
+        const backendDocs = await apiClient.getDocuments();
+        const backendArray = Array.isArray(backendDocs) ? backendDocs : (backendDocs as any)?.documents || [];
+        
+        // Merge: keep optimistic docs that aren't in backend yet, update ones that are
+        setDocuments(prev => {
+          const optimisticIds = newDocuments.map(d => d.filename);
+          const backendDocsWithSameNames = backendArray.filter(bd => 
+            optimisticIds.includes(bd.filename)
+          );
           
-          // Merge: keep optimistic docs that aren't in backend yet, update ones that are
-          setDocuments(prev => {
-            const optimisticIds = newDocuments.map(d => d.filename);
-            const backendDocsWithSameNames = backendArray.filter(bd => 
-              optimisticIds.includes(bd.filename)
+          // If backend has our uploaded docs, replace optimistic with real data
+          if (backendDocsWithSameNames.length > 0) {
+            const updatedDocs = prev.map(doc => {
+              const backendMatch = backendArray.find(bd => bd.filename === doc.filename);
+              return backendMatch || doc;
+            });
+            // Add any backend docs we don't have
+            const newBackendDocs = backendArray.filter(bd => 
+              !prev.find(pd => pd.filename === bd.filename)
             );
-            
-            // If backend has our uploaded docs, replace optimistic with real data
-            if (backendDocsWithSameNames.length > 0) {
-              const updatedDocs = prev.map(doc => {
-                const backendMatch = backendArray.find(bd => bd.filename === doc.filename);
-                return backendMatch || doc;
-              });
-              // Add any backend docs we don't have
-              const newBackendDocs = backendArray.filter(bd => 
-                !prev.find(pd => pd.filename === bd.filename)
-              );
-              return [...updatedDocs, ...newBackendDocs];
-            }
-            
-            // Backend doesn't have our docs yet, keep optimistic updates
-            return prev;
-          });
-        } catch (error) {
-          console.error('Background sync failed:', error);
-        }
-      }, 2000);
+            return [...updatedDocs, ...newBackendDocs];
+          }
+          
+          // Backend doesn't have our docs yet, keep optimistic updates
+          return prev;
+        });
+      } catch (error) {
+        console.error('Background sync failed:', error);
+      }
       
     } catch (error) {
       console.error('❌ Error during upload:', error);

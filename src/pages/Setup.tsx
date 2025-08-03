@@ -203,10 +203,8 @@ const Setup: React.FC = () => {
         description: "Please complete your onboarding to set up your AI assistant.",
       });
 
-      // Redirect to onboarding flow instead of login
-      setTimeout(() => {
-        navigate('/onboarding');
-      }, 1000);
+      // Direct redirect to onboarding flow
+      navigate('/onboarding');
 
     } catch (error) {
       console.error('Error creating account:', error);

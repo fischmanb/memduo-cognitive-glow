@@ -26,6 +26,13 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { apiClient } from '@/lib/api';
 
+interface Hypothesis {
+  hypothesis: string;
+  confidence: number;
+  reasoning: string;
+  sources?: string[];
+}
+
 interface ReasoningNode {
   id: string;
   name: string;
@@ -50,6 +57,7 @@ interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
+  hypotheses?: Hypothesis[];
   reasoning_nodes?: ReasoningNode[];
   sources?: DocumentSource[];
   avg_confidence?: number;
@@ -120,19 +128,41 @@ const Chat = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentQuestion = inputMessage.trim();
     setInputMessage('');
     setIsLoading(true);
 
     try {
-      // Use GraphRAG query endpoint through apiClient
-      const data = await apiClient.queryRAG(userMessage.content);
+      let sessionId = currentSession;
+      
+      // Create new session if needed
+      if (!sessionId) {
+        const newSession = await apiClient.createNewChat();
+        sessionId = newSession.id;
+        setCurrentSession(sessionId);
+      }
 
-      // Use real data from backend response
+      // Use the /chat/session/{session_id}/ask endpoint for revolutionary SAS probability distributions
+      const data = await apiClient.askChatQuestion(sessionId, currentQuestion);
+
+      // Extract hypotheses and build content showing probability distributions
+      let content = data.response || '';
+      const hypotheses = data.hypotheses || [];
+      
+      if (hypotheses.length > 0) {
+        content = `Based on the analysis, here are the potential hypotheses:\n\n`;
+        hypotheses.forEach((hyp: Hypothesis, index: number) => {
+          const confidencePercent = (hyp.confidence * 100).toFixed(1);
+          content += `**Hypothesis ${index + 1}** (${confidencePercent}% confidence):\n${hyp.hypothesis}\n\n*Reasoning:* ${hyp.reasoning}\n\n`;
+        });
+      }
+
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: data.response || 'I apologize, but I encountered an error processing your request.',
+        content: content,
         timestamp: new Date(),
+        hypotheses: hypotheses,
         reasoning_nodes: data.reasoning_nodes || [],
         sources: data.sources || [],
         avg_confidence: data.avg_confidence,
@@ -141,7 +171,7 @@ const Chat = () => {
 
       setMessages(prev => [...prev, assistantMessage]);
 
-      // If this is a new session, refresh sessions list
+      // Refresh sessions list if this was a new session
       if (!currentSession) {
         await loadChatSessions();
       }
@@ -340,11 +370,92 @@ const Chat = () => {
                                : 'neural-glass'
                            }`}
                          >
-                           <p className="text-white text-sm leading-relaxed whitespace-pre-wrap">
-                             {message.content}
-                           </p>
-                           
-                           {/* Sources Auditing */}
+                            <p className="text-white text-sm leading-relaxed whitespace-pre-wrap">
+                              {message.content}
+                            </p>
+                            
+                            {/* Probability Distributions for SAS Hypotheses */}
+                            {message.role === 'assistant' && message.hypotheses && message.hypotheses.length > 0 && (
+                              <div className="mt-4 space-y-3">
+                                <Collapsible defaultOpen>
+                                  <CollapsibleTrigger className="flex items-center justify-between w-full p-3 rounded-lg bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 hover:from-orange-500/15 hover:to-red-500/15 transition-all">
+                                    <div className="flex items-center space-x-2">
+                                      <BarChart3 className="h-4 w-4 text-orange-400" />
+                                      <span className="text-sm font-medium text-white">
+                                        SAS Probability Distributions ({message.hypotheses.length} hypotheses)
+                                      </span>
+                                      <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30 text-xs">
+                                        Revolutionary
+                                      </Badge>
+                                    </div>
+                                    <ChevronDown className="h-4 w-4 text-orange-400" />
+                                  </CollapsibleTrigger>
+                                  <CollapsibleContent className="mt-2">
+                                    <div className="bg-slate-900/50 rounded-lg p-3 border border-slate-700/50">
+                                      <div className="space-y-3">
+                                        {message.hypotheses.map((hypothesis, index) => (
+                                          <div key={index} className="bg-slate-800/50 rounded-md p-4 border border-slate-600/30">
+                                            <div className="flex items-center justify-between mb-3">
+                                              <div className="flex items-center space-x-2">
+                                                <Lightbulb className="h-4 w-4 text-yellow-400" />
+                                                <span className="text-sm font-medium text-white">
+                                                  Hypothesis {index + 1}
+                                                </span>
+                                              </div>
+                                              <Badge className="bg-gradient-to-r from-orange-500/20 to-red-500/20 text-orange-400 border-orange-500/30 text-sm font-bold">
+                                                {(hypothesis.confidence * 100).toFixed(1)}% confidence
+                                              </Badge>
+                                            </div>
+                                            
+                                            {/* Visual probability bar */}
+                                            <div className="mb-3">
+                                              <div className="w-full bg-slate-700/50 rounded-full h-2">
+                                                <div 
+                                                  className="bg-gradient-to-r from-orange-400 to-red-500 h-2 rounded-full transition-all duration-1000 ease-out"
+                                                  style={{ width: `${hypothesis.confidence * 100}%` }}
+                                                />
+                                              </div>
+                                              <div className="flex justify-between text-xs text-gray-400 mt-1">
+                                                <span>0%</span>
+                                                <span className="text-orange-400 font-medium">
+                                                  {(hypothesis.confidence * 100).toFixed(1)}%
+                                                </span>
+                                                <span>100%</span>
+                                              </div>
+                                            </div>
+                                            
+                                            <p className="text-white text-sm mb-2 leading-relaxed">
+                                              {hypothesis.hypothesis}
+                                            </p>
+                                            <p className="text-gray-400 text-xs italic">
+                                              <strong>Reasoning:</strong> {hypothesis.reasoning}
+                                            </p>
+                                            
+                                            {hypothesis.sources && hypothesis.sources.length > 0 && (
+                                              <div className="mt-2 flex flex-wrap gap-1">
+                                                <span className="text-xs text-gray-500">Sources:</span>
+                                                {hypothesis.sources.slice(0, 3).map((source, sourceIndex) => (
+                                                  <Badge key={sourceIndex} className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs">
+                                                    {source}
+                                                  </Badge>
+                                                ))}
+                                                {hypothesis.sources.length > 3 && (
+                                                  <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30 text-xs">
+                                                    +{hypothesis.sources.length - 3} more
+                                                  </Badge>
+                                                )}
+                                              </div>
+                                            )}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  </CollapsibleContent>
+                                </Collapsible>
+                              </div>
+                            )}
+                            
+                            {/* Sources Auditing */}
                            {message.role === 'assistant' && message.sources && message.sources.length > 0 && (
                              <div className="mt-4 space-y-3">
                                <Collapsible>

@@ -118,8 +118,7 @@ const PasswordEntry = () => {
 
     console.log('🚀 Starting authentication process...');
 
-    // Simulate validation delay for better UX
-    await new Promise(resolve => setTimeout(resolve, 500));
+    // Direct validation without artificial delays
 
     try {
       // Check for the 256-character master code

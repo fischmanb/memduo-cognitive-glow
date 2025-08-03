@@ -39,7 +39,7 @@ const Help = () => {
 
     try {
       // Simulate contact form submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Direct processing without artificial delays
       
       toast({
         title: "Message Sent",

@@ -62,11 +62,11 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         
         if (session?.user) {
           // Check if user is admin
-          setTimeout(async () => {
+          (async () => {
             const adminStatus = await checkAdminStatus(session.user.id);
             setIsAdmin(adminStatus);
             setLoading(false);
-          }, 0);
+          })();
         } else {
           setIsAdmin(false);
           setLoading(false);

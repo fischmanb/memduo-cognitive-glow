@@ -161,10 +161,8 @@ const AccountSetup: React.FC = () => {
         description: "You can now log in with your new credentials.",
       });
 
-      // Redirect to login or main page
-      setTimeout(() => {
-        navigate('/');
-      }, 2000);
+      // Direct redirect to main page
+      navigate('/');
 
     } catch (error: any) {
       console.error('Error creating account:', error);
