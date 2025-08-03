@@ -78,11 +78,13 @@ const Index = () => {
   }, [userEmail, email]);
   const [shiftPressed, setShiftPressed] = useState(false);
   const [typedSequence, setTypedSequence] = useState('');
+  const [showDirectSignup, setShowDirectSignup] = useState(false);
   
   const { toast } = useToast();
   const { logout } = useAuth();
 
   const SECRET_SEQUENCE = 'NOBLESSEOBLIGE';
+  const DIRECT_SIGNUP_SEQUENCE = 'GO';
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -110,10 +112,15 @@ const Index = () => {
         setShiftPressed(true);
       } else if (e.key === 'Escape' && showAdminLogin) {
         setShowAdminLogin(false);
+      } else if (e.key === 'Escape' && showDirectSignup) {
+        setShowDirectSignup(false);
       } else if (shiftPressed) {
         if (e.key === 'Enter') {
           if (typedSequence.toUpperCase() === SECRET_SEQUENCE) {
             setShowAdminLogin(true);
+            setTypedSequence('');
+          } else if (typedSequence.toUpperCase() === DIRECT_SIGNUP_SEQUENCE) {
+            setShowDirectSignup(true);
             setTypedSequence('');
           }
         } else if (e.key.length === 1) {
@@ -141,7 +148,7 @@ const Index = () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [shiftPressed, typedSequence, showAdminLogin]);
+  }, [shiftPressed, typedSequence, showAdminLogin, showDirectSignup]);
 
   const getFormProgress = () => {
     const totalFields = 8;
@@ -872,6 +879,54 @@ const Index = () => {
           </p>
         </div>
       </footer>
+
+      {/* Secret Direct Signup Modal - Triggered by SHIFT + "GO" + ENTER */}
+      {showDirectSignup && (
+        <div className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="neural-glass-premium max-w-md w-full relative">
+            <Button
+              onClick={() => setShowDirectSignup(false)}
+              variant="outline"
+              size="sm"
+              className="absolute top-4 right-4 bg-white/5 backdrop-blur-md border border-white/10 text-white/90 hover:bg-white/10 hover:border-white/20 hover:text-white transition-all duration-200 rounded-lg px-3 py-2"
+            >
+              <X size={16} />
+            </Button>
+            
+            <div className="p-8 text-center">
+              <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-emerald-400/20 to-cyan-500/20 rounded-2xl flex items-center justify-center">
+                <Users className="text-emerald-400" size={32} />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Direct Account Creation
+              </h3>
+              
+              <p className="text-gray-300 mb-6 leading-relaxed">
+                Bypass the waitlist and create your MemDuo account immediately. This option is available for authorized users and beta testers.
+              </p>
+              
+              <Button
+                onClick={() => {
+                  setShowDirectSignup(false);
+                  window.location.href = '/signup';
+                }}
+                className="w-full neural-glass-premium neural-glass-hover text-white font-bold py-4 text-lg group relative overflow-hidden mb-4"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/10 to-cyan-500/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                <span className="relative bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent">
+                  Create Account Now
+                </span>
+                <ChevronDown className="ml-2 w-5 h-5 rotate-[-90deg]" />
+              </Button>
+              
+              <p className="text-xs text-gray-500">
+                Secret access detected • No approval required
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import HomePage from "./components/HomePage";
 import AccountSetup from "./pages/AccountSetup";
 import Register from "./pages/Register";
+import DirectSignup from "./pages/DirectSignup";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import OnboardingFlow from "./components/OnboardingFlow";
@@ -41,6 +42,7 @@ const App = () => {
               <Route path="/setup" element={<AccountSetup />} />
               <Route path="/magic-setup" element={<Setup />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/signup" element={<DirectSignup />} />
               <Route 
                 path="/onboarding" 
                 element={
