@@ -89,6 +89,10 @@ class ApiClient {
       console.error('🚨 API Request failed:', error);
       
       if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+        // Check if this might be a mixed content issue (HTTPS → HTTP)
+        if (window.location.protocol === 'https:' && API_BASE_URL.startsWith('http:')) {
+          throw new Error('Mixed content error: Cannot make HTTP requests from HTTPS site. Please use HTTPS backend or test on HTTP site.');
+        }
         throw new Error('Network error: Unable to connect to the backend server. Please check your internet connection and try again.');
       }
       
