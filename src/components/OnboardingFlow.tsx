@@ -117,13 +117,27 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
     setIsLoading(true);
     
     try {
-      // Get the cached setup data
+      // Try to get cached setup data, but don't fail if it's not there
       const setupData = sessionStorage.getItem('setupData');
-      if (!setupData) {
-        throw new Error('Setup data not found');
+      let email, password, firstName, lastName;
+      
+      if (setupData) {
+        // Use cached data if available
+        const parsed = JSON.parse(setupData);
+        email = parsed.email;
+        password = parsed.password;
+        firstName = parsed.firstName;
+        lastName = parsed.lastName;
+        console.log('Using cached setup data for onboarding');
+      } else {
+        // For direct signup users, we'll skip the backend registration
+        // since they already created their account through the direct signup flow
+        console.log('No setup data found - user likely came through direct signup');
+        
+        toast.success('Profile setup completed! Redirecting to dashboard...');
+        onComplete();
+        return;
       }
-
-      const { email, password, firstName, lastName } = JSON.parse(setupData);
       
       // Calculate contradiction tolerance as average of scores
       const contradictionTolerance = parseFloat((answersToUse.reduce((a, b) => a + b, 0) / answersToUse.length).toFixed(2));
@@ -144,32 +158,36 @@ const OnboardingFlow: React.FC<OnboardingFlowProps> = ({ onComplete }) => {
       const response = await apiClient.register(registrationData);
       console.log('API registration successful:', response);
 
-      // Update waitlist status to "registered"
-      const { error: statusError } = await supabase
-        .from('waitlist_submissions')
-        .update({ status: 'registered' })
-        .eq('email', email);
+      // Update waitlist status to "registered" (only if we have email)
+      if (email) {
+        const { error: statusError } = await supabase
+          .from('waitlist_submissions')
+          .update({ status: 'registered' })
+          .eq('email', email);
 
-      if (statusError) {
-        console.error('Error updating waitlist status:', statusError);
-        // Don't fail the registration if this fails
+        if (statusError) {
+          console.error('Error updating waitlist status:', statusError);
+          // Don't fail the registration if this fails
+        }
       }
 
-      // Create the Supabase account as well for local auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-          },
-          emailRedirectTo: `${window.location.origin}/`
-        }
-      });
+      // Create the Supabase account as well for local auth (only if we have credentials)
+      if (email && password && firstName && lastName) {
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              first_name: firstName,
+              last_name: lastName,
+            },
+            emailRedirectTo: `${window.location.origin}/`
+          }
+        });
 
-      if (authError && !authError.message.includes('already registered')) {
-        throw authError;
+        if (authError && !authError.message.includes('already registered')) {
+          throw authError;
+        }
       }
       
       // Clear setup data
